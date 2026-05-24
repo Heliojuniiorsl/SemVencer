@@ -1,0 +1,4233 @@
+[
+  {
+    "plu": "281430",
+    "descricao": "ACEM ANGUS PORCI LAS PIEDRAS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "183239",
+    "descricao": "ACEM BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "124270",
+    "descricao": "ACEM BOV PORCIONADO RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "3911976",
+    "descricao": "ACEM BOV RESF CRY PC KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "1795738",
+    "descricao": "ACEM BOV RESF CRY PECA PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "52542",
+    "descricao": "ACEM BOV RESF PEDACO KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "49504",
+    "descricao": "ACEM FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "50685",
+    "descricao": "ALCATRA BOV ESPECIAL KG - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "183116",
+    "descricao": "ALCATRA BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "77231",
+    "descricao": "ALCATRA BOV RESF BIFE KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "120203",
+    "descricao": "ALCATRA BOV RESF FRACIONAD CRY KGOP",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "334662",
+    "descricao": "ALCATRA C/MAM BOV RESF PLENA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1283488",
+    "descricao": "ALCATRA C/MAMI BOV RESF CRY PONTE K",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "79181",
+    "descricao": "ALCATRA C/MAMINH BOV RESF PC CRY KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "1006766",
+    "descricao": "ALCATRA C/PICANHA CORD CONG IMP KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "242295",
+    "descricao": "ALCATRA C/PICANHA CORDEIRO SWIFT KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "31431",
+    "descricao": "ALCATRA FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1691795",
+    "descricao": "ALCATRA MIOLO C/MAMINHA BOV RESF",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "27588",
+    "descricao": "ALCATRA SUINA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "280877",
+    "descricao": "ALCATRA SUINA RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "327732",
+    "descricao": "ALCATRA SUINA TEMP RESF SUINCO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "293013",
+    "descricao": "ALCATRA SUINA TEMP SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "261999",
+    "descricao": "ALCATRA SWIFT KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "311458",
+    "descricao": "ALCATRA/PICANHA DE CORDEIRO CONG KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "328210",
+    "descricao": "ANCHO SUINO CHIMICHURRIM SEARA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "772891",
+    "descricao": "ANCHO SUINO CONG AURORA PREMIUM KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "2400556",
+    "descricao": "ASA DE FGO CONG PONTE KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "417808",
+    "descricao": "ASA FGO REF BONASA KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "191470",
+    "descricao": "ASA FGO RESF ATENDIMENTO KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "132527",
+    "descricao": "ASA FGO SUPER FRANGO RESF PCT KG",
+    "categoria": "Aves",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "6668",
+    "descricao": "ASA FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "2069920",
+    "descricao": "ASA FRANGO RESF PONTE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+
+  {
+    "plu": "322812",
+    "descricao": "ASSADO DE TIRA MATURATTA CONG KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "240338",
+    "descricao": "ASSADO DE TIRAS SWIFT KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "169592",
+    "descricao": "ASSADO TIRA CONG BASSI KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "314305",
+    "descricao": "AVE CHESTER PERDIGAO BRASILEIRIS KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "314282",
+    "descricao": "AVE CHESTER PERDIGAO MINEIRO KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "174701",
+    "descricao": "AVE FIESTA ASSA FACIL CONG SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "766111",
+    "descricao": "AVE FIESTA CHURRASQUEIRA SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "609722",
+    "descricao": "AVE FIESTA DESOSSADA TEMP CONG SEAR",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "314169",
+    "descricao": "AVE FIESTA MEDITER KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "491662",
+    "descricao": "AVE FIESTA TEMP CONG SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "753203",
+    "descricao": "AVE NATALINA ORGANICA TEMP SADIA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "314275",
+    "descricao": "AVE SUPREME FACIL SADIA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "35705",
+    "descricao": "AVE SUPREME TEMP CONG SADIA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "420",
+    "descricao": "BABY BEEF BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "333771",
+    "descricao": "BABY BEEF NABRASA RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "768511",
+    "descricao": "BABY BEEF RESF KG ES 92",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "283359",
+    "descricao": "BABY BEEF SWIFT GRAN RESERVA KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "345538",
+    "descricao": "BACON SUINO RESF KG CORTE",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "3824412",
+    "descricao": "BARRIGA C/CARNE SUINA RESF PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1094626",
+    "descricao": "BARRIGA MANTA RESFRIADA IN NAT. KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "312394",
+    "descricao": "BARRIGA SUIN TEMP NABRASA PERDI KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "768986",
+    "descricao": "BARRIGA SUINA AURORA PREMIUM KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "328180",
+    "descricao": "BARRIGA SUINA LEMON PEP SEARA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "54270",
+    "descricao": "BARRIGA SUINA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "42659",
+    "descricao": "BARRIGA SUINA RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "4887911",
+    "descricao": "BARRIGA SUINA RESF VACUO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "327763",
+    "descricao": "BARRIGA SUINA TEMP RESF SUINCO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "88718",
+    "descricao": "BIFE A MILANESA PATINHO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "88732",
+    "descricao": "BIFE A MINEIRA BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "219785",
+    "descricao": "BIFE ANCHO - FILE COSTELA BASSI RES",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "437622",
+    "descricao": "BIFE ANCHO BOV ARG RESF FRIAR KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "766883",
+    "descricao": "BIFE ANCHO MINERVA SELECAO RESF KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "283328",
+    "descricao": "BIFE ANCHO SWIFT GRAN RESERVA KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "88404",
+    "descricao": "BIFE BORBOLETA BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "83355",
+    "descricao": "BIFE CACAROLA BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "38980",
+    "descricao": "BIFE CHORICO BOV ARG RESF FRIAR KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "47197",
+    "descricao": "BIFE CHORIZO CONTRA FILE RESF K",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "283335",
+    "descricao": "BIFE CHORIZO SWIFT GRAN RESERVA KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "77224",
+    "descricao": "BIFE COXAO MOLE BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "767415",
+    "descricao": "BIFE DE CHORIZO ES 92 RESF KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "241397",
+    "descricao": "BIFE DE CHORIZO SWIFT KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "95877",
+    "descricao": "BIFE DE FILE DE FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "52559",
+    "descricao": "BIFE ESPECIAL CONTRA FILE RESF K",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "58872",
+    "descricao": "BIFE FIGADO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "888",
+    "descricao": "BIFE FIGADO BOVINO KG",
+    "categoria": "Cordeiro",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "191623",
+    "descricao": "BIFE FILE PEITO RESF ATEND KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "83379",
+    "descricao": "BIFE PALHA LAGARTO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "54690",
+    "descricao": "BIFE PANELA BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "352",
+    "descricao": "BIFE PARA ROLE CHA FORA BOV RF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "444",
+    "descricao": "BIFE PARIS BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "956",
+    "descricao": "BISTECA SUINA CONG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "41058",
+    "descricao": "BISTECA SUINA FATIADA CONG K",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Congelado"
+  },
+  {
+    "plu": "263023",
+    "descricao": "BISTECA SUINA FATIADA CONG SADIA",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Congelado"
+  },
+  {
+    "plu": "222921",
+    "descricao": "BISTECA SUINA PURURUCA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "19699",
+    "descricao": "BISTECA SUINA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "226585",
+    "descricao": "BISTECA SUINA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "73653",
+    "descricao": "BOMBOM ALCATRA RESF K",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "283458",
+    "descricao": "BOMBOM ALCATRA SWIFT GRANRESERVA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "261890",
+    "descricao": "BOMBOM DE ALCATRA SWIFT KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "2070759",
+    "descricao": "BUCHO BOV CONG (ESTOMAGO) KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "512",
+    "descricao": "BUCHO BOV RESF",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "111478",
+    "descricao": "BUCHO BOVINO CONG KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "826",
+    "descricao": "BUCHO BOVINO KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "212267",
+    "descricao": "BUCHO BOVINO KG - ATEND. BALCAO",
+    "categoria": "Cordeiro",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "4695257",
+    "descricao": "CAPA FILE BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "50371",
+    "descricao": "CAPA FILE BOV RESF PEDACO KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "752305",
+    "descricao": "CARCACA DE CORDEIRO RESF COMPRA KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1493191",
+    "descricao": "CARCACA SUINA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "114226",
+    "descricao": "CARCACA SUINA RESF PERSA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "288514",
+    "descricao": "CARNE DE SOL (PECINHA) KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "298971",
+    "descricao": "CARNE DE SOL BOV MANTA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "288507",
+    "descricao": "CARNE DE SOL BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "760423",
+    "descricao": "CARNE DE SOL COX O DURO KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "87698",
+    "descricao": "CARNE DE SOL CX MOLE KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "3305713",
+    "descricao": "CARNE DE SOL DE COXAO MOLE PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "753616",
+    "descricao": "CARNE DE SOL DRESDEN BOV KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "3286623",
+    "descricao": "CARNE DE SOL PONTE KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "211567",
+    "descricao": "CARNE MOIDA COXAO MOLE KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "247771",
+    "descricao": "CARNE MOIDA CX MOLE HOMOG RESF KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "39789",
+    "descricao": "CARNE MOIDA PATINHO HOMOG RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "536",
+    "descricao": "CARNE P/ MOLHO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "61315",
+    "descricao": "CARNE P/ STROGONOFF DE ALCATRA",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "82587",
+    "descricao": "CARNE P/ STROGONOFF DE COXAO MOLE",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "1915",
+    "descricao": "CARNE P/ STROGONOFF DE FILE MIGNON",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "241076",
+    "descricao": "CARNE P/ STROGONOFF DE PATINHO",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "288491",
+    "descricao": "CARNE SOL LAGARTO KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "242240",
+    "descricao": "CARRE CURTO CORDEIRO SWIFT KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "311410",
+    "descricao": "CARRE DE CORD FRANCES CONG KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "6015268",
+    "descricao": "CARRE SUINO 2X2 RESF PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "315067",
+    "descricao": "CARRE SUINO C/OSSO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "64033",
+    "descricao": "CARRE SUINO CONG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1202007",
+    "descricao": "CARRE SUINO CONG PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "270274",
+    "descricao": "CARRE SUINO INTEIRO CONG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "83423",
+    "descricao": "CF CHURRASCO ANCHO",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "4710936",
+    "descricao": "CG ALCATRA C/MAM BOV RESF KG PONTE",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "493611",
+    "descricao": "CHA DE FORA BOV ESPECIAL KG - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "183208",
+    "descricao": "CHA DE FORA BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "111041",
+    "descricao": "CHESTER ASSA FACIL CONG PERDIGAO KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "23474",
+    "descricao": "CHESTER AZEITE CONG PERDIGAO KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "15158",
+    "descricao": "CHESTER CONG PERDIGAO KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "791588",
+    "descricao": "CHESTER DESOS RECHE C/ FAROFA PE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "378857",
+    "descricao": "CHESTER DESOSSADO CONG PERDIGAO KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "406017",
+    "descricao": "CHESTER FACIL PESTO CONG PERDIGAO K",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "328999",
+    "descricao": "CHORIZO NABRASA RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "322898",
+    "descricao": "CHULETA BOV MATURATTA CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "247955",
+    "descricao": "CHULETA BOVINA ATENDIMENTO KG",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "252430",
+    "descricao": "CHULETA BOVINA BDJ RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "248389",
+    "descricao": "CHULETA BOVINA CONG COMPRA/PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "248044",
+    "descricao": "CHULETA BOVINA CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "240291",
+    "descricao": "CHULETA SWIFT KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "7635540",
+    "descricao": "CNE DE SOL CHA DE FORA KG PONTE",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "270212",
+    "descricao": "CNE DE SOL CHA DE FORA RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "219938",
+    "descricao": "CNE DE SOL CX MOLE FORA DO VACUO KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "7635564",
+    "descricao": "CNE DE SOL DE LAGARTO KG PONTE",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "270182",
+    "descricao": "CNE DE SOL DE LAGARTO RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "281737",
+    "descricao": "CONTRA FILE AN PORC LAS PIEDRAS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "124218",
+    "descricao": "CONTRA FILE BIFE ANCHO RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "754873",
+    "descricao": "CONTRA FILE BOV CONG SWIFT MAIS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "4700791",
+    "descricao": "CONTRA FILE BOV ESPECIAL",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "19965",
+    "descricao": "CONTRA FILE BOV ESPECIAL KG - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "183093",
+    "descricao": "CONTRA FILE BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "80200",
+    "descricao": "CONTRA FILE BOV PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Não informado"
+  },
+  {
+    "plu": "376",
+    "descricao": "CONTRA FILE BOV RESF BIFE KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "1333954",
+    "descricao": "CONTRA FILE BOV RESF COMPRA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1652338",
+    "descricao": "CONTRA FILE BOVINO PONTE",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "165389",
+    "descricao": "CONTRA FILE CHORIZO BASSI KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "34036",
+    "descricao": "CONTRA FILE FORA DO VACUO BOV RESF",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "28363",
+    "descricao": "CONTRA FILE MATURATTA",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "766524",
+    "descricao": "CONTRAFILE CHORIZO BASSI ANGUS CONG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "3817537",
+    "descricao": "COPA LOMBO SUINA RESF PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "25157",
+    "descricao": "COPA LOMBO SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "131124",
+    "descricao": "COPA LOMBO SUINO RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "215497",
+    "descricao": "COPA LOMBO SUINO RF ATENDIMENTO KG",
+    "categoria": "Suíno",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "241786",
+    "descricao": "COPA LOMBO SUINO S/OSSO CONG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "292993",
+    "descricao": "COPA LOMBO SUINO TEMP SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "292931",
+    "descricao": "COPA LOMBRO REC SEARA GOUMERT KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "199452",
+    "descricao": "COR DA ALC BOV RESF (BABY BF) 1953",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "2073309",
+    "descricao": "CORACAO BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "120234",
+    "descricao": "CORACAO BOV N.C KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "29643",
+    "descricao": "CORACAO DA ALCATRA MATURATTA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "362986",
+    "descricao": "CORACAO DE PATINHO KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "192705",
+    "descricao": "CORACAO FGO RESF BAND KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "7009",
+    "descricao": "CORACAO FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "470445",
+    "descricao": "CORDEIRO INT RESF KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1162493",
+    "descricao": "CORDEIRO INT RESF PONTE KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "418614",
+    "descricao": "COROA SUINA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "764148",
+    "descricao": "CORTES CXA/SOBRECX PADARIA SEARA KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "195058",
+    "descricao": "COSTELA BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "778459",
+    "descricao": "COSTELA BOV COZ CONG C MOLHO SD KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "241649",
+    "descricao": "COSTELA BOV JA PRO FORNO SWIFT KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "761673",
+    "descricao": "COSTELA BOV MINGA CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "3823026",
+    "descricao": "COSTELA BOV PONTA AG RESF FRIBOI KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "227766",
+    "descricao": "COSTELA CONGELADA DE TERNEIRO KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "242257",
+    "descricao": "COSTELA CORDEIRO CONG SWIFT KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "771634",
+    "descricao": "COSTELA CORDEIRO FLAVOR SERRADA KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "117791",
+    "descricao": "COSTELA DE CORDEIRO RESF KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "311083",
+    "descricao": "COSTELA DE CORDEIRO TIRA CONG KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "231732",
+    "descricao": "COSTELA DE TERNEIRO ROJ O CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "308656",
+    "descricao": "COSTELA DO TRASEIRO A VACUO",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "762496",
+    "descricao": "COSTELA MINGA N.C. ATENDIMENTO KG",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "762472",
+    "descricao": "COSTELA MINGA N.C. BDJ KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "256193",
+    "descricao": "COSTELA NO BAFO SWIFT BLACK KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "6015275",
+    "descricao": "COSTELA SUINA 2X2 RESF PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "191616",
+    "descricao": "COSTELA SUINA ATENDIMENTO KG",
+    "categoria": "Suíno",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "771467",
+    "descricao": "COSTELA SUINA BARBECUE SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "611",
+    "descricao": "COSTELA SUINA CONG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "435987",
+    "descricao": "COSTELA SUINA CONG NABRASA PERDIGAO",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1201437",
+    "descricao": "COSTELA SUINA CONG PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "10191",
+    "descricao": "COSTELA SUINA FATIADA RESF KG CORTE",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "44899",
+    "descricao": "COSTELA SUINA PURURUCA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "28851",
+    "descricao": "COSTELA SUINA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "10528",
+    "descricao": "COSTELA SUINA RESF KG CORTES",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "261579",
+    "descricao": "COSTELA SUINA SWIFT KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "773188",
+    "descricao": "COSTELA SUINA TEMP FACIL SADIA",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "327442",
+    "descricao": "COSTELA SUINA TEMP. RESF. SUINCO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "241908",
+    "descricao": "COSTELA SUINA TEMPERADA SWIFT KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "299152",
+    "descricao": "COSTELA TIRA SUINA CONG SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "85830",
+    "descricao": "COSTELINHA SUINA FATIADA KG",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "191555",
+    "descricao": "COXA C/ SOBRE FGO RESF ATEND KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "1523140",
+    "descricao": "COXA C/SOBRECOXA FGO CONG PONTE KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "16339",
+    "descricao": "COXA C/SOBRECOXA FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "19934",
+    "descricao": "COXA FGO S/PELE RESF GNEL KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1281",
+    "descricao": "COXA FRANGO RESF K",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "4888215",
+    "descricao": "COXA PERU CONG KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "306003",
+    "descricao": "COXA PERU CONG SADIA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "33756",
+    "descricao": "COXA S/ PELE RESF ATENDIMENTO",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "417846",
+    "descricao": "COXA S/COXA FGO RESF BONASA KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "132671",
+    "descricao": "COXA S/COXA SUPER FGO RESF PCT KG",
+    "categoria": "Outros",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "78788",
+    "descricao": "COXA SCOXA FGO S/PELE RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "753227",
+    "descricao": "COXA SOBRECO CHESTER CHURR PERD KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "2069777",
+    "descricao": "COXA-SOBRECOXA FRANGO RESF PONTE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "81641",
+    "descricao": "COXAO DURO BOV RESF BIFE KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "1649826",
+    "descricao": "COXAO DURO BOV RESF PECA PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "89999",
+    "descricao": "COXAO DURO BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "334310",
+    "descricao": "COXAO DURO BOV RESF PLENA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "362436",
+    "descricao": "COXAO DURO BOV RESF SADILAR CRY KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "773089",
+    "descricao": "COXAO DURO BOVINO DE SOL KG FP",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "36634",
+    "descricao": "COXAO DURO FORA DO VACUO BOV RESF K",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "3910559",
+    "descricao": "COXAO DURO RESF CRY KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "55185",
+    "descricao": "COXAO DURO SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "280822",
+    "descricao": "COXAO DURO SUINO RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "611626",
+    "descricao": "COXAO MOLE BOV ESPECIAL - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "183154",
+    "descricao": "COXAO MOLE BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "262651",
+    "descricao": "COXAO MOLE BOV RESF FRIBOI 1953",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1648461",
+    "descricao": "COXAO MOLE BOV RESF PCA CRY PONTE K",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "89982",
+    "descricao": "COXAO MOLE BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "4694205",
+    "descricao": "COXAO MOLE BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "334259",
+    "descricao": "COXAO MOLE BOV RESP PLENA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "34838",
+    "descricao": "COXAO MOLE FORA DO VACUO BOV RESF K",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "55208",
+    "descricao": "COXAO MOLE SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "280860",
+    "descricao": "COXAO MOLE SUINO RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "191487",
+    "descricao": "COXINHA ASA FGO RESF ATENDIMENTO KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "3809389",
+    "descricao": "COXINHA ASA FGO RESF KG (PONTE)",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "191883",
+    "descricao": "COXINHA ASA FGO TEMP RESF ATEND KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "131568",
+    "descricao": "COXINHA ASA RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "132480",
+    "descricao": "COXINHA ASA SUPER FGO RESF PCT KG",
+    "categoria": "Outros",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "5749966",
+    "descricao": "COXINHA DA ASA FGO RESF KG COMPRA",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "28202",
+    "descricao": "COXINHA DA ASA FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "417853",
+    "descricao": "COXINHA DA ASA RESF BONASA KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "418621",
+    "descricao": "CUBO DE PERNIL SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "89135",
+    "descricao": "CUBOS DE COXAO DURO BOV RESF K",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "92388",
+    "descricao": "CUBOS DE PEITO FGO RESF P/FONDU KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "285537",
+    "descricao": "CUBOS FILE PEITO FGO RESF BDJ KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "86110",
+    "descricao": "CUBOS P/GOULASH SUINO KG",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "216760",
+    "descricao": "CUBOS PERNIL SUINO RESF KG (CORTES)",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "819",
+    "descricao": "CUPIM BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "774901",
+    "descricao": "CUPIM BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1303445",
+    "descricao": "CUPIM BOV CONG PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "131629",
+    "descricao": "CUPIM BOV PORCIONADO RESF FRIBOI KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "292818",
+    "descricao": "CUPIM BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "771405",
+    "descricao": "CUPIM COZIDO COM SACHE SADIA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "64330",
+    "descricao": "CUPIM MATURATTA RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "165693",
+    "descricao": "CXX FILE MIGNON BOV S/ CORDAO RESF",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "4695400",
+    "descricao": "CXX FRALDINHA BOV COMPRA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "3908952",
+    "descricao": "CXX PICANHA BOV ESPECIAL RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "3048207",
+    "descricao": "DIANT BOV RESF C/OSSO KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "3820957",
+    "descricao": "DIANT BOV RESF C/OSSO PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1784022",
+    "descricao": "DIANT BOV RESF C/OSSO PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "471138",
+    "descricao": "DRUMET FGO TEMP RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1226423",
+    "descricao": "DRUMET FGO TEMP RESF KG PONTE",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1840308",
+    "descricao": "DRUMETT FGO CONG PONTE KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "767460",
+    "descricao": "ENTRECOTE ESTANCIA 92 CONG KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "767422",
+    "descricao": "ENTRECOTE ESTANCIA 92 RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "392815",
+    "descricao": "ENTRECOTE FILE COSTELA MATURATTA",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "128407",
+    "descricao": "ENTRECOTE NABRASA RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "447713",
+    "descricao": "ESCALOPE FILE SUINO RESF KG CORTE",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "345989",
+    "descricao": "ESCALOPE LOMBO SUINO RESF KG CORTE",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "61629",
+    "descricao": "ESPETINHO DE CORACAO DE FGO RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "5979837",
+    "descricao": "FGO PASS TEMP RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "471121",
+    "descricao": "FGO PASSARINHO TEMP RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1226508",
+    "descricao": "FGO PASSARINHO TEMP RESF KG PONTE",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "174756",
+    "descricao": "FIESTA DESOS ASSA FACIL SEARA KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "2073606",
+    "descricao": "FIGADO BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1361407",
+    "descricao": "FIGADO BOV CONGELADO COMPRA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "132435",
+    "descricao": "FIGADO FGO SUPER FRANGO RESF PCT KG",
+    "categoria": "Aves",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "1545661",
+    "descricao": "FIGADO FRANGO CONG PONTE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "2486",
+    "descricao": "FIGADO FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "2082493",
+    "descricao": "FIGADO FRANGO RESF PONTE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "476683",
+    "descricao": "FILE CX/SOBRE TEMP RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "192026",
+    "descricao": "FILE CX/SOBRE TEMP RESF ATD KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1226393",
+    "descricao": "FILE CX/SOBRE TEMP RESF PTE KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "228268",
+    "descricao": "FILE DE COXA SCOXA RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "5029",
+    "descricao": "FILE DE PEITO FGO RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "471114",
+    "descricao": "FILE DE PEITO FGO TEMP RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "191609",
+    "descricao": "FILE FGO RESF ATENDIMENTO KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "5979820",
+    "descricao": "FILE FGO TEMP RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "467377",
+    "descricao": "FILE MIG BOV ESPECIAL KG - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "901",
+    "descricao": "FILE MIGNON BOV EXTRA LIMPO RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "183062",
+    "descricao": "FILE MIGNON BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "7608407",
+    "descricao": "FILE MIGNON BOV RESERVA COMPRA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "11099",
+    "descricao": "FILE MIGNON BOV RESF BIFE KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "3290057",
+    "descricao": "FILE MIGNON BOV RESF CRY FRIBOI KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "1655834",
+    "descricao": "FILE MIGNON BOV RESF PECA PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "214018",
+    "descricao": "FILE MIGNON COM CORDAO BOV RESFRIAD",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "48682",
+    "descricao": "FILE MIGNON EXTRA LIMPO BASSI",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "33688",
+    "descricao": "FILE MIGNON FORA DO VACUO BOV RESF",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "17497",
+    "descricao": "FILE MIGNON MATURATTA",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "147644",
+    "descricao": "FILE MIGNON S/CORDAOBOV RESF KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1266009",
+    "descricao": "FILE MIGNON SEM CORDAO ESPECIAL",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "292955",
+    "descricao": "FILE MIGNON SUI TEMP SADIA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "191685",
+    "descricao": "FILE MIGNON SUINO ATENDIMENTO KG",
+    "categoria": "Suíno",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "2493",
+    "descricao": "FILE MIGNON SUINO CONG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1225860",
+    "descricao": "FILE MIGNON SUINO CONG PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "345958",
+    "descricao": "FILE MIGNON SUINO FAT RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "31240",
+    "descricao": "FILE MIGNON SUINO RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "6015282",
+    "descricao": "FILE MIGNON SUINO RESF PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "88695",
+    "descricao": "FILE MIGNON SUINO RESF(CARC SUINO)K",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "261692",
+    "descricao": "FILE MIGNON SUINO SWIFT KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "326841",
+    "descricao": "FILE MIGNON SUINO TEMP. SUINCO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "283410",
+    "descricao": "FILE MIGNON SWIFT GRAN RESERVA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "4888369",
+    "descricao": "FILE MINGON SUINO RESF VACUO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "417839",
+    "descricao": "FILE PEITO FGO RESF BONASA KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "192057",
+    "descricao": "FILE PEITO FGO TEMP RESF ATEND KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "132688",
+    "descricao": "FILE PEITO SUPER FGO RESF PCT KG",
+    "categoria": "Outros",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "753128",
+    "descricao": "FILE SUINO C MOLHO MEL E ABAC KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "778671",
+    "descricao": "FILEZ DE FGO EMPANADO CONG KG NC",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "778688",
+    "descricao": "FILEZINHO DE FGO EMP CONG KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "772853",
+    "descricao": "FILEZINHO DE FGO EMP CONG KG COMPRA",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "241243",
+    "descricao": "FILEZINHO SUINO S/OSSO CONG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "333788",
+    "descricao": "FRALDA NABRASA RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "768535",
+    "descricao": "FRALDA RESF KG ES 92",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "47722",
+    "descricao": "FRALDINHA BOV EXTRA LIMPA BASSI KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "223614",
+    "descricao": "FRALDINHA BOV RESF ANGUS FRIBOI",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "131612",
+    "descricao": "FRALDINHA BOV RESF FRIBOI KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "64026",
+    "descricao": "FRALDINHA BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "46930",
+    "descricao": "FRALDINHA BOV RESF PEDACO KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "1647754",
+    "descricao": "FRALDINHA BOV RESF VACUO PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "197946",
+    "descricao": "FRALDINHA DE CORDEIRO CONG KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "44455",
+    "descricao": "FRALDINHA FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "267069",
+    "descricao": "FRALDINHA GRILL 1953 BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "76753",
+    "descricao": "FRALDINHA MATURATTA",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "267106",
+    "descricao": "FRALDINHA NOBRE 1953 BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "12010",
+    "descricao": "FRANGO A PASSARINHO RESF K",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "181808",
+    "descricao": "FRANGO ASSA FACIL SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "344654",
+    "descricao": "FRANGO CAIPIRA NHO BENTO KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "261555",
+    "descricao": "FRANGO CAIPIRA SWIFT KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "949",
+    "descricao": "FRANGO CONGELADO KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "99516",
+    "descricao": "FRANGO CONGELADO SADIA FRQ KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "335294",
+    "descricao": "FRANGO DE PADARIA ERVAS SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "54287",
+    "descricao": "FRANGO DESOSSADO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "140294",
+    "descricao": "FRANGO DESOSSADO TEMP COPACOL RF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "216944",
+    "descricao": "FRANGO INT CORTADO NA JUNTA RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "87254",
+    "descricao": "FRANGO INT S/ PELE RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "197717",
+    "descricao": "FRANGO INTEIRO DAGRANJA SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "335393",
+    "descricao": "FRANGO PADARIA CERVEJA SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "335409",
+    "descricao": "FRANGO PADARIA TRADICIONAL SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "191821",
+    "descricao": "FRANGO PAS TEMP RESF ATEND KG",
+    "categoria": "Aves",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "66938",
+    "descricao": "FRANGO PASSARINHO ATEND BALCAO",
+    "categoria": "Aves",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "995825",
+    "descricao": "FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "87247",
+    "descricao": "FRANGO RESF (METADE) K",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "349048",
+    "descricao": "FRANGO RESF BONASA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "47746",
+    "descricao": "FRANGO RESF S/ MIUDOS KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1617627",
+    "descricao": "FRANGO RESFRIADO KG (PONTE)",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "132695",
+    "descricao": "FRANGO SUPER FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "750189",
+    "descricao": "FRANGO TEMP JA PRO FORNO SWIFT KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "752503",
+    "descricao": "FRENCH RACK OVINO CG DRESDEN KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "1106",
+    "descricao": "GALETO CONG K",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "263054",
+    "descricao": "GALETO SWIFT CONG KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "762915",
+    "descricao": "GALINHA DANGOLA INTEIRA VG CONG KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "54294",
+    "descricao": "JOELHO SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "754835",
+    "descricao": "LAGARTO BOV CONG SWIFT MAIS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "879507",
+    "descricao": "LAGARTO BOV ESPECIAL KG - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "183185",
+    "descricao": "LAGARTO BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "11662",
+    "descricao": "LAGARTO BOV RESF BIFE KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "995276",
+    "descricao": "LAGARTO BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "46060",
+    "descricao": "LAGARTO BOV RESF PEDACO KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "1650785",
+    "descricao": "LAGARTO BOV RESF VACUO PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "773096",
+    "descricao": "LAGARTO BOVINO DE SOL KG FP",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "80347",
+    "descricao": "LAGARTO BOVINO RESF EXTRA LIMPO KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "41768",
+    "descricao": "LAGARTO FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "240222",
+    "descricao": "LAGARTO SEM PELE SWIFT KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "31288",
+    "descricao": "LAGARTO SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "345668",
+    "descricao": "LAGARTO SUINO RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "240239",
+    "descricao": "LAGARTO SWIFT KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "53747",
+    "descricao": "LEITAO CONG KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "19040",
+    "descricao": "LEMMON E PEPPER BASSI KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "193863",
+    "descricao": "LINGUA BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "2073903",
+    "descricao": "LINGUA BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "12317",
+    "descricao": "LINGUA BOVINA SEM PELE 1KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "1250",
+    "descricao": "LINGUA BOVINO KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "262194",
+    "descricao": "LINGUA FATIADA SWIFT KG",
+    "categoria": "Outros",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "482196",
+    "descricao": "LOMBO SADIA FUNCIONARIO KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "750097",
+    "descricao": "LOMBO SUINO ASSA FACIL SWIFT KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "62848",
+    "descricao": "LOMBO SUINO CONG SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "784672",
+    "descricao": "LOMBO SUINO CONG SEARA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "232319",
+    "descricao": "LOMBO SUINO FACIL SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "16087",
+    "descricao": "LOMBO SUINO FATIADO RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "765299",
+    "descricao": "LOMBO SUINO LEVEM TEMP SUINCO CG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "222891",
+    "descricao": "LOMBO SUINO PURURUCA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "191739",
+    "descricao": "LOMBO SUINO RESF ATENDIMENTO KG",
+    "categoria": "Suíno",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "85403",
+    "descricao": "LOMBO SUINO RESF KG (CS)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "6015312",
+    "descricao": "LOMBO SUINO RESF PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "4888819",
+    "descricao": "LOMBO SUINO RESF VACUO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "12249",
+    "descricao": "LOMBO SUINO RESFRIADO KG CORTE",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "68178",
+    "descricao": "LOMBO SUINO TEMP CONG SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1274",
+    "descricao": "LOMBO SUINO TEMP CONG SEARA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "326612",
+    "descricao": "LOMBO SUINO TEMP RESF SUINCO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "257602",
+    "descricao": "LOMBO TEMPERADO CONG PERDIGAO",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "262743",
+    "descricao": "MAMINHA ALCATR BOV RESF FRIBOI 1953",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "766869",
+    "descricao": "MAMINHA ALCATRA ANA PAULA CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "769679",
+    "descricao": "MAMINHA ALCATRA CONG ES 92 KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "767408",
+    "descricao": "MAMINHA ALCATRA RESF ES 92 KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "206464",
+    "descricao": "MAMINHA BOV ARG RESF FRIAR KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "879774",
+    "descricao": "MAMINHA BOV ESPECIAL KG - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "183123",
+    "descricao": "MAMINHA BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "56854",
+    "descricao": "MAMINHA BOV RESF BIFE KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "3817971",
+    "descricao": "MAMINHA BOV RESF CRY PECA PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "1298",
+    "descricao": "MAMINHA BOV RESF ESPECIAL KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "48118",
+    "descricao": "MAMINHA BOV RESF EXTRA LIMPA BASSI",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "142502",
+    "descricao": "MAMINHA BOV RESF FRIBOI KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "76050",
+    "descricao": "MAMINHA BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "771580",
+    "descricao": "MAMINHA DA ALCATRA NABRASA RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "36559",
+    "descricao": "MAMINHA FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "241687",
+    "descricao": "MAMINHA JA PRO FORNO SWIFT KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "52948",
+    "descricao": "MAMINHA MATURATTA",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "256186",
+    "descricao": "MAMINHA SWIFT BLACK KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "283298",
+    "descricao": "MAMINHA SWIFT GRAN RESERVA 900G",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "261906",
+    "descricao": "MEDALHAO DE BABY BEEF SWIFT KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "262200",
+    "descricao": "MEDALHAO DE PICANHA SWIFT MAIS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "1304",
+    "descricao": "MEDALHAO FILE MIGNOM BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "435994",
+    "descricao": "MEDALHAO FILE SUINO RESF KG CORTE",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "51088",
+    "descricao": "MEIA CARCACA SUINA RESF C/PELE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "244640",
+    "descricao": "MEIO ASA FGO RESF TEMP KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1230222",
+    "descricao": "MEIO ASA FGO TEMP RESF KG PONTE",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1858464",
+    "descricao": "MEIO ASA RESF TEMP KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "192033",
+    "descricao": "MEIO ASA TEMP RESF ATEND KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "791564",
+    "descricao": "MEIO DA ASA C/ COXIN CHESTER PERD K",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "753197",
+    "descricao": "MEIO PEIT PERU C CROSTA SPEC SAD KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "2084985",
+    "descricao": "MIOLO ALCATRA BOV RESF PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "170871",
+    "descricao": "MIOLO DA ALCATRA BOV RESF PC VC KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "209595",
+    "descricao": "MIOLO DA ALCATRA PEDA O KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "194051",
+    "descricao": "MIOLO DA ALCATRA RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "2074351",
+    "descricao": "MOCOTO BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "833",
+    "descricao": "MOCOTO BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "378055",
+    "descricao": "MOCOTO BOVINO KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "192712",
+    "descricao": "MOELA FGO RESF ATEND KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "4115397",
+    "descricao": "MOELA FRANGO CONG COMPRA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "7245",
+    "descricao": "MOELA FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "2086392",
+    "descricao": "MOELA FRANGO RESF PONTE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "93392",
+    "descricao": "MOIDA HOMOGENEIZADA ACEM",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "78818",
+    "descricao": "MOIDA HOMOGENEIZADA PALETA",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "495981",
+    "descricao": "MUSCULO BOV ESPECIAL KG - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "183222",
+    "descricao": "MUSCULO BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "1689693",
+    "descricao": "MUSCULO BOV RESF PECA PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "90025",
+    "descricao": "MUSCULO BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "8280",
+    "descricao": "MUSCULO BOV RESF PEDACO KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "3914083",
+    "descricao": "MUSCULO BOVINO RESF CRY KG",
+    "categoria": "Cordeiro",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "15301",
+    "descricao": "MUSCULO DA PALETA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "41959",
+    "descricao": "MUSCULO FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "34371",
+    "descricao": "MUSCULO SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "752480",
+    "descricao": "NECK OVINO CONG FAT DRESDEN KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "314152",
+    "descricao": "ORG AVE FIESTA SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "338721",
+    "descricao": "ORG FILE MIGNON BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "140058",
+    "descricao": "ORG FRALDINHA BOV RESF INT KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "483971",
+    "descricao": "ORG FRANGO CONGELADO KORIN KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "200813",
+    "descricao": "OSSO BUCO CONG BASSI KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "86431",
+    "descricao": "OSSO BUCO CONGELADO KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "5581412",
+    "descricao": "OSSO BUCO CONGELADO PONTE KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "97093",
+    "descricao": "OSSO BUCO FAT SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "751858",
+    "descricao": "OSSOBUCO SWIFT OURO KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "183246",
+    "descricao": "PALETA BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "124140",
+    "descricao": "PALETA BOV PORCIONADA RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "1798999",
+    "descricao": "PALETA BOV RESF PECA PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "59985",
+    "descricao": "PALETA BOV RESF PEDACO KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "771603",
+    "descricao": "PALETA C/OSSO FLAVOR KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "242226",
+    "descricao": "PALETA CORDEIRO SWIFT KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "311045",
+    "descricao": "PALETA DE CORDEIRO CONG KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "117739",
+    "descricao": "PALETA DE CORDEIRO RESF KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "56342",
+    "descricao": "PALETA FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1208672",
+    "descricao": "PALETA S/ OSSO SUINO RESF PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1249927",
+    "descricao": "PALETA SUINA C/OSSO PONTE",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "54300",
+    "descricao": "PALETA SUINA C/OSSO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "222914",
+    "descricao": "PALETA SUINA PURURUCA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "63661",
+    "descricao": "PALETA SUINO S/OSSO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "767255",
+    "descricao": "PALETA SWIFT MAIS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "3914403",
+    "descricao": "PALETA-PA PALETA COM/SEM MUSCULO",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "768955",
+    "descricao": "PANCETA LEMON PEPPER AURORA PREM KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "292924",
+    "descricao": "PANCETA SUI RECH SEARA GOUMERT KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "467414",
+    "descricao": "PATINHO BOV ESPECIAL KG - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "183192",
+    "descricao": "PATINHO BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "77392",
+    "descricao": "PATINHO BOV RESF BIFE KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "362580",
+    "descricao": "PATINHO BOV RESF CRY SADILAR KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "288149",
+    "descricao": "PATINHO BOV RESF FRAC CRY KG KG OP",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "90193",
+    "descricao": "PATINHO BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "4694809",
+    "descricao": "PATINHO BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "1658071",
+    "descricao": "PATINHO BOV RESF PECA VACUO PONTEKG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "40129",
+    "descricao": "PATINHO FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "55260",
+    "descricao": "PATINHO SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "280884",
+    "descricao": "PATINHO SUINO RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "31714",
+    "descricao": "PATO CANAD FRANCE CONG V GERMANI KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "762908",
+    "descricao": "PATO TEMP PRONTO P ASSAR VG CONG KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "54317",
+    "descricao": "PE SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "183277",
+    "descricao": "PEITO BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "124201",
+    "descricao": "PEITO BOV PORCIONADO RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "3913659",
+    "descricao": "PEITO BOV RESF CRY KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "1798340",
+    "descricao": "PEITO BOV RESF PECA PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "60066",
+    "descricao": "PEITO BOV RESF PEDACO KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "191586",
+    "descricao": "PEITO C/ OSSO RESF ATENDIMENTO KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "753234",
+    "descricao": "PEITO DE CHESTER P CHURRASC PERD KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "2069623",
+    "descricao": "PEITO DE FRANGO RESF PONTE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "417822",
+    "descricao": "PEITO FGO C/OSSO RESF BONASA KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1311",
+    "descricao": "PEITO FGO C/OSSO RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "63173",
+    "descricao": "PEITO FGO RESF S/PELE KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "132640",
+    "descricao": "PEITO FGO SUPER FRANGO RESF PCT KG",
+    "categoria": "Aves",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "753166",
+    "descricao": "PEITO FIESTA RECH ERVAS CG KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "56335",
+    "descricao": "PEITO FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1516814",
+    "descricao": "PEITO FRANGO CONG PONTE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "764162",
+    "descricao": "PEITO FRANGO DE PADARIA SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "191715",
+    "descricao": "PEITO FRANGO S/ PELE RESF ATEND KG",
+    "categoria": "Aves",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "778756",
+    "descricao": "PEITO PERU RECHEADO CONG SADIA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1489",
+    "descricao": "PEITO PERU SADIA TEMP CONG PPPTR KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "122313",
+    "descricao": "PEITO PERU TEMP CONG SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "2070070",
+    "descricao": "PEITO S/O S/P FGO RESF(FILE) PTE KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "89326",
+    "descricao": "PEIXINHO ESPECIAL BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "767231",
+    "descricao": "PERA COXAO MOLE SWIFT MAIS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "210027",
+    "descricao": "PERNIL C/OSSO INTEIRO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "771658",
+    "descricao": "PERNIL CORDEIRO FRAC FLAVOR KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "242189",
+    "descricao": "PERNIL CORDEIRO SWIFT KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "310963",
+    "descricao": "PERNIL DE CORDEIRO CONG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "117777",
+    "descricao": "PERNIL DE CORDEIRO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "314237",
+    "descricao": "PERNIL RECH C/ PUR DE MACA SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "196901",
+    "descricao": "PERNIL S/O ERVAS FACIL SEARA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "771702",
+    "descricao": "PERNIL S/O TEMP CALABRESA SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "34340",
+    "descricao": "PERNIL SNO ESP S/OSSO RESF ATEND KG",
+    "categoria": "Suíno",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "302364",
+    "descricao": "PERNIL SUI C/ OSSO SEARA COMPRA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "482202",
+    "descricao": "PERNIL SUI FRAC SADIA CG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "750134",
+    "descricao": "PERNIL SUINO ASSA FACIL SWIFT KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "1303780",
+    "descricao": "PERNIL SUINO C/O S/P RESF PONTE K",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "315159",
+    "descricao": "PERNIL SUINO C/OSSO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "66778",
+    "descricao": "PERNIL SUINO C/OSSO RESF CS KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "2868",
+    "descricao": "PERNIL SUINO CONG KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "3822302",
+    "descricao": "PERNIL SUINO CONG PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "68086",
+    "descricao": "PERNIL SUINO CONG SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "134392",
+    "descricao": "PERNIL SUINO DESOS TEMP SADIA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "1557",
+    "descricao": "PERNIL SUINO DESOS TEMP SEARA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "16926",
+    "descricao": "PERNIL SUINO ESPECIAL S/O KG CORTE",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "495936",
+    "descricao": "PERNIL SUINO ESPUMANTE CONG SADIA K",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "222938",
+    "descricao": "PERNIL SUINO PURURUCA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "4575078",
+    "descricao": "PERNIL SUINO S/OSSO RESF PONTE KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "4890010",
+    "descricao": "PERNIL SUINO S/OSSO RESF VACUO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "452816",
+    "descricao": "PERNIL SUINO TEMP CONG SEARA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "327459",
+    "descricao": "PERNIL SUINO TEMP. RESF. SUINCO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "314251",
+    "descricao": "PERNIL TEMPERADO CONG PERDIGAO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "175081",
+    "descricao": "PERU ASSA FACIL CONG SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "314565",
+    "descricao": "PERU DEFUMADO SEARA GOURMET KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "314244",
+    "descricao": "PERU ESPUMANTE CONG SADIA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "613200",
+    "descricao": "PERU FACIL TEMP CONG SADIA KG PTRF",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "110921",
+    "descricao": "PERU MANTEIGA ERVAS CONG SADIA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "32971",
+    "descricao": "PERU MANTEIGA ERVAS CONG SEARA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "482226",
+    "descricao": "PERU SADIA FUNCIONARIO KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "299398",
+    "descricao": "PERU SADIA TEMP CONG KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1447033",
+    "descricao": "PERU SEARA TEMP CONG 4 A 4 9 KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1013900",
+    "descricao": "PERU SEARA TEMP CONG 5 a 5,9 KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "52184",
+    "descricao": "PERU SEARA TEMP CONG KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "96584",
+    "descricao": "PERU TEMP CONG PERDIGAO 3/4 KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "99790",
+    "descricao": "PERU TEMP CONG PERDIGAO 4/5 KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "299404",
+    "descricao": "PERU TEMP CONG PERDIGAO KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1564",
+    "descricao": "PERU TEMP CONG SADIA PRT04 KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "56649",
+    "descricao": "PERU TEMP CONG SADIA PRT10 KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "43311",
+    "descricao": "PERU TEMP CONG SADIA PRT14 KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "310352",
+    "descricao": "PES FRANGO ATEND NC RESF KG",
+    "categoria": "Aves",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "310369",
+    "descricao": "PES FRANGO BAND NC RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "7767234",
+    "descricao": "PES FRANGO CONG PONTE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "120227",
+    "descricao": "PESCOCO DE CORDEIRO RESF P/ENSOP KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "245340",
+    "descricao": "PICANHA ARGENTINA CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "765824",
+    "descricao": "PICANHA ARGENTINA CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "766159",
+    "descricao": "PICANHA BOV ANA PAULA ANGUS CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "97864",
+    "descricao": "PICANHA BOV ARG RESF FRIAR KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "754828",
+    "descricao": "PICANHA BOV CONG SWIFT MAIS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "606783",
+    "descricao": "PICANHA BOV ESPECIAL KG - ATEND",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "29629",
+    "descricao": "PICANHA BOV ESPECIAL VACUO RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "188968",
+    "descricao": "PICANHA BOV FATIADA KG (PONTE)",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "183086",
+    "descricao": "PICANHA BOV KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "7608414",
+    "descricao": "PICANHA BOV RESERVA COMPRA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "61643",
+    "descricao": "PICANHA BOV RESF BIFE KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "3290798",
+    "descricao": "PICANHA BOV RESF CRY FRIBOI KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "362634",
+    "descricao": "PICANHA BOV RESF CRY SADILAR KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "47586",
+    "descricao": "PICANHA BOV RESF EXTRA LIMPA BASSI",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "250603",
+    "descricao": "PICANHA BOV RESF FRIBOI 1953",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "195447",
+    "descricao": "PICANHA BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "171892",
+    "descricao": "PICANHA BOV RESF PECA VACUO COMPRA",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "101844",
+    "descricao": "PICANHA BOV RESF PECA VACUO KG",
+    "categoria": "Bovino",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "257114",
+    "descricao": "PICANHA BOV VACUO RESERV KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "38355",
+    "descricao": "PICANHA BOVINA RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "304054",
+    "descricao": "PICANHA BOVINA TIPO B KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "769686",
+    "descricao": "PICANHA CONG ES 92 KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "197922",
+    "descricao": "PICANHA DE CORDEIRO CONG KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "3909386",
+    "descricao": "PICANHA ESPECIAL BOV RESF PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "767439",
+    "descricao": "PICANHA ESTANCIA 92 RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "281447",
+    "descricao": "PICANHA FAT ANGUS LAS PIEDRAS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "315944",
+    "descricao": "PICANHA FATIADA KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "94726",
+    "descricao": "PICANHA FORA DO VACUO BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "288323",
+    "descricao": "PICANHA LAS PIEDRAS ANGUS KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "49009",
+    "descricao": "PICANHA MATURATTA",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "328944",
+    "descricao": "PICANHA NABRASA RESFRIADA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "7770906",
+    "descricao": "PICANHA RESERVA PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "762984",
+    "descricao": "PICANHA SUINA ALHO SWIFT KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "38164",
+    "descricao": "PICANHA SUINA RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "222945",
+    "descricao": "PICANHA SUINA RESF KG (CORTE)",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "252331",
+    "descricao": "PICANHA SUINA TEMP CONG PANTAN KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "312431",
+    "descricao": "PICANHA SUINA TEMP NABRASA PERD KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "750103",
+    "descricao": "PICANHA SUINA TEMP SWIFT KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "326834",
+    "descricao": "PICANHA SUINA TEMP. RESF. SUINCO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "283366",
+    "descricao": "PICANHA SWIFT GRAN RESERVA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "238946",
+    "descricao": "PICANHA TEMP AO ALHO GOLD MEAT KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "245388",
+    "descricao": "PICANHA URUGUAIA BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "1821659",
+    "descricao": "PONTA AG COST BOV RESF PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "112062",
+    "descricao": "PRIME RIB C/ OSSO KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "322874",
+    "descricao": "PRIME RIB MATURATTA CONG KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "418577",
+    "descricao": "PRIME RIB SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "240321",
+    "descricao": "PRIME RIB SWIFT KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "151245",
+    "descricao": "QA AVE NATALINA CONG QUALITA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "770224",
+    "descricao": "QA CONTRA FILE ANCHO CONG QDO KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "770064",
+    "descricao": "QA CONTRA FILE ANCHO RESF RB KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "770217",
+    "descricao": "QA CONTRA FILE CHORIZO CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "770057",
+    "descricao": "QA CONTRA FILE CHORIZO RESF RB KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "210638",
+    "descricao": "QA COSTELINHA SUINA QUALITA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "126717",
+    "descricao": "QA FILE SUINO RESF TEMP QUALITA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "770118",
+    "descricao": "QA FRALDINHA CONGELADA QDO KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "770071",
+    "descricao": "QA FRALDINHA RESFRIADA RB KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "208338",
+    "descricao": "QA FRALDINHA SUINA QUALITA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "126724",
+    "descricao": "QA LOMBO SUINO RESF TEMP QUALITA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "482233",
+    "descricao": "QA LOMBO SUINO TEMP CONG QUALITA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "770248",
+    "descricao": "QA MAMINHA CONGELADA QDO KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "770088",
+    "descricao": "QA MAMINHA RESFRIADA RB KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "770255",
+    "descricao": "QA MIOLO DE ALCATRA CONG QDO KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "770095",
+    "descricao": "QA MIOLO DE ALCATRA RESFR RB KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "136761",
+    "descricao": "QA PERNIL SUINO DESOS TEM QUALITA K",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "126816",
+    "descricao": "QA PERNIL SUINO RESF TEMP QUALITAKG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "771092",
+    "descricao": "QA PERU QUALITA KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "770200",
+    "descricao": "QA PICANHA CONGELADA QDO KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "770040",
+    "descricao": "QA PICANHA RESFRIADA RB KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "204231",
+    "descricao": "QA PICANHA SUINA QUALITA KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "126762",
+    "descricao": "QA SOBREPALETA RESF TEMP QUALITA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "2075402",
+    "descricao": "RABADA (CAUDA) BOV CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "212199",
+    "descricao": "RABADA BOVINA KG - ATEND. BALCAO",
+    "categoria": "Bovino",
+    "tipo": "Atendimento balcão • Não informado"
+  },
+  {
+    "plu": "789",
+    "descricao": "RABADA BOVINO KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "240215",
+    "descricao": "RABO BOVINO SWIFT KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "302418",
+    "descricao": "RAQUETE ANGUS PORC CONG LAS PIEDRAS",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "245791",
+    "descricao": "RAQUETE BOV RESF FRIBOI 1953",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "6185756",
+    "descricao": "RG ACEM BOV PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "5377381",
+    "descricao": "RG ALCATRA BOV RESF PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "5379620",
+    "descricao": "RG CAPA DE FILE BOV COMPRA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "5379637",
+    "descricao": "RG CAPA DE FILE BOV PONTE",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "306942",
+    "descricao": "RG CONTRA FILE FORA VACUO RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "5377374",
+    "descricao": "RG CONTRA FILE RESF PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "240949",
+    "descricao": "RG COSTELA CONG SERRADA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "227759",
+    "descricao": "RG COSTELA CONGELADA KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "231831",
+    "descricao": "RG COSTELA DIANTEIRO CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "231688",
+    "descricao": "RG COSTELA FATIADA RESF NC KG",
+    "categoria": "Bovino",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "231800",
+    "descricao": "RG COSTELA JANELA CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "231787",
+    "descricao": "RG COSTELA ROJAO CONG KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "231695",
+    "descricao": "RG COSTELA TIRAS RESF N.C. KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "5379538",
+    "descricao": "RG COXAO DURO BOV RES PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "5377404",
+    "descricao": "RG COXAO MOLE BOV RES PONTE",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "5377367",
+    "descricao": "RG FILE MIGNON RESF PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "5378128",
+    "descricao": "RG FRALDINHA BOV RESF PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "5379460",
+    "descricao": "RG LAGARTO BOV RESF PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "5379552",
+    "descricao": "RG MUSCULO BOV RESF PONTE",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1442366",
+    "descricao": "RG PALETA BOV PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "5379514",
+    "descricao": "RG PATINHO BOV RESF PONTE",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "1442373",
+    "descricao": "RG PEITO BOV PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "5377275",
+    "descricao": "RG PICANHA BOV RESF PONTE KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "4366904",
+    "descricao": "RINS BOVINO CONGELADO KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "105491",
+    "descricao": "RINS BOVINO KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "995795",
+    "descricao": "SCALOPE FILE MIGNON BOV RESF KG",
+    "categoria": "Bovino",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "117807",
+    "descricao": "SHORT RACK CARNEIRO KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "771597",
+    "descricao": "SHORT RACK FLAVOR KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "752497",
+    "descricao": "SHORT RACK OVINO CG DRESDEN KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "753135",
+    "descricao": "SHORT RIB C MOLHO LARANJ E MARAC KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "322799",
+    "descricao": "SHORT RIB MATURATTA CONG KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "169554",
+    "descricao": "SHORT RIBS CONG BASSI KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "74667",
+    "descricao": "SOBRECOXA FGO RESF GNEL KG (COXA)KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "51705",
+    "descricao": "SOBRECOXA FGO RESF GNEL KG (PCTE)",
+    "categoria": "Outros",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "191760",
+    "descricao": "SOBRECOXA FGO S/ PELE RESF ATEND KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "63357",
+    "descricao": "SOBRECOXA FGO S/PELE RESF GNEL COXA",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "85601",
+    "descricao": "SOBRECOXA FGO S/PELE RESF KG (PCTE)",
+    "categoria": "Outros",
+    "tipo": "Peça/cryovac • Resfriado"
+  },
+  {
+    "plu": "192040",
+    "descricao": "SOBRECOXA FGO TEMP RESF ATEND KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "471145",
+    "descricao": "SOBRECOXA FGO TEMP RESF KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "191654",
+    "descricao": "SOBRECOXA FRANG RESF ATENDIMENTO KG",
+    "categoria": "Outros",
+    "tipo": "Atendimento balcão • Resfriado"
+  },
+  {
+    "plu": "4173564",
+    "descricao": "SOBRECOXA FRANGO RESF PONTE KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "326865",
+    "descricao": "SOBREPALETA SUINA TEMP R. SUINCO KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "63210",
+    "descricao": "STROGONOFF DE FILE FRANGO RESF KG",
+    "categoria": "Aves",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "36504",
+    "descricao": "STROGONOFF SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "417105",
+    "descricao": "T BONE CARNEIRO RESF KG",
+    "categoria": "Cordeiro",
+    "tipo": "Produto padrão • Resfriado"
+  },
+  {
+    "plu": "771665",
+    "descricao": "T-BONE FAT FLAVOR TEMPERADO KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "314855",
+    "descricao": "T-BONE SUINO PREMIUM SWIFT KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "322829",
+    "descricao": "TBONE MATURATTA CONG KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "240314",
+    "descricao": "TBONE SWIFT KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Não informado"
+  },
+  {
+    "plu": "116602",
+    "descricao": "TIBONE CONG BASSI KG",
+    "categoria": "Outros",
+    "tipo": "Produto padrão • Congelado"
+  },
+  {
+    "plu": "42826",
+    "descricao": "TOUCINHO CUBOS SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Resfriado"
+  },
+  {
+    "plu": "1960",
+    "descricao": "TOUCINHO SUINO FATIADO KG",
+    "categoria": "Suíno",
+    "tipo": "Porcionado/Fracionado • Não informado"
+  },
+  {
+    "plu": "54515",
+    "descricao": "TOUCINHO SUINO RESF KG",
+    "categoria": "Suíno",
+    "tipo": "Produto padrão • Resfriado"
+  }
+]

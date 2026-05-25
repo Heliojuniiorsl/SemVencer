@@ -1,25 +1,15 @@
-import { useMemo, useState } from 'react';
-import { Calculator, Copy, Search, PackageSearch, CheckCircle2 } from 'lucide-react';
+import { useMemo, useState, useEffect } from 'react';
+import { Calculator, Copy, Search, PackageSearch, CheckCircle2, Grid3x3, List } from 'lucide-react';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ProdutoCard from './components/ProdutoCard';
+import ResultadoTabela from './components/ResultadoTabela';
+import ResultadoCards from './components/ResultadoCards';
 import produtos from './data/plus.json';
 import { calcularUltimoDigito, montarPluCompleto, somenteNumeros } from './utils/calcularDigito';
 import { buscarProdutoExato, buscarProdutos } from './utils/filtros';
 
 const categorias = ['Todas', 'Bovino', 'Suíno', 'Aves', 'Cordeiro', 'Peixes', 'Outros'];
-
-function ProdutoCard({ produto }) {
-  return (
-    <article className="produto-card">
-      <div>
-        <span className="badge">{produto.categoria}</span>
-        <h3>{produto.descricao}</h3>
-        <p>{produto.tipo}</p>
-      </div>
-      <strong>{produto.plu}</strong>
-    </article>
-  );
-}
 
 export default function App() {
   const [aba, setAba] = useState('calcular');
@@ -27,6 +17,21 @@ export default function App() {
   const [termoPesquisa, setTermoPesquisa] = useState('');
   const [categoria, setCategoria] = useState('Todas');
   const [copiado, setCopiado] = useState(false);
+  const [visualizacao, setVisualizacao] = useState('tabela');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  // Detectar mudanças de tamanho da tela
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      // Muda automaticamente para cards em mobile e tabela em desktop
+      setVisualizacao(mobile ? 'cards' : 'tabela');
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const baseLimpa = somenteNumeros(pluBase);
   const ultimoDigito = calcularUltimoDigito(baseLimpa);
@@ -131,17 +136,36 @@ export default function App() {
             </div>
           </div>
 
-          <div className="contador">
-            Mostrando {resultados.length} resultado(s){resultados.length === 80 ? ' — limite visual de 80 itens' : ''}
+          <div className="visualizacao-controls">
+            <div className="contador">
+              Mostrando {resultados.length} resultado(s){resultados.length === 80 ? ' — limite visual de 80 itens' : ''}
+            </div>
+            
+            <div className="botoes-visualizacao">
+              <button
+                className={`btn-view ${visualizacao === 'cards' ? 'active' : ''}`}
+                onClick={() => setVisualizacao('cards')}
+                title="Visualizar como cards"
+              >
+                <Grid3x3 size={18} /> Cards
+              </button>
+              <button
+                className={`btn-view ${visualizacao === 'tabela' ? 'active' : ''}`}
+                onClick={() => setVisualizacao('tabela')}
+                title="Visualizar como tabela"
+              >
+                <List size={18} /> Tabela
+              </button>
+            </div>
           </div>
 
-          <div className="lista-produtos">
-            {resultados.map((produto) => (
-              <ProdutoCard key={`${produto.plu}-${produto.descricao}`} produto={produto} />
-            ))}
-          </div>
-
-          {resultados.length === 0 && (
+          {resultados.length > 0 ? (
+            visualizacao === 'cards' ? (
+              <ResultadoCards produtos={resultados} />
+            ) : (
+              <ResultadoTabela produtos={resultados} />
+            )
+          ) : (
             <div className="produto-vazio">Nenhum PLU encontrado nessa pesquisa.</div>
           )}
         </section>

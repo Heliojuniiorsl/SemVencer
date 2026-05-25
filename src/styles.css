@@ -31,8 +31,8 @@ body {
 
 .header {
   max-width: 1050px;
-  margin: 0 auto 24px;
-  padding: 20px 24px;
+  margin: 0 auto 12px;
+  padding: 8px 15px;
   border-radius: 24px;
   background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.08));
   border: 1px solid rgba(34, 197, 94, 0.3);
@@ -435,6 +435,190 @@ body {
 }
 
 /* ====================================
+   CONTROLES DE VISUALIZAÇÃO
+   ==================================== */
+
+.visualizacao-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 0;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.botoes-visualizacao {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-view {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-view:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.btn-view.active {
+  background: #22c55e;
+  color: #04130b;
+  border-color: #22c55e;
+}
+
+/* ====================================
+   RESULTADO - CARDS
+   ==================================== */
+
+.resultado-cards-container {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.resultado-info {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+/* ====================================
+   RESULTADO - TABELA
+   ==================================== */
+
+.resultado-tabela-container {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.tabela-scroll {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  margin-bottom: 12px;
+}
+
+.resultado-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.resultado-tabela thead {
+  background: rgba(34, 197, 94, 0.15);
+  border-bottom: 2px solid rgba(34, 197, 94, 0.3);
+}
+
+.resultado-tabela th {
+  padding: 14px 12px;
+  text-align: left;
+  font-weight: 900;
+  color: #86efac;
+  white-space: nowrap;
+}
+
+.resultado-tabela tbody tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: 0.15s;
+}
+
+.resultado-tabela tbody tr:hover {
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.resultado-tabela td {
+  padding: 12px;
+  color: #e2e8f0;
+}
+
+.plu-cell {
+  font-weight: 900;
+  color: #86efac;
+  min-width: 90px;
+}
+
+.descricao-cell {
+  min-width: 250px;
+  max-width: 400px;
+  word-wrap: break-word;
+}
+
+.categoria-cell {
+  min-width: 110px;
+  text-align: center;
+}
+
+.badge-tabela {
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.tipo-cell {
+  min-width: 180px;
+  color: #cbd5e1;
+}
+
+.acao-cell {
+  text-align: center;
+  min-width: 60px;
+}
+
+.btn-copiar-tabela {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(34, 197, 94, 0.15);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-copiar-tabela:hover {
+  background: rgba(34, 197, 94, 0.25);
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ====================================
    RESPONSIVO - MOBILE
    ==================================== */
 
@@ -451,5 +635,39 @@ body {
 
   .header-description {
     display: none;
+  }
+
+  /* Visualização mobile */
+  .visualizacao-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .botoes-visualizacao {
+    justify-content: center;
+  }
+
+  .btn-view {
+    flex: 1;
+  }
+
+  /* Cards em coluna no mobile */
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Tabela scroll no mobile */
+  .descricao-cell {
+    min-width: 150px;
+    max-width: 200px;
+  }
+
+  .resultado-tabela {
+    font-size: 12px;
+  }
+
+  .resultado-tabela th,
+  .resultado-tabela td {
+    padding: 10px 8px;
   }
 }

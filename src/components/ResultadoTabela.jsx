@@ -2,15 +2,12 @@ import { Copy, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ResultadoTabela({ produtos }) {
-  const [copiado, setCopiado] = useState(false);
   const [linhaCopiada, setLinhaCopiada] = useState(null);
 
   function copiarPlu(plu) {
     navigator.clipboard.writeText(plu);
     setLinhaCopiada(plu);
-    setCopiado(true);
     setTimeout(() => {
-      setCopiado(false);
       setLinhaCopiada(null);
     }, 1500);
   }
@@ -30,7 +27,7 @@ export default function ResultadoTabela({ produtos }) {
           </thead>
           <tbody>
             {produtos.map((produto) => (
-              <tr key={produto.plu} className="tabela-linha">
+              <tr key={produto.plu}>
                 <td className="plu-cell">
                   <strong>{produto.plu}</strong>
                 </td>
@@ -40,16 +37,8 @@ export default function ResultadoTabela({ produtos }) {
                 </td>
                 <td className="tipo-cell">{produto.tipo}</td>
                 <td className="acao-cell">
-                  <button
-                    className="btn-copiar-tabela"
-                    onClick={() => copiarPlu(produto.plu)}
-                    title="Copiar PLU"
-                  >
-                    {linhaCopiada === produto.plu ? (
-                      <CheckCircle2 size={18} />
-                    ) : (
-                      <Copy size={18} />
-                    )}
+                  <button className="icon-button" onClick={() => copiarPlu(produto.plu)} title="Copiar PLU">
+                    {linhaCopiada === produto.plu ? <CheckCircle2 size={18} /> : <Copy size={18} />}
                   </button>
                 </td>
               </tr>

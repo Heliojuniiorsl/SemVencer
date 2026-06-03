@@ -3,4 +3,5 @@ dist
 .env
 .DS_Store
 vite-dev.log
+vite-*.log
 .codex-remote-attachments

@@ -1,26 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   AlertTriangle,
-  Archive,
   Calculator,
   CalendarCheck,
   Camera,
   CheckCircle2,
-  ClipboardList,
   Clock3,
   Copy,
   Eye,
   Filter,
   Grid3x3,
-  LayoutDashboard,
   List,
+  Moon,
   PackageCheck,
   PackageSearch,
   Pencil,
   Search,
+  Settings,
   ShieldCheck,
+  Sun,
   Trash2,
-  TrendingUp,
   X,
   XCircle,
 } from 'lucide-react';
@@ -30,57 +29,150 @@ import ProdutoCard from './components/ProdutoCard';
 import ResultadoTabela from './components/ResultadoTabela';
 import ResultadoCards from './components/ResultadoCards';
 import produtos from './data/plus.json';
+import {
+  ADMIN_MATRICULA,
+  CONTATO_LIBERACAO,
+  aprovarUsuario,
+  cadastrarUsuario,
+  carregarUsuariosPendentes,
+  carregarDadosRemotos,
+  loginUsuario,
+  removerValidadeRemota,
+  salvarFotosRemotas,
+  salvarValidadesRemotas,
+} from './services/database';
 import { calcularUltimoDigito, montarPluCompleto, somenteNumeros } from './utils/calcularDigito';
 import { buscarProdutoExato, buscarProdutos } from './utils/filtros';
 
 const categorias = ['Todas', 'Bovino', 'Suíno', 'Aves', 'Cordeiro', 'Peixes', 'Outros'];
 
 const navegacao = [
-  { path: '/', label: 'Início', icon: LayoutDashboard },
+  { path: '/', label: 'Validade', icon: CalendarCheck },
   { path: '/plu', label: 'PLU', icon: Calculator },
   { action: 'cadastro', label: 'Cadastrar', icon: PackageCheck },
   { path: '/pesquisa-plu', label: 'Pesquisa', icon: Search },
-  { path: '/validades', label: 'Validades', icon: CalendarCheck },
+  { path: '/configuracao', label: 'Config', icon: Settings },
 ];
+
+const temasDisponiveis = [
+  {
+    id: 'claro',
+    label: 'Claro',
+    resumo: 'premium',
+    swatches: ['#ffffff', '#0f766e', '#d9a441'],
+  },
+  {
+    id: 'escuro',
+    label: 'Escuro',
+    resumo: 'grafite',
+    swatches: ['#161b1a', '#0f766e', '#d6b45f'],
+  },
+  {
+    id: 'oceano',
+    label: 'Oceano',
+    resumo: 'azul',
+    swatches: ['#081728', '#2563eb', '#22d3ee'],
+  },
+  {
+    id: 'vinho',
+    label: 'Vinho',
+    resumo: 'rubi',
+    swatches: ['#21101a', '#be3155', '#f0b36a'],
+  },
+  {
+    id: 'floresta',
+    label: 'Floresta',
+    resumo: 'verde',
+    swatches: ['#0d1b13', '#16a34a', '#c9b458'],
+  },
+];
+
+function normalizarTema(valor) {
+  return temasDisponiveis.some((tema) => tema.id === valor) ? valor : 'claro';
+}
 
 const statusConfig = {
   vencido: {
     label: 'Vencidos',
     badge: 'Vencido',
     icon: XCircle,
-    tone: 'danger',
+    tone: 'vermelho',
   },
   hoje: {
-    label: 'Vencem hoje',
-    badge: 'Hoje',
+    label: 'Vence hoje',
+    badge: 'Vence hoje',
     icon: AlertTriangle,
-    tone: 'warning',
+    tone: 'laranja-forte',
   },
-  critico: {
-    label: 'Até 3 dias',
-    badge: 'Até 3 dias',
+  ate1: {
+    label: 'Vencendo em 1 dia',
+    badge: 'Vencendo em 1 dia',
     icon: Clock3,
-    tone: 'orange',
+    tone: 'laranja',
   },
-  alerta: {
-    label: 'Até 7 dias',
-    badge: 'Até 7 dias',
+  ate3Resf: {
+    label: 'Vencendo em 3d RESF',
+    badge: 'Vencendo em 3 dias',
+    icon: Clock3,
+    tone: 'amarelo-laranja',
+  },
+  ate3Cong: {
+    label: 'Vencendo em 3d CONG',
+    badge: 'Vencendo em 3 dias',
+    icon: Clock3,
+    tone: 'amarelo',
+  },
+  ate10Resf: {
+    label: 'Vencendo em 10d RESF',
+    badge: 'Vencendo em 10 dias',
     icon: CalendarCheck,
-    tone: 'blue',
+    tone: 'amarelo',
   },
-  ok: {
-    label: 'Em dia',
-    badge: 'Em dia',
+  ate15: {
+    label: 'Vencendo em 15 dias',
+    badge: 'Vencendo em 15 dias',
+    icon: CalendarCheck,
+    tone: 'amarelo-claro',
+  },
+  ate30Cong: {
+    label: 'Vencendo em 30d CONG',
+    badge: 'Vencendo em 30 dias',
+    icon: CalendarCheck,
+    tone: 'amarelo-claro',
+  },
+  okResf: {
+    label: '+15d RESF',
+    badge: 'Mais de 15 dias',
     icon: ShieldCheck,
-    tone: 'success',
+    tone: 'verde',
+  },
+  okCong: {
+    label: '+30d CONG',
+    badge: 'Mais de 30 dias',
+    icon: ShieldCheck,
+    tone: 'verde',
   },
 };
 
-const setores = ['Área de venda', 'Câmara', 'Açougue', 'Câmara fria', 'Exposição', 'Manipulação', 'Separação'];
+const statusOrdem = [
+  'vencido',
+  'hoje',
+  'ate1',
+  'ate3Resf',
+  'ate3Cong',
+  'ate10Resf',
+  'ate15',
+  'ate30Cong',
+  'okResf',
+  'okCong',
+];
 
 const storageKeys = {
   validades: 'semVencer.validades.v1',
+  validadesPorUsuario: 'semVencer.validades.usuario.v1',
   fotosPorPlu: 'semVencer.fotosPorPlu.v1',
+  tema: 'semVencer.tema.v1',
+  usuario: 'semVencer.usuarioAtual.v1',
 };
 
 const validadeSeed = [
@@ -164,6 +256,7 @@ function resolverRota(pathname) {
 
   const aliases = {
     '/dashboard': '/',
+    '/validades': '/',
     '/pesquisa': '/pesquisa-plu',
     '/pesquisa-de-plu': '/pesquisa-plu',
     '/pesquisa de plu': '/pesquisa-plu',
@@ -187,6 +280,43 @@ function criarDataRelativa(dias) {
   return data.toISOString().slice(0, 10);
 }
 
+function inferirTipoConservacao(valor) {
+  const texto = String(valor || '').toUpperCase();
+  if (texto.includes('CONG') || texto.includes('CONGEL')) return 'CONG';
+  return 'RESF';
+}
+
+function normalizarTipoProduto(valor) {
+  const texto = String(valor || '').trim().toUpperCase();
+  if (texto === 'RESF' || texto === 'RESFRIADO') return 'RESF';
+  if (texto === 'CONG' || texto === 'CONGELADO') return 'CONG';
+  return inferirTipoConservacao(texto);
+}
+
+function inferirUnidadeProduto(valor) {
+  const texto = String(valor || '').toUpperCase();
+  return /\bUN\b/.test(texto) ? 'un' : 'kg';
+}
+
+function extrairUnidadeQuantidade(valor) {
+  return String(valor || '').toLowerCase().includes('un') ? 'un' : 'kg';
+}
+
+function limparQuantidade(valor) {
+  const somenteQuantidade = String(valor || '').replace(/[^\d,.]/g, '').replace(/\./g, ',');
+  const partes = somenteQuantidade.split(',');
+  return partes.length > 1 ? `${partes[0]},${partes.slice(1).join('')}` : partes[0];
+}
+
+function extrairNumeroQuantidade(valor) {
+  const match = String(valor || '').match(/\d+(?:[,.]\d+)?/);
+  return match ? limparQuantidade(match[0]) : '';
+}
+
+function formatarQuantidade(valor, unidade) {
+  return `${limparQuantidade(valor) || '1'} ${unidade === 'un' ? 'un' : 'kg'}`;
+}
+
 function criarValidadesIniciais() {
   return validadeSeed.map((item, index) => {
     const produto = produtos[item.produtoIndex] || produtos[index] || produtos[0];
@@ -198,6 +328,7 @@ function criarValidadesIniciais() {
       categoria: produto.categoria,
       lote: item.lote,
       setor: item.setor,
+      tipo: inferirTipoConservacao(`${produto.descricao} ${produto.tipo}`),
       quantidade: item.quantidade,
       fabricacao: criarDataRelativa(item.validadeEmDias - 5),
       validade: criarDataRelativa(item.validadeEmDias),
@@ -236,14 +367,64 @@ function aplicarFotosSalvas(itens, fotosPorPlu) {
     return {
       ...item,
       imagem: item.imagem || fotosPorPlu[codigo] || '',
+      tipo: item.tipo ? normalizarTipoProduto(item.tipo) : inferirTipoConservacao(item.produto),
     };
   });
 }
 
-function carregarValidadesSalvas(fotosPorPlu) {
-  const salvas = lerStorageJson(storageKeys.validades, null);
-  const itens = Array.isArray(salvas) && salvas.length > 0 ? salvas : criarValidadesIniciais();
+function chaveValidadesUsuario(usuario) {
+  const matricula = somenteNumeros(usuario?.matricula);
+  return matricula ? `${storageKeys.validadesPorUsuario}.${matricula}` : '';
+}
+
+function carregarValidadesDoUsuario(usuario, fotosPorPlu) {
+  const matricula = somenteNumeros(usuario?.matricula);
+
+  if (!matricula) {
+    return [];
+  }
+
+  const salvas = lerStorageJson(chaveValidadesUsuario(usuario), null);
+
+  if (Array.isArray(salvas)) {
+    return aplicarFotosSalvas(salvas, fotosPorPlu);
+  }
+
+  if (matricula !== ADMIN_MATRICULA) {
+    return [];
+  }
+
+  const legado = lerStorageJson(storageKeys.validades, null);
+  const itens = Array.isArray(legado) && legado.length > 0 ? legado : criarValidadesIniciais();
   return aplicarFotosSalvas(itens, fotosPorPlu);
+}
+
+function salvarValidadesDoUsuario(usuario, validades) {
+  const chave = chaveValidadesUsuario(usuario);
+
+  if (!chave) {
+    return;
+  }
+
+  salvarStorageJson(chave, validades);
+}
+
+function normalizarSessaoUsuario(usuario) {
+  if (!usuario) return null;
+
+  const matricula = somenteNumeros(usuario.matricula);
+  const admin = matricula === ADMIN_MATRICULA;
+
+  return {
+    ...usuario,
+    matricula,
+    admin,
+    aprovado: admin || Boolean(usuario.aprovado),
+  };
+}
+
+function usuarioPodeAcessar(usuario) {
+  return Boolean(usuario?.admin || usuario?.aprovado);
 }
 
 function formatarData(dataISO) {
@@ -254,6 +435,13 @@ function formatarData(dataISO) {
   }).format(new Date(`${dataISO}T00:00:00`));
 }
 
+function formatarDataCurta(dataISO) {
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+  }).format(new Date(`${dataISO}T00:00:00`));
+}
+
 function diferencaEmDias(dataISO) {
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
@@ -261,18 +449,39 @@ function diferencaEmDias(dataISO) {
   return Math.round((alvo.getTime() - hoje.getTime()) / 86400000);
 }
 
-function classificarValidade(dias) {
+function classificarValidade(dias, tipo) {
+  const tipoProduto = normalizarTipoProduto(tipo);
+
   if (dias < 0) return 'vencido';
   if (dias === 0) return 'hoje';
-  if (dias <= 3) return 'critico';
-  if (dias <= 7) return 'alerta';
-  return 'ok';
+  if (dias <= 1) return 'ate1';
+
+  if (dias <= 3) {
+    return tipoProduto === 'CONG' ? 'ate3Cong' : 'ate3Resf';
+  }
+
+  if (tipoProduto === 'RESF' && dias <= 10) return 'ate10Resf';
+  if (dias <= 15) return 'ate15';
+  if (tipoProduto === 'CONG' && dias <= 30) return 'ate30Cong';
+
+  return tipoProduto === 'CONG' ? 'okCong' : 'okResf';
 }
 
 function textoPrazo(dias) {
   if (dias < 0) return `${Math.abs(dias)} dia(s) vencido`;
   if (dias === 0) return 'vence hoje';
   return `vence em ${dias} dia(s)`;
+}
+
+function textoDiasTabela(dias) {
+  if (dias < 0) {
+    const total = Math.abs(dias);
+    return `${total} ${total === 1 ? 'dia vencido' : 'dias vencidos'}`;
+  }
+
+  if (dias === 0) return 'Vence hoje';
+  if (dias === 1) return '1 dia';
+  return `${dias} dias`;
 }
 
 function normalizarTexto(valor) {
@@ -359,13 +568,22 @@ function carregarImagemProduto(file) {
 
 function App() {
   const [rotaAtual, setRotaAtual] = useState(() => resolverRota(window.location.pathname));
+  const [tema, setTema] = useState(() => normalizarTema(lerStorageJson(storageKeys.tema, 'claro')));
+  const [usuarioAtual, setUsuarioAtual] = useState(() => normalizarSessaoUsuario(lerStorageJson(storageKeys.usuario, null)));
+  const [authErro, setAuthErro] = useState('');
+  const [authMensagem, setAuthMensagem] = useState('');
+  const [sincronizando, setSincronizando] = useState(false);
+  const [dadosRemotosCarregados, setDadosRemotosCarregados] = useState(false);
+  const [usuarioDadosChave, setUsuarioDadosChave] = useState('');
+  const [usuariosPendentes, setUsuariosPendentes] = useState([]);
   const [pluBase, setPluBase] = useState('');
   const [termoPesquisa, setTermoPesquisa] = useState('');
   const [categoria, setCategoria] = useState('Todas');
   const [copiado, setCopiado] = useState(false);
-  const [visualizacao, setVisualizacao] = useState(() => (window.innerWidth < 768 ? 'cards' : 'tabela'));
+  const [visualizacao, setVisualizacao] = useState('tabela');
+  const [visualizacaoValidades, setVisualizacaoValidades] = useState('tabela');
   const [fotosPorPlu, setFotosPorPlu] = useState(carregarFotosPorPlu);
-  const [validades, setValidades] = useState(() => carregarValidadesSalvas(fotosPorPlu));
+  const [validades, setValidades] = useState([]);
   const [filtroValidade, setFiltroValidade] = useState('todos');
   const [buscaValidade, setBuscaValidade] = useState('');
   const [cadastroAberto, setCadastroAberto] = useState(false);
@@ -374,20 +592,13 @@ function App() {
   const [novoItem, setNovoItem] = useState({
     produto: '',
     plu: '',
-    setor: 'Área de venda',
+    setor: '',
+    tipo: '',
     quantidade: '',
+    unidade: 'kg',
     validade: criarDataRelativa(5),
     imagem: '',
   });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setVisualizacao(window.innerWidth < 768 ? 'cards' : 'tabela');
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -397,6 +608,104 @@ function App() {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  useEffect(() => {
+    const temaAtual = normalizarTema(tema);
+    document.documentElement.dataset.theme = temaAtual;
+    salvarStorageJson(storageKeys.tema, temaAtual);
+  }, [tema]);
+
+  useEffect(() => {
+    if (usuarioAtual) {
+      salvarStorageJson(storageKeys.usuario, usuarioAtual);
+      return;
+    }
+
+    try {
+      window.localStorage.removeItem(storageKeys.usuario);
+    } catch {
+      // Mantem a sessao apenas em memoria se o navegador bloquear storage.
+    }
+  }, [usuarioAtual]);
+
+  useEffect(() => {
+    if (!usuarioAtual || usuarioPodeAcessar(usuarioAtual)) {
+      return;
+    }
+
+    setUsuarioAtual(null);
+    setValidades([]);
+    setUsuarioDadosChave('');
+    setDadosRemotosCarregados(false);
+    setAuthMensagem(`Cadastro pendente. Entre em contato com ${CONTATO_LIBERACAO} para liberar o acesso.`);
+  }, [usuarioAtual]);
+
+  useEffect(() => {
+    if (!usuarioAtual?.admin) {
+      setUsuariosPendentes([]);
+      return undefined;
+    }
+
+    let cancelado = false;
+
+    carregarUsuariosPendentes()
+      .then((usuarios) => {
+        if (!cancelado) {
+          setUsuariosPendentes(usuarios);
+        }
+      })
+      .catch((error) => {
+        console.warn('Nao foi possivel carregar usuarios pendentes', error);
+      });
+
+    return () => {
+      cancelado = true;
+    };
+  }, [usuarioAtual]);
+
+  useEffect(() => {
+    if (!usuarioAtual || !usuarioPodeAcessar(usuarioAtual) || dadosRemotosCarregados) {
+      return undefined;
+    }
+
+    let cancelado = false;
+
+    async function carregarBanco() {
+      setSincronizando(true);
+      setAuthErro('');
+
+      try {
+        const validadesLocais = carregarValidadesDoUsuario(usuarioAtual, fotosPorPlu);
+        const dados = await carregarDadosRemotos(usuarioAtual, validadesLocais, fotosPorPlu);
+
+        if (cancelado) return;
+
+        const usuarioCarregado = dados.usuario || usuarioAtual;
+        if (dados.usuario && dados.usuario.id !== usuarioAtual.id) {
+          setUsuarioAtual(dados.usuario);
+        }
+        setFotosPorPlu(dados.fotosPorPlu);
+        setValidades(aplicarFotosSalvas(dados.validades, dados.fotosPorPlu));
+        setUsuarioDadosChave(chaveValidadesUsuario(usuarioCarregado));
+        setDadosRemotosCarregados(true);
+      } catch (error) {
+        if (!cancelado) {
+          setAuthErro(error.message || 'Nao foi possivel carregar o banco.');
+          setDadosRemotosCarregados(true);
+        }
+      } finally {
+        if (!cancelado) {
+          setSincronizando(false);
+        }
+      }
+    }
+
+    carregarBanco();
+
+    return () => {
+      cancelado = true;
+    };
+  }, [dadosRemotosCarregados, usuarioAtual]);
 
   useEffect(() => {
     if (!cadastroAberto && !produtoDetalhe) {
@@ -412,12 +721,27 @@ function App() {
   }, [cadastroAberto, produtoDetalhe]);
 
   useEffect(() => {
-    salvarStorageJson(storageKeys.validades, validades);
-  }, [validades]);
+    if (!usuarioAtual || !dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) return;
+    salvarValidadesDoUsuario(usuarioAtual, validades);
+  }, [dadosRemotosCarregados, usuarioAtual, usuarioDadosChave, validades]);
 
   useEffect(() => {
     salvarStorageJson(storageKeys.fotosPorPlu, fotosPorPlu);
   }, [fotosPorPlu]);
+
+  useEffect(() => {
+    if (!usuarioAtual || !dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) return;
+    salvarValidadesRemotas(validades, usuarioAtual).catch((error) => {
+      console.warn('Nao foi possivel sincronizar validades', error);
+    });
+  }, [dadosRemotosCarregados, usuarioAtual, usuarioDadosChave, validades]);
+
+  useEffect(() => {
+    if (!usuarioAtual || !dadosRemotosCarregados) return;
+    salvarFotosRemotas(fotosPorPlu).catch((error) => {
+      console.warn('Nao foi possivel sincronizar fotos', error);
+    });
+  }, [dadosRemotosCarregados, fotosPorPlu, usuarioAtual]);
 
   const baseLimpa = somenteNumeros(pluBase);
   const ultimoDigito = calcularUltimoDigito(baseLimpa);
@@ -432,14 +756,20 @@ function App() {
     return validades
       .map((item) => {
         const dias = diferencaEmDias(item.validade);
-        const status = classificarValidade(dias);
+        const tipo = item.tipo ? normalizarTipoProduto(item.tipo) : inferirTipoConservacao(item.produto);
+        const status = classificarValidade(dias, tipo);
+        const config = statusConfig[status];
         const codigo = somenteNumeros(item.plu);
 
         return {
           ...item,
+          tipo,
           imagem: item.imagem || fotosPorPlu[codigo] || '',
           dias,
           status,
+          statusBadge: config.badge,
+          statusLabel: config.label,
+          statusTone: config.tone,
           prazo: textoPrazo(dias),
         };
       })
@@ -447,21 +777,51 @@ function App() {
   }, [fotosPorPlu, validades]);
 
   const resumoValidades = useMemo(() => {
-    const resumo = {
-      vencido: 0,
-      hoje: 0,
-      critico: 0,
-      alerta: 0,
-      ok: 0,
-      total: validadesTratadas.length,
-    };
+    const resumo = statusOrdem.reduce(
+      (resultado, status) => ({
+        ...resultado,
+        [status]: 0,
+      }),
+      { total: validadesTratadas.length },
+    );
 
     validadesTratadas.forEach((item) => {
-      resumo[item.status] += 1;
+      if (typeof resumo[item.status] === 'number') {
+        resumo[item.status] += 1;
+      }
     });
 
     return resumo;
   }, [validadesTratadas]);
+
+  const statusResumoCards = useMemo(
+    () => {
+      const candidatos = statusOrdem
+        .filter((status) => status !== 'vencido')
+        .map((status) => ({
+          id: status,
+          value: resumoValidades[status] || 0,
+          ...statusConfig[status],
+        }));
+      const ativos = candidatos.filter((status) => status.value > 0);
+      const vazios = candidatos.filter((status) => status.value === 0);
+
+      return [...ativos, ...vazios].slice(0, 3);
+    },
+    [resumoValidades],
+  );
+
+  const statusFiltros = useMemo(
+    () =>
+      statusOrdem
+        .map((status) => ({
+          id: status,
+          value: resumoValidades[status] || 0,
+          ...statusConfig[status],
+        }))
+        .filter((status) => status.value > 0),
+    [resumoValidades],
+  );
 
   const validadesFiltradas = useMemo(() => {
     const termo = buscaValidade.trim().toLowerCase();
@@ -478,25 +838,66 @@ function App() {
     });
   }, [buscaValidade, filtroValidade, validadesTratadas]);
 
-  const dadosPorSetor = useMemo(() => {
-    return setores.map((setor) => {
-      const itens = validadesTratadas.filter((item) => item.setor === setor);
-      const pendentes = itens.filter((item) => ['vencido', 'hoje', 'critico', 'alerta'].includes(item.status)).length;
+  async function entrarComMatricula(matricula) {
+    setSincronizando(true);
+    setAuthErro('');
+    setAuthMensagem('');
 
-      return {
-        setor,
-        total: itens.length,
-        pendentes,
-      };
-    });
-  }, [validadesTratadas]);
+    try {
+      const usuario = await loginUsuario(matricula);
+      setUsuarioAtual(usuario);
+      setValidades([]);
+      setUsuarioDadosChave('');
+      setDadosRemotosCarregados(false);
+    } catch (error) {
+      setAuthErro(error.message || 'Nao foi possivel entrar.');
+    } finally {
+      setSincronizando(false);
+    }
+  }
 
-  const categoriasResumo = useMemo(() => {
-    return produtos.reduce((acc, produto) => {
-      acc[produto.categoria] = (acc[produto.categoria] || 0) + 1;
-      return acc;
-    }, {});
-  }, []);
+  async function cadastrarComTelefone(dados) {
+    setSincronizando(true);
+    setAuthErro('');
+    setAuthMensagem('');
+
+    try {
+      const usuario = await cadastrarUsuario(dados);
+      if (!usuarioPodeAcessar(usuario)) {
+        setAuthMensagem(`Cadastro enviado. Entre em contato com ${CONTATO_LIBERACAO} para liberar o acesso.`);
+        return;
+      }
+
+      setUsuarioAtual(usuario);
+      setValidades([]);
+      setUsuarioDadosChave('');
+      setDadosRemotosCarregados(false);
+    } catch (error) {
+      setAuthErro(error.message || 'Nao foi possivel cadastrar.');
+    } finally {
+      setSincronizando(false);
+    }
+  }
+
+  function sair() {
+    setUsuarioAtual(null);
+    setValidades([]);
+    setUsuarioDadosChave('');
+    setDadosRemotosCarregados(false);
+  }
+
+  async function aprovarCadastroUsuario(matricula) {
+    setSincronizando(true);
+
+    try {
+      await aprovarUsuario(matricula);
+      setUsuariosPendentes((usuarios) => usuarios.filter((usuario) => usuario.matricula !== matricula));
+    } catch (error) {
+      console.warn('Nao foi possivel aprovar usuario', error);
+    } finally {
+      setSincronizando(false);
+    }
+  }
 
   async function copiarPlu() {
     if (!pluCompleto) return;
@@ -548,8 +949,10 @@ function App() {
     setNovoItem({
       produto: '',
       plu: '',
-      setor: 'Área de venda',
+      setor: '',
+      tipo: '',
       quantidade: '',
+      unidade: 'kg',
       validade: criarDataRelativa(5),
       imagem: '',
     });
@@ -573,7 +976,9 @@ function App() {
       produto: item.produto,
       plu: item.plu === 'Sem PLU' ? '' : item.plu,
       setor: item.setor.includes('Câmara') ? 'Câmara' : 'Área de venda',
-      quantidade: item.quantidade,
+      tipo: item.tipo ? normalizarTipoProduto(item.tipo) : inferirTipoConservacao(item.produto),
+      quantidade: extrairNumeroQuantidade(item.quantidade),
+      unidade: extrairUnidadeQuantidade(item.quantidade),
       validade: item.validade,
       imagem: item.imagem || fotosPorPlu[codigo] || '',
     });
@@ -591,6 +996,8 @@ function App() {
     const codigoLimpo = somenteNumeros(novoItem.plu);
     const pluFinal = codigoLimpo || 'Sem PLU';
     const imagemFinal = novoItem.imagem || fotosPorPlu[codigoLimpo] || '';
+    const quantidadeFinal = formatarQuantidade(novoItem.quantidade, novoItem.unidade);
+    const tipoFinal = novoItem.tipo ? normalizarTipoProduto(novoItem.tipo) : inferirTipoConservacao(novoItem.produto);
     salvarFotoDoPlu(codigoLimpo, imagemFinal);
 
     if (cadastroEdicaoId) {
@@ -602,7 +1009,8 @@ function App() {
                 produto: novoItem.produto.trim(),
                 plu: pluFinal,
                 setor: novoItem.setor,
-                quantidade: novoItem.quantidade.trim() || '1 un',
+                tipo: tipoFinal,
+                quantidade: quantidadeFinal,
                 validade: novoItem.validade,
                 imagem: imagemFinal,
               }
@@ -621,8 +1029,9 @@ function App() {
         plu: pluFinal,
         categoria: 'Cadastro',
         setor: novoItem.setor,
+        tipo: tipoFinal,
         lote: 'Cadastro manual',
-        quantidade: novoItem.quantidade.trim() || '1 un',
+        quantidade: quantidadeFinal,
         fabricacao: criarDataRelativa(-1),
         validade: novoItem.validade,
         imagem: imagemFinal,
@@ -638,14 +1047,17 @@ function App() {
 
   function excluirProduto(id) {
     setValidades((itens) => itens.filter((item) => item.id !== id));
+    removerValidadeRemota(id).catch((error) => {
+      console.warn('Nao foi possivel remover do Supabase', error);
+    });
   }
 
   const pageProps = {
     resumoValidades,
+    statusResumoCards,
+    statusFiltros,
     validadesTratadas,
     validadesFiltradas,
-    dadosPorSetor,
-    categoriasResumo,
     produtos,
     categorias,
     pluBase,
@@ -663,6 +1075,10 @@ function App() {
     resultados,
     visualizacao,
     setVisualizacao,
+    visualizacaoValidades,
+    setVisualizacaoValidades,
+    tema,
+    setTema,
     filtroValidade,
     setFiltroValidade,
     buscaValidade,
@@ -678,10 +1094,27 @@ function App() {
     excluirProduto,
     produtoDetalhe,
     setProdutoDetalhe,
+    usuarioAtual,
+    sincronizando,
+    usuariosPendentes,
+    aprovarCadastroUsuario,
+    sair,
     navegar,
   };
 
-  const rotaRenderizada = ['/plu', '/pesquisa-plu', '/validades'].includes(rotaAtual) ? rotaAtual : '/';
+  const rotaRenderizada = ['/plu', '/pesquisa-plu', '/configuracao'].includes(rotaAtual) ? rotaAtual : '/';
+
+  if (!usuarioAtual || !usuarioPodeAcessar(usuarioAtual)) {
+    return (
+      <AuthPage
+        erro={authErro}
+        mensagem={authMensagem}
+        loading={sincronizando}
+        onLogin={entrarComMatricula}
+        onCadastro={cadastrarComTelefone}
+      />
+    );
+  }
 
   return (
     <main className="app-shell">
@@ -691,13 +1124,15 @@ function App() {
         buildHref={criarHref}
         onNavigate={navegar}
         onAction={executarAcaoNavegacao}
+        usuarioAtual={usuarioAtual}
+        sincronizando={sincronizando}
       />
 
       <section className="page-shell">
-        {rotaRenderizada === '/' && <DashboardPage {...pageProps} />}
+        {rotaRenderizada === '/' && <ValidadesPage {...pageProps} />}
         {rotaRenderizada === '/plu' && <PluPage {...pageProps} />}
         {rotaRenderizada === '/pesquisa-plu' && <PesquisaPluPage {...pageProps} />}
-        {rotaRenderizada === '/validades' && <ValidadesPage {...pageProps} />}
+        {rotaRenderizada === '/configuracao' && <ConfiguracaoPage {...pageProps} />}
       </section>
 
       {cadastroAberto && (
@@ -732,147 +1167,6 @@ function PageTitle({ eyebrow, title, description, icon: Icon }) {
   );
 }
 
-function DashboardPage({
-  resumoValidades,
-  validadesTratadas,
-  dadosPorSetor,
-  categoriasResumo,
-  produtos,
-  navegar,
-}) {
-  const prioridade = validadesTratadas.slice(0, 5);
-  const totalCritico = resumoValidades.vencido + resumoValidades.hoje + resumoValidades.critico;
-  const cobertura = resumoValidades.total
-    ? Math.round(((resumoValidades.ok + resumoValidades.alerta) / resumoValidades.total) * 100)
-    : 0;
-
-  return (
-    <div className="page-grid">
-      <PageTitle
-        eyebrow="Painel inicial"
-        title="Dashboard de validades"
-        description="Visão diária de risco, prioridade por lote, setores e base de PLUs monitorada."
-        icon={LayoutDashboard}
-      />
-
-      <div className="metrics-grid">
-        <MetricCard status="vencido" value={resumoValidades.vencido} />
-        <MetricCard status="hoje" value={resumoValidades.hoje} />
-        <MetricCard status="critico" value={resumoValidades.critico} />
-        <MetricCard status="ok" value={`${cobertura}%`} label="Cobertura em dia" />
-      </div>
-
-      <div className="dashboard-layout">
-        <section className="work-panel">
-          <div className="section-heading">
-            <div>
-              <span>Fila operacional</span>
-              <h3>Prioridade de hoje</h3>
-            </div>
-            <strong>{totalCritico} lote(s) críticos</strong>
-          </div>
-
-          <div className="priority-list">
-            {prioridade.map((item) => (
-              <ValidadeRow key={item.id} item={item} compact />
-            ))}
-          </div>
-        </section>
-
-        <section className="work-panel">
-          <div className="section-heading">
-            <div>
-              <span>Rotina PVPS</span>
-              <h3>Checklist de controle</h3>
-            </div>
-            <ClipboardList size={22} />
-          </div>
-
-          <div className="checklist">
-            <ChecklistItem text="Separar vencidos e bloquear venda" urgent={resumoValidades.vencido > 0} />
-            <ChecklistItem text="Conferir etiquetas que vencem hoje" urgent={resumoValidades.hoje > 0} />
-            <ChecklistItem text="Revisar exposição dos próximos 3 dias" urgent={resumoValidades.critico > 0} />
-            <ChecklistItem text="Atualizar novos lotes recebidos" />
-          </div>
-        </section>
-      </div>
-
-      <div className="dashboard-layout secondary">
-        <section className="work-panel">
-          <div className="section-heading">
-            <div>
-              <span>Setores</span>
-              <h3>Mapa de validade</h3>
-            </div>
-            <Archive size={22} />
-          </div>
-
-          <div className="sector-grid">
-            {dadosPorSetor.map((item) => (
-              <article className="sector-card" key={item.setor}>
-                <span>{item.setor}</span>
-                <strong>{item.total}</strong>
-                <p>{item.pendentes} pendente(s)</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="work-panel">
-          <div className="section-heading">
-            <div>
-              <span>Base PLU</span>
-              <h3>Produtos cadastrados</h3>
-            </div>
-            <TrendingUp size={22} />
-          </div>
-
-          <div className="stock-summary">
-            <div>
-              <strong>{produtos.length}</strong>
-              <span>PLUs no banco local</span>
-            </div>
-            <div>
-              <strong>{Object.keys(categoriasResumo).length}</strong>
-              <span>categorias</span>
-            </div>
-          </div>
-
-          <div className="category-bars">
-            {Object.entries(categoriasResumo)
-              .sort((a, b) => b[1] - a[1])
-              .slice(0, 5)
-              .map(([categoria, total]) => (
-                <div className="bar-row" key={categoria}>
-                  <span>{categoria}</span>
-                  <div>
-                    <i style={{ width: `${Math.max(12, (total / produtos.length) * 100)}%` }} />
-                  </div>
-                  <strong>{total}</strong>
-                </div>
-              ))}
-          </div>
-        </section>
-      </div>
-
-      <div className="quick-actions">
-        <a href={criarHref('/plu')} onClick={(event) => navegar(event, '/plu')}>
-          <Calculator size={20} />
-          <span>Calcular PLU</span>
-        </a>
-        <a href={criarHref('/pesquisa-plu')} onClick={(event) => navegar(event, '/pesquisa-plu')}>
-          <Search size={20} />
-          <span>Pesquisar PLU</span>
-        </a>
-        <a href={criarHref('/validades')} onClick={(event) => navegar(event, '/validades')}>
-          <CalendarCheck size={20} />
-          <span>Gerenciar validades</span>
-        </a>
-      </div>
-    </div>
-  );
-}
-
 function MetricCard({ status, value, label }) {
   const config = statusConfig[status];
   const Icon = config.icon;
@@ -888,12 +1182,78 @@ function MetricCard({ status, value, label }) {
   );
 }
 
-function ChecklistItem({ text, urgent }) {
+function AuthPage({ erro, mensagem, loading, onLogin, onCadastro }) {
+  const [modo, setModo] = useState('login');
+  const [matricula, setMatricula] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const matriculaLimpa = somenteNumeros(matricula);
+
+  function enviar(event) {
+    event.preventDefault();
+
+    if (modo === 'login') {
+      onLogin(matriculaLimpa);
+      return;
+    }
+
+    onCadastro({
+      matricula: matriculaLimpa,
+      telefone,
+    });
+  }
+
   return (
-    <div className={urgent ? 'check-item urgent' : 'check-item'}>
-      {urgent ? <AlertTriangle size={18} /> : <CheckCircle2 size={18} />}
-      <span>{text}</span>
-    </div>
+    <main className="auth-shell">
+      <section className="auth-card">
+        <div className="auth-brand">
+          <PackageCheck size={28} />
+          <div>
+            <span>Sem Vencer</span>
+            <h1>Acesso</h1>
+          </div>
+        </div>
+
+        <div className="auth-tabs">
+          <button className={modo === 'login' ? 'active' : ''} onClick={() => setModo('login')} type="button">
+            Login
+          </button>
+          <button className={modo === 'cadastro' ? 'active' : ''} onClick={() => setModo('cadastro')} type="button">
+            Cadastro
+          </button>
+        </div>
+
+        <form className="auth-form" onSubmit={enviar}>
+          <label>
+            Matricula
+            <input
+              value={matricula}
+              inputMode="numeric"
+              onChange={(event) => setMatricula(somenteNumeros(event.target.value))}
+            />
+          </label>
+
+          {modo === 'cadastro' && (
+            <label>
+              Telefone
+              <input
+                value={telefone}
+                inputMode="tel"
+                placeholder="DDD + numero"
+                onChange={(event) => setTelefone(somenteNumeros(event.target.value))}
+              />
+            </label>
+          )}
+
+          {mensagem && <div className="auth-info">{mensagem}</div>}
+          {erro && <div className="auth-error">{erro}</div>}
+
+          <button className="primary-button auth-submit" type="submit" disabled={loading}>
+            <CheckCircle2 size={18} />
+            {loading ? 'Aguarde...' : modo === 'login' ? 'Entrar' : 'Cadastrar'}
+          </button>
+        </form>
+      </section>
+    </main>
   );
 }
 
@@ -1052,7 +1412,7 @@ function PesquisaPluPage({
             <span>Resultados</span>
             <h3>{resultados.length} item(ns) encontrados</h3>
           </div>
-          <strong>{resultados.length === 80 ? 'Limite visual de 80' : 'Base local'}</strong>
+          <strong>{resultados.length === 80 ? 'Limite visual de 80' : 'Consulta'}</strong>
         </div>
 
         {resultados.length > 0 ? (
@@ -1071,27 +1431,29 @@ function PesquisaPluPage({
 
 function ValidadesPage({
   resumoValidades,
+  statusResumoCards,
+  statusFiltros,
+  validadesTratadas,
   validadesFiltradas,
+  visualizacaoValidades,
+  setVisualizacaoValidades,
+  filtroValidade,
+  setFiltroValidade,
   abrirEdicaoProduto,
   excluirProduto,
   produtoDetalhe,
   setProdutoDetalhe,
 }) {
+  const [filtroAberto, setFiltroAberto] = useState(false);
+  const [calendarioAberto, setCalendarioAberto] = useState(false);
+  const filtroAtivo = filtroValidade !== 'todos';
+
   return (
     <div className="page-grid">
-      <PageTitle
-        eyebrow="Controle"
-        title="Validades"
-        description="Cadastro e conferência dos lotes com vencimento, setor, quantidade e revisão."
-        icon={CalendarCheck}
-      />
-
-      <div className="metrics-grid compact">
-        <MetricCard status="vencido" value={resumoValidades.vencido} />
-        <MetricCard status="hoje" value={resumoValidades.hoje} />
-        <MetricCard status="critico" value={resumoValidades.critico} />
-        <MetricCard status="alerta" value={resumoValidades.alerta} />
-        <MetricCard status="ok" value={resumoValidades.ok} />
+      <div className="metrics-grid compact status-summary">
+        {statusResumoCards.map((item) => (
+          <MetricCard key={item.id} status={item.id} value={item.value} label={item.label} />
+        ))}
       </div>
 
       <section className="work-panel">
@@ -1100,23 +1462,374 @@ function ValidadesPage({
             <span>Produtos</span>
             <h3>Cadastrados</h3>
           </div>
-          <strong>{validadesFiltradas.length} registro(s)</strong>
+          <div className="heading-actions">
+            <strong>{validadesFiltradas.length} registro(s)</strong>
+            <div className="view-toggle list-tools" aria-label="Acoes da lista">
+              <button
+                className={visualizacaoValidades === 'tabela' ? 'active' : ''}
+                onClick={() => setVisualizacaoValidades('tabela')}
+                title="Visualizar como tabela"
+              >
+                <List size={18} />
+              </button>
+              <button
+                className={visualizacaoValidades === 'cards' ? 'active' : ''}
+                onClick={() => setVisualizacaoValidades('cards')}
+                title="Visualizar como cards"
+              >
+                <Grid3x3 size={18} />
+              </button>
+              <button
+                className={filtroAtivo ? 'active' : ''}
+                onClick={() => setFiltroAberto(true)}
+                title="Filtrar validades"
+                type="button"
+              >
+                <Filter size={18} />
+              </button>
+              <button onClick={() => setCalendarioAberto(true)} title="Ver calendario" type="button">
+                <CalendarCheck size={18} />
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="validade-list">
-          {validadesFiltradas.map((item) => (
-            <ProdutoCadastroCard
-              key={item.id}
-              item={item}
+        {validadesFiltradas.length > 0 ? (
+          visualizacaoValidades === 'cards' ? (
+            <div className="validade-list">
+              {validadesFiltradas.map((item) => (
+                <ProdutoCadastroCard
+                  key={item.id}
+                  item={item}
+                  onView={setProdutoDetalhe}
+                  onEdit={abrirEdicaoProduto}
+                  onDelete={excluirProduto}
+                />
+              ))}
+            </div>
+          ) : (
+            <ProdutoCadastroTabela
+              itens={validadesFiltradas}
               onView={setProdutoDetalhe}
               onEdit={abrirEdicaoProduto}
               onDelete={excluirProduto}
             />
+          )
+        ) : (
+          <div className="empty-state">Nenhum produto cadastrado ainda.</div>
+        )}
+      </section>
+
+      {produtoDetalhe && (
+        <ProdutoDetalheSheet
+          item={produtoDetalhe}
+          onClose={() => setProdutoDetalhe(null)}
+          onEdit={(item) => {
+            setProdutoDetalhe(null);
+            abrirEdicaoProduto(item);
+          }}
+          onDelete={(id) => {
+            excluirProduto(id);
+            setProdutoDetalhe(null);
+          }}
+        />
+      )}
+
+      {filtroAberto && (
+        <FiltroValidadeSheet
+          resumoValidades={resumoValidades}
+          statusFiltros={statusFiltros}
+          filtroValidade={filtroValidade}
+          setFiltroValidade={setFiltroValidade}
+          onClose={() => setFiltroAberto(false)}
+        />
+      )}
+
+      {calendarioAberto && (
+        <CalendarioValidadesSheet itens={validadesTratadas} onClose={() => setCalendarioAberto(false)} />
+      )}
+    </div>
+  );
+}
+
+function FiltroValidadeSheet({ resumoValidades, statusFiltros, filtroValidade, setFiltroValidade, onClose }) {
+  function selecionarFiltro(status) {
+    setFiltroValidade(status);
+    onClose();
+  }
+
+  return (
+    <div className="bottom-sheet-backdrop" role="presentation" onClick={onClose}>
+      <section
+        className="bottom-sheet filter-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="filtro-validade-titulo"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="sheet-handle" />
+        <div className="sheet-header">
+          <div>
+            <span>Filtro</span>
+            <h3 id="filtro-validade-titulo">Validades</h3>
+          </div>
+          <button className="sheet-close" onClick={onClose} aria-label="Fechar filtro">
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="filter-sheet-options">
+          <button
+            className={filtroValidade === 'todos' ? 'status-filter-chip active all' : 'status-filter-chip all'}
+            onClick={() => selecionarFiltro('todos')}
+            type="button"
+          >
+            Todos
+            <strong>{resumoValidades.total}</strong>
+          </button>
+          {statusFiltros.map((item) => (
+            <button
+              key={item.id}
+              className={
+                filtroValidade === item.id
+                  ? `status-filter-chip tone-${item.tone} active`
+                  : `status-filter-chip tone-${item.tone}`
+              }
+              onClick={() => selecionarFiltro(item.id)}
+              type="button"
+            >
+              {item.label}
+              <strong>{item.value}</strong>
+            </button>
           ))}
         </div>
       </section>
+    </div>
+  );
+}
 
-      {produtoDetalhe && <ProdutoDetalheSheet item={produtoDetalhe} onClose={() => setProdutoDetalhe(null)} />}
+function CalendarioValidadesSheet({ itens, onClose }) {
+  const hoje = useMemo(() => {
+    const data = new Date();
+    data.setHours(0, 0, 0, 0);
+    return data;
+  }, []);
+
+  const calendario = useMemo(() => {
+    const ano = hoje.getFullYear();
+    const mes = hoje.getMonth();
+    const primeiroDia = new Date(ano, mes, 1);
+    const ultimoDia = new Date(ano, mes + 1, 0);
+    const inicio = new Date(primeiroDia);
+    inicio.setDate(primeiroDia.getDate() - primeiroDia.getDay());
+    const totalCelulas = Math.ceil((primeiroDia.getDay() + ultimoDia.getDate()) / 7) * 7;
+
+    const porData = itens.reduce((resultado, item) => {
+      const chave = item.validade;
+      return {
+        ...resultado,
+        [chave]: [...(resultado[chave] || []), item],
+      };
+    }, {});
+
+    return Array.from({ length: totalCelulas }, (_, index) => {
+      const data = new Date(inicio);
+      data.setDate(inicio.getDate() + index);
+      const chave = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}-${String(
+        data.getDate(),
+      ).padStart(2, '0')}`;
+      const produtosDia = (porData[chave] || []).sort(
+        (a, b) => statusOrdem.indexOf(a.status) - statusOrdem.indexOf(b.status) || a.dias - b.dias,
+      );
+      const config = produtosDia[0] ? statusConfig[produtosDia[0].status] : null;
+
+      return {
+        chave,
+        dia: data.getDate(),
+        noMes: data.getMonth() === mes,
+        produtos: produtosDia,
+        config,
+      };
+    });
+  }, [hoje, itens]);
+
+  const proximasDatas = useMemo(() => {
+    return itens
+      .filter((item) => item.dias >= 0)
+      .sort((a, b) => a.dias - b.dias || a.produto.localeCompare(b.produto))
+      .slice(0, 6);
+  }, [itens]);
+
+  const tituloMes = new Intl.DateTimeFormat('pt-BR', { month: 'long', year: 'numeric' }).format(hoje);
+
+  return (
+    <div className="bottom-sheet-backdrop" role="presentation" onClick={onClose}>
+      <section
+        className="bottom-sheet calendar-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="calendario-validade-titulo"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="sheet-handle" />
+        <div className="sheet-header">
+          <div>
+            <span>Calendario</span>
+            <h3 id="calendario-validade-titulo">{tituloMes}</h3>
+          </div>
+          <button className="sheet-close" onClick={onClose} aria-label="Fechar calendario">
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="calendar-weekdays" aria-hidden="true">
+          {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map((dia) => (
+            <span key={dia}>{dia}</span>
+          ))}
+        </div>
+
+        <div className="calendar-grid">
+          {calendario.map((dia) => (
+            <div
+              className={
+                dia.config
+                  ? `calendar-day tone-${dia.config.tone}${dia.noMes ? '' : ' muted'}`
+                  : `calendar-day${dia.noMes ? '' : ' muted'}`
+              }
+              key={dia.chave}
+            >
+              <span>{dia.dia}</span>
+              {dia.produtos.length > 0 && <strong>{dia.produtos.length}</strong>}
+            </div>
+          ))}
+        </div>
+
+        <div className="calendar-next-list">
+          {proximasDatas.map((item) => {
+            const config = statusConfig[item.status];
+
+            return (
+              <div className={`calendar-next-item tone-${config.tone}`} key={item.id}>
+                <i />
+                <span>{formatarDataCurta(item.validade)}</span>
+                <strong>{item.produto}</strong>
+                <em>{config.badge}</em>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function ConfiguracaoPage({ tema, setTema, usuarioAtual, sincronizando, usuariosPendentes, aprovarCadastroUsuario, sair }) {
+  return (
+    <div className="page-grid">
+      <PageTitle
+        eyebrow="Ajustes"
+        title="Configuração"
+        description="Preferências do aplicativo."
+        icon={Settings}
+      />
+
+      <section className="settings-panel">
+        <div className="section-heading">
+          <div>
+            <span>Aparência</span>
+            <h3>Tema</h3>
+          </div>
+          <Settings size={22} />
+        </div>
+
+        <div className="theme-options" role="group" aria-label="Tema do aplicativo">
+          {temasDisponiveis.map((item) => {
+            const Icon = item.id === 'claro' ? Sun : Moon;
+
+            return (
+              <button key={item.id} className={tema === item.id ? 'active' : ''} onClick={() => setTema(item.id)}>
+                <Icon size={18} />
+                <span>
+                  <strong>{item.label}</strong>
+                  <small>{item.resumo}</small>
+                </span>
+                <em>
+                  {item.swatches.map((cor) => (
+                    <i key={cor} style={{ background: cor }} />
+                  ))}
+                </em>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="theme-preview" aria-hidden="true">
+          <div>
+            <span />
+            <strong />
+          </div>
+          <i />
+          <i />
+          <i />
+        </div>
+      </section>
+
+      <section className="settings-panel">
+        <div className="section-heading">
+          <div>
+            <span>Conta</span>
+            <h3>Sessao</h3>
+          </div>
+          <ShieldCheck size={22} />
+        </div>
+
+        <div className="session-panel">
+          <div>
+            <span>Matricula</span>
+            <strong>{usuarioAtual?.matricula}</strong>
+          </div>
+          <div>
+            <span>Perfil</span>
+            <strong>{usuarioAtual?.admin ? 'Admin' : 'Usuario'}</strong>
+          </div>
+          <button className="session-logout" onClick={sair} type="button">
+            <X size={18} />
+            Sair
+          </button>
+        </div>
+
+        {sincronizando && <div className="sync-note">Processando...</div>}
+      </section>
+
+      {usuarioAtual?.admin && (
+        <section className="settings-panel">
+          <div className="section-heading">
+            <div>
+              <span>Acessos</span>
+              <h3>Cadastros pendentes</h3>
+            </div>
+            <ShieldCheck size={22} />
+          </div>
+
+          {usuariosPendentes.length > 0 ? (
+            <div className="pending-users">
+              {usuariosPendentes.map((usuario) => (
+                <div key={usuario.matricula}>
+                  <span>
+                    <strong>{usuario.matricula}</strong>
+                    <small>{usuario.telefone}</small>
+                  </span>
+                  <button type="button" onClick={() => aprovarCadastroUsuario(usuario.matricula)} disabled={sincronizando}>
+                    Aprovar
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-access">Nenhum cadastro pendente.</div>
+          )}
+        </section>
+      )}
     </div>
   );
 }
@@ -1156,6 +1869,7 @@ function CadastroProdutoSheet({
 
     atualizarNovoItem('produto', produto.descricao);
     atualizarNovoItem('plu', produto.plu);
+    atualizarNovoItem('unidade', inferirUnidadeProduto(produto.descricao));
     if (!novoItem.imagem && fotosPorPlu[produto.plu]) {
       atualizarNovoItem('imagem', fotosPorPlu[produto.plu]);
     }
@@ -1280,17 +1994,47 @@ function CadastroProdutoSheet({
 
             <label>
               Quantidade
-              <input
-                value={novoItem.quantidade}
-                placeholder="Ex: 12 un"
-                onChange={(event) => atualizarNovoItem('quantidade', event.target.value)}
-              />
+              <div className="quantity-input-row">
+                <input
+                  value={novoItem.quantidade}
+                  inputMode="decimal"
+                  onChange={(event) => atualizarNovoItem('quantidade', limparQuantidade(event.target.value))}
+                />
+                <div className="unit-toggle" aria-label="Unidade">
+                  {['kg', 'un'].map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      className={novoItem.unidade === item ? 'active' : ''}
+                      onClick={() => atualizarNovoItem('unidade', item)}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </label>
           </div>
 
-          <label>
-            Local
-            <div className="local-toggle">
+          <div className="choice-row">
+            <span>Tipo</span>
+            <div className="local-toggle compact-toggle" aria-label="Tipo">
+              {['RESF', 'CONG'].map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  className={novoItem.tipo === item ? 'active' : ''}
+                  onClick={() => atualizarNovoItem('tipo', item)}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="choice-row">
+            <span>Local</span>
+            <div className="local-toggle" aria-label="Local">
               {['Área de venda', 'Câmara'].map((item) => (
                 <button
                   key={item}
@@ -1302,7 +2046,7 @@ function CadastroProdutoSheet({
                 </button>
               ))}
             </div>
-          </label>
+          </div>
 
           <button className="primary-button sheet-submit" type="submit">
             <CheckCircle2 size={18} />
@@ -1314,11 +2058,61 @@ function CadastroProdutoSheet({
   );
 }
 
+function ProdutoCadastroTabela({ itens, onView }) {
+  return (
+    <div className="validade-tabela-container" role="table" aria-label="Produtos cadastrados">
+      <div className="validade-tabela">
+        {itens.map((item) => {
+          const config = statusConfig[item.status];
+
+          return (
+            <button
+              className={`validade-tabela-item tone-${config.tone}${item.dias <= 3 ? ' is-alerting' : ''}`}
+              key={item.id}
+              type="button"
+              onClick={() => onView(item)}
+            >
+              <span className="validade-linha-principal">
+                <strong>{item.produto}</strong>
+                <span>{textoDiasTabela(item.dias)}</span>
+                <i className="status-dot" title={config.badge} aria-label={config.badge} />
+              </span>
+
+              <span className="validade-linha-secundaria">
+                <span>
+                  <small>Qtd.</small>
+                  <b>{item.quantidade}</b>
+                </span>
+                <span>
+                  <small>Val.</small>
+                  <b>{formatarDataCurta(item.validade)}</b>
+                </span>
+                <span>
+                  <small>EAN</small>
+                  <b>{item.plu}</b>
+                </span>
+                <span>
+                  <small>Tipo</small>
+                  <b>{item.tipo}</b>
+                </span>
+                <span>
+                  <small>Local</small>
+                  <b>{item.setor}</b>
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function ProdutoCadastroCard({ item, onView, onEdit, onDelete }) {
   const config = statusConfig[item.status];
 
   return (
-    <article className="produto-cadastro-card">
+    <article className={`produto-cadastro-card tone-${config.tone}${item.dias <= 3 ? ' is-alerting' : ''}`}>
       <div className="produto-image-box">
         {item.imagem ? (
           <img className="produto-foto" src={item.imagem} alt={`Foto de ${item.produto}`} />
@@ -1368,7 +2162,7 @@ function InfoBox({ label, value }) {
   );
 }
 
-function ProdutoDetalheSheet({ item, onClose }) {
+function ProdutoDetalheSheet({ item, onClose, onEdit, onDelete }) {
   return (
     <div className="bottom-sheet-backdrop" role="presentation" onClick={onClose}>
       <section
@@ -1390,50 +2184,36 @@ function ProdutoDetalheSheet({ item, onClose }) {
         </div>
 
         <div className="detail-grid">
-          {item.imagem && (
-            <div className="detail-photo">
+          <div className={item.imagem ? 'detail-photo has-image' : 'detail-photo'}>
+            {item.imagem ? (
               <img src={item.imagem} alt={`Foto de ${item.produto}`} />
-            </div>
-          )}
+            ) : (
+              <>
+                <PackageCheck size={34} />
+                <span>Sem foto</span>
+              </>
+            )}
+          </div>
           <InfoBox label="PLU / EAN" value={item.plu} />
           <InfoBox label="Quantidade" value={item.quantidade} />
+          <InfoBox label="Tipo" value={item.tipo} />
           <InfoBox label="Local" value={item.setor} />
           <InfoBox label="Validade" value={formatarData(item.validade)} />
+          <InfoBox label="Prazo" value={item.prazo} />
+        </div>
+
+        <div className="detail-actions">
+          <button className="detail-action edit" onClick={() => onEdit(item)}>
+            <Pencil size={18} />
+            Editar
+          </button>
+          <button className="detail-action delete" onClick={() => onDelete(item.id)}>
+            <Trash2 size={18} />
+            Apagar
+          </button>
         </div>
       </section>
     </div>
-  );
-}
-
-function ValidadeRow({ item, compact, onToggle }) {
-  const config = statusConfig[item.status];
-  const Icon = config.icon;
-
-  return (
-    <article className={`validade-row tone-${config.tone}`}>
-      <div className="status-icon">
-        <Icon size={18} />
-      </div>
-      <div className="validade-main">
-        <div>
-          <span className="status-badge">{config.badge}</span>
-          <strong>{item.produto}</strong>
-        </div>
-        <p>
-          PLU {item.plu} · lote {item.lote} · {item.setor}
-        </p>
-      </div>
-      <div className="validade-meta">
-        <strong>{formatarData(item.validade)}</strong>
-        <span>{item.prazo}</span>
-      </div>
-      {!compact && (
-        <button className={item.revisado ? 'review-button done' : 'review-button'} onClick={() => onToggle(item.id)}>
-          <CheckCircle2 size={17} />
-          {item.revisado ? 'Revisado' : 'Revisar'}
-        </button>
-      )}
-    </article>
   );
 }
 

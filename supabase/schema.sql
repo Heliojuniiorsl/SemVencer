@@ -39,6 +39,23 @@ create table if not exists public.fotos_produtos (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.produtos_base (
+  plu text primary key,
+  descricao text not null,
+  categoria text not null default 'Outros',
+  tipo text not null default 'Nao informado',
+  tipo_plu text not null default 'Nao informado',
+  secao text not null default 'Outros',
+  embalagem_multiplo numeric,
+  origem text not null default 'BASE_DADOS_NOMES_CORRIGIDOS.xlsx',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists produtos_base_categoria_idx on public.produtos_base (categoria);
+create index if not exists produtos_base_secao_idx on public.produtos_base (secao);
+create index if not exists produtos_base_descricao_idx on public.produtos_base using gin (to_tsvector('portuguese', descricao));
+
 create or replace function public.set_updated_at()
 returns trigger
 language plpgsql
@@ -59,6 +76,11 @@ create trigger set_fotos_produtos_updated_at
 before update on public.fotos_produtos
 for each row execute function public.set_updated_at();
 
+drop trigger if exists set_produtos_base_updated_at on public.produtos_base;
+create trigger set_produtos_base_updated_at
+before update on public.produtos_base
+for each row execute function public.set_updated_at();
+
 insert into public.usuarios (matricula, telefone, admin, aprovado)
 values ('000000', '00000000000', true, true)
 on conflict (matricula)
@@ -71,6 +93,7 @@ where matricula = '3408990';
 alter table public.usuarios enable row level security;
 alter table public.validades enable row level security;
 alter table public.fotos_produtos enable row level security;
+alter table public.produtos_base enable row level security;
 
 drop policy if exists "usuarios leitura anon" on public.usuarios;
 create policy "usuarios leitura anon"
@@ -134,3 +157,12 @@ on public.fotos_produtos for update
 to anon
 using (true)
 with check (true);
+
+drop policy if exists "produtos leitura anon" on public.produtos_base;
+create policy "produtos leitura anon"
+on public.produtos_base for select
+to anon
+using (true);
+
+drop policy if exists "produtos escrita anon" on public.produtos_base;
+drop policy if exists "produtos atualizacao anon" on public.produtos_base;

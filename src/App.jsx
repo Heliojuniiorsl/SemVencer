@@ -11,14 +11,12 @@ import {
   Filter,
   Grid3x3,
   List,
-  Moon,
   PackageCheck,
   PackageSearch,
   Pencil,
   Search,
   Settings,
   ShieldCheck,
-  Sun,
   Trash2,
   X,
   XCircle,
@@ -34,6 +32,7 @@ import {
   CONTATO_LIBERACAO,
   aprovarUsuario,
   cadastrarUsuario,
+  carregarProdutosBaseRemotos,
   carregarUsuariosPendentes,
   carregarDadosRemotos,
   loginUsuario,
@@ -44,7 +43,28 @@ import {
 import { calcularUltimoDigito, montarPluCompleto, somenteNumeros } from './utils/calcularDigito';
 import { buscarProdutoExato, buscarProdutos } from './utils/filtros';
 
-const categorias = ['Todas', 'Bovino', 'Suíno', 'Aves', 'Cordeiro', 'Peixes', 'Outros'];
+function listarCategoriasProdutos(listaProdutos) {
+  return [
+    'Todas',
+    ...Array.from(new Set(listaProdutos.map((produto) => produto.categoria || 'Outros'))).sort((a, b) =>
+      a.localeCompare(b, 'pt-BR'),
+    ),
+  ];
+}
+
+function listarSecoesProdutos(listaProdutos) {
+  return Array.from(new Set(listaProdutos.map((produto) => produto.secao || 'Outros')))
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+}
+
+function contarProdutosPorSecao(listaProdutos) {
+  return listaProdutos.reduce((resultado, produto) => {
+    const secao = produto.secao || 'Outros';
+    resultado[secao] = (resultado[secao] || 0) + 1;
+    return resultado;
+  }, {});
+}
 
 const navegacao = [
   { path: '/', label: 'Validade', icon: CalendarCheck },
@@ -53,43 +73,6 @@ const navegacao = [
   { path: '/pesquisa-plu', label: 'Pesquisa', icon: Search },
   { path: '/configuracao', label: 'Config', icon: Settings },
 ];
-
-const temasDisponiveis = [
-  {
-    id: 'claro',
-    label: 'Claro',
-    resumo: 'premium',
-    swatches: ['#ffffff', '#0f766e', '#d9a441'],
-  },
-  {
-    id: 'escuro',
-    label: 'Escuro',
-    resumo: 'grafite',
-    swatches: ['#161b1a', '#0f766e', '#d6b45f'],
-  },
-  {
-    id: 'oceano',
-    label: 'Oceano',
-    resumo: 'azul',
-    swatches: ['#081728', '#2563eb', '#22d3ee'],
-  },
-  {
-    id: 'vinho',
-    label: 'Vinho',
-    resumo: 'rubi',
-    swatches: ['#21101a', '#be3155', '#f0b36a'],
-  },
-  {
-    id: 'floresta',
-    label: 'Floresta',
-    resumo: 'verde',
-    swatches: ['#0d1b13', '#16a34a', '#c9b458'],
-  },
-];
-
-function normalizarTema(valor) {
-  return temasDisponiveis.some((tema) => tema.id === valor) ? valor : 'claro';
-}
 
 const statusConfig = {
   vencido: {
@@ -171,7 +154,7 @@ const storageKeys = {
   validades: 'semVencer.validades.v1',
   validadesPorUsuario: 'semVencer.validades.usuario.v1',
   fotosPorPlu: 'semVencer.fotosPorPlu.v1',
-  tema: 'semVencer.tema.v1',
+  secoesPorUsuario: 'semVencer.secoes.usuario.v1',
   usuario: 'semVencer.usuarioAtual.v1',
 };
 
@@ -377,6 +360,27 @@ function chaveValidadesUsuario(usuario) {
   return matricula ? `${storageKeys.validadesPorUsuario}.${matricula}` : '';
 }
 
+function chaveSecoesUsuario(usuario) {
+  const matricula = somenteNumeros(usuario?.matricula);
+  return matricula ? `${storageKeys.secoesPorUsuario}.${matricula}` : '';
+}
+
+function normalizarSecoesSelecionadas(valor) {
+  if (!Array.isArray(valor)) return [];
+
+  return Array.from(new Set(valor.map((secao) => String(secao || '').trim()).filter(Boolean)));
+}
+
+function carregarSecoesDoUsuario(usuario) {
+  const chave = chaveSecoesUsuario(usuario);
+
+  if (!chave) {
+    return [];
+  }
+
+  return normalizarSecoesSelecionadas(lerStorageJson(chave, []));
+}
+
 function carregarValidadesDoUsuario(usuario, fotosPorPlu) {
   const matricula = somenteNumeros(usuario?.matricula);
 
@@ -566,15 +570,20 @@ function carregarImagemProduto(file) {
   });
 }
 
+function carregarUsuarioInicial() {
+  return normalizarSessaoUsuario(lerStorageJson(storageKeys.usuario, null));
+}
+
 function App() {
   const [rotaAtual, setRotaAtual] = useState(() => resolverRota(window.location.pathname));
-  const [tema, setTema] = useState(() => normalizarTema(lerStorageJson(storageKeys.tema, 'claro')));
-  const [usuarioAtual, setUsuarioAtual] = useState(() => normalizarSessaoUsuario(lerStorageJson(storageKeys.usuario, null)));
+  const [usuarioAtual, setUsuarioAtual] = useState(carregarUsuarioInicial);
   const [authErro, setAuthErro] = useState('');
   const [authMensagem, setAuthMensagem] = useState('');
   const [sincronizando, setSincronizando] = useState(false);
   const [dadosRemotosCarregados, setDadosRemotosCarregados] = useState(false);
   const [usuarioDadosChave, setUsuarioDadosChave] = useState('');
+  const [secoesUsuarioChave, setSecoesUsuarioChave] = useState(() => chaveSecoesUsuario(carregarUsuarioInicial()));
+  const [secoesSelecionadas, setSecoesSelecionadas] = useState(() => carregarSecoesDoUsuario(carregarUsuarioInicial()));
   const [usuariosPendentes, setUsuariosPendentes] = useState([]);
   const [pluBase, setPluBase] = useState('');
   const [termoPesquisa, setTermoPesquisa] = useState('');
@@ -582,6 +591,7 @@ function App() {
   const [copiado, setCopiado] = useState(false);
   const [visualizacao, setVisualizacao] = useState('tabela');
   const [visualizacaoValidades, setVisualizacaoValidades] = useState('tabela');
+  const [produtosBase, setProdutosBase] = useState(produtos);
   const [fotosPorPlu, setFotosPorPlu] = useState(carregarFotosPorPlu);
   const [validades, setValidades] = useState([]);
   const [filtroValidade, setFiltroValidade] = useState('todos');
@@ -610,10 +620,47 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const temaAtual = normalizarTema(tema);
-    document.documentElement.dataset.theme = temaAtual;
-    salvarStorageJson(storageKeys.tema, temaAtual);
-  }, [tema]);
+    document.documentElement.dataset.theme = 'claro';
+    try {
+      window.localStorage.removeItem('semVencer.tema.v1');
+    } catch (error) {
+      console.warn('Nao foi possivel limpar o tema antigo', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const chave = chaveSecoesUsuario(usuarioAtual);
+    setSecoesSelecionadas(carregarSecoesDoUsuario(usuarioAtual));
+    setSecoesUsuarioChave(chave);
+  }, [usuarioAtual?.matricula]);
+
+  useEffect(() => {
+    const chave = chaveSecoesUsuario(usuarioAtual);
+
+    if (!chave || secoesUsuarioChave !== chave) {
+      return;
+    }
+
+    salvarStorageJson(chave, secoesSelecionadas);
+  }, [secoesSelecionadas, secoesUsuarioChave, usuarioAtual]);
+
+  useEffect(() => {
+    let cancelado = false;
+
+    carregarProdutosBaseRemotos(produtos)
+      .then((itens) => {
+        if (!cancelado && Array.isArray(itens) && itens.length > 0) {
+          setProdutosBase(itens);
+        }
+      })
+      .catch((error) => {
+        console.warn('Nao foi possivel carregar produtos do Supabase', error);
+      });
+
+    return () => {
+      cancelado = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (usuarioAtual) {
@@ -743,14 +790,36 @@ function App() {
     });
   }, [dadosRemotosCarregados, fotosPorPlu, usuarioAtual]);
 
+  const secoesProdutos = useMemo(() => listarSecoesProdutos(produtosBase), [produtosBase]);
+  const contagemSecoesProdutos = useMemo(() => contarProdutosPorSecao(produtosBase), [produtosBase]);
+  const secoesSelecionadasValidas = useMemo(
+    () => secoesSelecionadas.filter((secao) => secoesProdutos.includes(secao)),
+    [secoesProdutos, secoesSelecionadas],
+  );
+  const produtosFiltradosPorSecao = useMemo(() => {
+    if (secoesSelecionadasValidas.length === 0) {
+      return produtosBase;
+    }
+
+    const secoesPermitidas = new Set(secoesSelecionadasValidas);
+    return produtosBase.filter((produto) => secoesPermitidas.has(produto.secao || 'Outros'));
+  }, [produtosBase, secoesSelecionadasValidas]);
+
   const baseLimpa = somenteNumeros(pluBase);
   const ultimoDigito = calcularUltimoDigito(baseLimpa);
   const pluCompleto = montarPluCompleto(baseLimpa);
-  const produtoCalculado = buscarProdutoExato(produtos, pluCompleto);
+  const produtoCalculado = buscarProdutoExato(produtosFiltradosPorSecao, pluCompleto);
+  const categoriasProdutos = useMemo(() => listarCategoriasProdutos(produtosFiltradosPorSecao), [produtosFiltradosPorSecao]);
+
+  useEffect(() => {
+    if (!categoriasProdutos.includes(categoria)) {
+      setCategoria('Todas');
+    }
+  }, [categoria, categoriasProdutos]);
 
   const resultados = useMemo(() => {
-    return buscarProdutos(produtos, termoPesquisa, categoria).slice(0, 80);
-  }, [termoPesquisa, categoria]);
+    return buscarProdutos(produtosFiltradosPorSecao, termoPesquisa, categoria).slice(0, 80);
+  }, [produtosFiltradosPorSecao, termoPesquisa, categoria]);
 
   const validadesTratadas = useMemo(() => {
     return validades
@@ -1052,14 +1121,37 @@ function App() {
     });
   }
 
+  function alternarSecaoProduto(secao) {
+    setSecoesSelecionadas((atuais) => {
+      const selecionadas = normalizarSecoesSelecionadas(atuais);
+
+      if (selecionadas.includes(secao)) {
+        return selecionadas.filter((item) => item !== secao);
+      }
+
+      return [...selecionadas, secao];
+    });
+  }
+
+  function usarTodasSecoesProdutos() {
+    setSecoesSelecionadas([]);
+  }
+
   const pageProps = {
     resumoValidades,
     statusResumoCards,
     statusFiltros,
     validadesTratadas,
     validadesFiltradas,
-    produtos,
-    categorias,
+    produtos: produtosFiltradosPorSecao,
+    produtosBaseTotal: produtosBase.length,
+    produtosVisiveisTotal: produtosFiltradosPorSecao.length,
+    secoesProdutos,
+    contagemSecoesProdutos,
+    secoesSelecionadas: secoesSelecionadasValidas,
+    alternarSecaoProduto,
+    usarTodasSecoesProdutos,
+    categorias: categoriasProdutos,
     pluBase,
     setPluBase,
     baseLimpa,
@@ -1077,8 +1169,6 @@ function App() {
     setVisualizacao,
     visualizacaoValidades,
     setVisualizacaoValidades,
-    tema,
-    setTema,
     filtroValidade,
     setFiltroValidade,
     buscaValidade,
@@ -1137,6 +1227,7 @@ function App() {
 
       {cadastroAberto && (
         <CadastroProdutoSheet
+          produtosBase={produtosFiltradosPorSecao}
           novoItem={novoItem}
           cadastroEdicaoId={cadastroEdicaoId}
           fotosPorPlu={fotosPorPlu}
@@ -1272,7 +1363,7 @@ function PluPage({
       <PageTitle
         eyebrow="Cálculo"
         title="PLU"
-        description="Calculadora de último dígito e validação direta no banco local de produtos."
+        description="Calculadora de último dígito e validação direta na base de produtos."
         icon={Calculator}
       />
 
@@ -1723,54 +1814,66 @@ function CalendarioValidadesSheet({ itens, onClose }) {
   );
 }
 
-function ConfiguracaoPage({ tema, setTema, usuarioAtual, sincronizando, usuariosPendentes, aprovarCadastroUsuario, sair }) {
+function ConfiguracaoPage({
+  usuarioAtual,
+  sincronizando,
+  usuariosPendentes,
+  aprovarCadastroUsuario,
+  sair,
+  secoesProdutos,
+  contagemSecoesProdutos,
+  secoesSelecionadas,
+  produtosBaseTotal,
+  produtosVisiveisTotal,
+  alternarSecaoProduto,
+  usarTodasSecoesProdutos,
+}) {
+  const usandoTodasSecoes = secoesSelecionadas.length === 0;
+
   return (
     <div className="page-grid">
       <PageTitle
         eyebrow="Ajustes"
         title="Configuração"
-        description="Preferências do aplicativo."
+        description="Preferências da base de PLU."
         icon={Settings}
       />
 
       <section className="settings-panel">
         <div className="section-heading">
           <div>
-            <span>Aparência</span>
-            <h3>Tema</h3>
+            <span>Base de PLU</span>
+            <h3>Seções usadas</h3>
           </div>
-          <Settings size={22} />
+          <PackageSearch size={22} />
         </div>
 
-        <div className="theme-options" role="group" aria-label="Tema do aplicativo">
-          {temasDisponiveis.map((item) => {
-            const Icon = item.id === 'claro' ? Sun : Moon;
+        <div className="section-selector-status">
+          <div>
+            <span>{usandoTodasSecoes ? 'Todas as seções' : `${secoesSelecionadas.length} seção(ões)`}</span>
+            <strong>
+              {produtosVisiveisTotal} de {produtosBaseTotal} produtos
+            </strong>
+          </div>
+          <button type="button" onClick={usarTodasSecoesProdutos} disabled={usandoTodasSecoes}>
+            Usar todas
+          </button>
+        </div>
+
+        <div className="section-options" role="group" aria-label="Seções da base de PLU">
+          {secoesProdutos.map((secao) => {
+            const ativa = secoesSelecionadas.includes(secao);
 
             return (
-              <button key={item.id} className={tema === item.id ? 'active' : ''} onClick={() => setTema(item.id)}>
-                <Icon size={18} />
+              <button key={secao} type="button" className={ativa ? 'active' : ''} onClick={() => alternarSecaoProduto(secao)}>
+                <CheckCircle2 size={17} />
                 <span>
-                  <strong>{item.label}</strong>
-                  <small>{item.resumo}</small>
+                  <strong>{secao}</strong>
+                  <small>{contagemSecoesProdutos[secao] || 0} produto(s)</small>
                 </span>
-                <em>
-                  {item.swatches.map((cor) => (
-                    <i key={cor} style={{ background: cor }} />
-                  ))}
-                </em>
               </button>
             );
           })}
-        </div>
-
-        <div className="theme-preview" aria-hidden="true">
-          <div>
-            <span />
-            <strong />
-          </div>
-          <i />
-          <i />
-          <i />
         </div>
       </section>
 
@@ -1835,6 +1938,7 @@ function ConfiguracaoPage({ tema, setTema, usuarioAtual, sincronizando, usuarios
 }
 
 function CadastroProdutoSheet({
+  produtosBase,
   novoItem,
   cadastroEdicaoId,
   fotosPorPlu,
@@ -1845,8 +1949,8 @@ function CadastroProdutoSheet({
 }) {
   const [mostrarSugestoes, setMostrarSugestoes] = useState(false);
   const produtosProvaveis = useMemo(
-    () => encontrarProdutosProvaveis(produtos, novoItem.produto, novoItem.plu),
-    [novoItem.produto, novoItem.plu],
+    () => encontrarProdutosProvaveis(produtosBase, novoItem.produto, novoItem.plu),
+    [novoItem.produto, novoItem.plu, produtosBase],
   );
 
   async function selecionarFoto(event) {

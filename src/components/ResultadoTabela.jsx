@@ -1,4 +1,4 @@
-import { Copy, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Copy } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ResultadoTabela({ produtos }) {
@@ -19,10 +19,12 @@ export default function ResultadoTabela({ produtos }) {
           <thead>
             <tr>
               <th>PLU</th>
-              <th>Descrição</th>
+              <th>Descricao</th>
               <th>Categoria</th>
+              <th>Secao</th>
               <th>Tipo</th>
-              <th>Ação</th>
+              <th>Emb.</th>
+              <th>Acao</th>
             </tr>
           </thead>
           <tbody>
@@ -35,7 +37,9 @@ export default function ResultadoTabela({ produtos }) {
                 <td className="categoria-cell">
                   <span className="badge-tabela">{produto.categoria}</span>
                 </td>
-                <td className="tipo-cell">{produto.tipo}</td>
+                <td className="tipo-cell">{produto.secao}</td>
+                <td className="tipo-cell">{produto.tipoPlu || produto.tipo}</td>
+                <td className="tipo-cell">{produto.embalagemMultiplo || '-'}</td>
                 <td className="acao-cell">
                   <button className="icon-button" onClick={() => copiarPlu(produto.plu)} title="Copiar PLU">
                     {linhaCopiada === produto.plu ? <CheckCircle2 size={18} /> : <Copy size={18} />}

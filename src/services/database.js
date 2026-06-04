@@ -111,8 +111,38 @@ function fotosArrayParaMapa(fotos) {
   }, {});
 }
 
+function fromDbProduto(item) {
+  return {
+    plu: item.plu,
+    descricao: item.descricao,
+    categoria: item.categoria || 'Outros',
+    tipo: item.tipo || item.tipo_plu || 'Nao informado',
+    tipoPlu: item.tipo_plu || 'Nao informado',
+    secao: item.secao || 'Outros',
+    embalagemMultiplo: item.embalagem_multiplo ?? null,
+  };
+}
+
 export function bancoAtivo() {
   return supabaseConfigurado;
+}
+
+export async function carregarProdutosBaseRemotos(fallback = []) {
+  if (!supabaseConfigurado) {
+    return fallback;
+  }
+
+  const { data, error } = await supabase
+    .from('produtos_base')
+    .select('plu, descricao, categoria, tipo, tipo_plu, secao, embalagem_multiplo')
+    .order('categoria', { ascending: true })
+    .order('descricao', { ascending: true });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data && data.length > 0 ? data.map(fromDbProduto) : fallback;
 }
 
 export async function cadastrarUsuario({ matricula, telefone }) {

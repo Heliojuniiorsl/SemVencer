@@ -9,6 +9,29 @@ function somenteDigitos(valor) {
   return String(valor || '').replace(/\D/g, '');
 }
 
+export function telefoneValido(valor) {
+  const telefone = somenteDigitos(valor);
+  const ddd = Number(telefone.slice(0, 2));
+  const numero = telefone.slice(2);
+
+  return (
+    telefone.length === 11 &&
+    ddd >= 11 &&
+    ddd <= 99 &&
+    numero.startsWith('9') &&
+    !/^(\d)\1+$/.test(telefone)
+  );
+}
+
+export function formatarTelefone(valor) {
+  const telefone = somenteDigitos(valor).slice(0, 11);
+
+  if (telefone.length <= 2) return telefone;
+  if (telefone.length <= 7) return `(${telefone.slice(0, 2)}) ${telefone.slice(2)}`;
+
+  return `(${telefone.slice(0, 2)}) ${telefone.slice(2, 7)}-${telefone.slice(7)}`;
+}
+
 function lerLocal(chave, fallback) {
   try {
     const bruto = window.localStorage.getItem(chave);
@@ -34,9 +57,15 @@ function normalizarUsuario(usuario) {
   return {
     id: usuario.id || `local-${matricula}`,
     matricula,
-    telefone: usuario.telefone || '',
+    telefone: somenteDigitos(usuario.telefone),
     admin,
     aprovado: admin || Boolean(usuario.aprovado),
+    createdAt: usuario.created_at || usuario.createdAt || '',
+    lastLoginAt: usuario.last_login_at || usuario.lastLoginAt || '',
+    lastActivityLabel: usuario.last_activity_label || usuario.lastActivityLabel || '',
+    lastActivityAt: usuario.last_activity_at || usuario.lastActivityAt || '',
+    lastRoute: usuario.last_route || usuario.lastRoute || '',
+    atividade: usuario.atividade || null,
   };
 }
 
@@ -77,7 +106,6 @@ function toDbValidade(item, usuario) {
     quantidade: item.quantidade || '',
     fabricacao: item.fabricacao || null,
     validade: item.validade,
-    imagem: item.imagem || '',
     responsavel: item.responsavel || '',
     revisado: Boolean(item.revisado),
   };
@@ -95,20 +123,9 @@ function fromDbValidade(item) {
     quantidade: item.quantidade || '',
     fabricacao: item.fabricacao || '',
     validade: item.validade,
-    imagem: item.imagem || '',
     responsavel: item.responsavel || '',
     revisado: Boolean(item.revisado),
   };
-}
-
-function fotosArrayParaMapa(fotos) {
-  return fotos.reduce((resultado, item) => {
-    if (!item.plu || !item.imagem) return resultado;
-    return {
-      ...resultado,
-      [item.plu]: item.imagem,
-    };
-  }, {});
 }
 
 function fromDbProduto(item) {
@@ -151,6 +168,10 @@ export async function cadastrarUsuario({ matricula, telefone }) {
 
   if (!matriculaLimpa || !telefoneLimpo) {
     throw new Error('Informe telefone e matricula.');
+  }
+
+  if (!telefoneValido(telefoneLimpo)) {
+    throw new Error('Informe um telefone celular valido com DDD.');
   }
 
   const usuarioPayload = {
@@ -283,6 +304,124 @@ export async function carregarUsuariosPendentes() {
   return (data || []).map(normalizarUsuario);
 }
 
+function resumoAtividadeUsuario(usuario, validades = []) {
+  const itens = validades
+    .filter((item) => item.usuario_id === usuario.id)
+    .sort((a, b) => {
+      const dataA = new Date(a.updated_at || a.created_at || 0).getTime();
+      const dataB = new Date(b.updated_at || b.created_at || 0).getTime();
+      return dataB - dataA;
+  });
+  const ultimo = itens[0] || null;
+  const atividadeLabel =
+    usuario.last_activity_label || usuario.lastActivityLabel || (ultimo ? `Cadastrou ${ultimo.produto}` : 'Sem atividade recente');
+  const atividadeAt =
+    usuario.last_activity_at || usuario.lastActivityAt || usuario.last_login_at || usuario.lastLoginAt || ultimo?.updated_at || ultimo?.created_at || '';
+
+  return {
+    totalProdutos: itens.length,
+    ultimoProduto: ultimo?.produto || '',
+    ultimoPlu: ultimo?.plu || '',
+    ultimaValidade: ultimo?.validade || '',
+    ultimaMovimentacaoAt: ultimo?.updated_at || ultimo?.created_at || '',
+    label: atividadeLabel,
+    at: atividadeAt,
+    rota: usuario.last_route || usuario.lastRoute || '',
+  };
+}
+
+async function carregarUsuariosRemotosAdmin() {
+  const selectCompleto =
+    'id, matricula, telefone, admin, aprovado, created_at, last_login_at, last_activity_label, last_activity_at, last_route';
+  const selectBasico = 'id, matricula, telefone, admin, aprovado, created_at, last_login_at';
+
+  let consulta = await supabase.from('usuarios').select(selectCompleto).order('created_at', { ascending: false });
+
+  if (consulta.error && /last_activity_|last_route/i.test(consulta.error.message)) {
+    consulta = await supabase.from('usuarios').select(selectBasico).order('created_at', { ascending: false });
+  }
+
+  if (consulta.error) throw new Error(consulta.error.message);
+
+  return consulta.data || [];
+}
+
+export async function carregarUsuariosAdmin() {
+  if (!supabaseConfigurado) {
+    const usuarios = lerLocal(localUsersKey, []).map(normalizarUsuario).filter(Boolean);
+
+    return usuarios.map((usuario) => {
+      const validades = lerLocal(`semVencer.validades.usuario.v1.${usuario.matricula}`, []);
+      return {
+        ...usuario,
+        atividade: resumoAtividadeUsuario(usuario, validades.map((item) => ({ ...item, usuario_id: usuario.id }))),
+      };
+    });
+  }
+
+  const usuarios = await carregarUsuariosRemotosAdmin();
+  const ids = usuarios.map((usuario) => usuario.id).filter(Boolean);
+  let validades = [];
+
+  if (ids.length > 0) {
+    const { data, error } = await supabase
+      .from('validades')
+      .select('usuario_id, produto, plu, validade, created_at, updated_at')
+      .in('usuario_id', ids);
+
+    if (error) throw new Error(error.message);
+    validades = data || [];
+  }
+
+  return usuarios.map((usuario) => {
+    const normalizado = normalizarUsuario(usuario);
+    return {
+      ...normalizado,
+      atividade: resumoAtividadeUsuario(usuario, validades),
+    };
+  });
+}
+
+export async function registrarAtividadeUsuario(usuario, atividade, rota = '') {
+  if (!usuario || !atividade) return;
+
+  const agora = new Date().toISOString();
+  const dadosAtividade = {
+    lastActivityLabel: atividade,
+    lastActivityAt: agora,
+    lastRoute: rota,
+  };
+
+  if (!supabaseConfigurado) {
+    const matricula = somenteDigitos(usuario.matricula);
+    const usuarios = lerLocal(localUsersKey, []);
+    const atualizados = usuarios.map((item) =>
+      somenteDigitos(item.matricula) === matricula
+        ? {
+            ...item,
+            ...dadosAtividade,
+          }
+        : item,
+    );
+
+    salvarLocal(localUsersKey, atualizados);
+    return;
+  }
+
+  const payload = {
+    last_activity_label: atividade,
+    last_activity_at: agora,
+    last_route: rota,
+  };
+
+  const filtro = usuario.id && !String(usuario.id).startsWith('local-') ? { coluna: 'id', valor: usuario.id } : { coluna: 'matricula', valor: somenteDigitos(usuario.matricula) };
+  const { error } = await supabase.from('usuarios').update(payload).eq(filtro.coluna, filtro.valor);
+
+  if (error && !/last_activity_|last_route/i.test(error.message)) {
+    throw new Error(error.message);
+  }
+}
+
 export async function aprovarUsuario(matricula) {
   const matriculaLimpa = somenteDigitos(matricula);
 
@@ -310,38 +449,34 @@ export async function aprovarUsuario(matricula) {
   return normalizarUsuario(data);
 }
 
-export async function carregarDadosRemotos(usuario, validadesFallback, fotosFallback) {
+export async function carregarDadosRemotos(usuario, validadesFallback) {
   if (!supabaseConfigurado || !usuario) {
     return {
       usuario,
       validades: validadesFallback,
-      fotosPorPlu: fotosFallback,
     };
   }
 
   const usuarioBanco = await garantirUsuarioRemoto(usuario);
-  const [{ data: validades, error: validadesError }, { data: fotos, error: fotosError }] = await Promise.all([
-    supabase.from('validades').select('*').eq('usuario_id', usuarioBanco.id).order('created_at', { ascending: false }),
-    supabase.from('fotos_produtos').select('*'),
-  ]);
+  const { data: validades, error: validadesError } = await supabase
+    .from('validades')
+    .select('*')
+    .eq('usuario_id', usuarioBanco.id)
+    .order('created_at', { ascending: false });
 
   if (validadesError) throw new Error(validadesError.message);
-  if (fotosError) throw new Error(fotosError.message);
 
   if (!validades || validades.length === 0) {
     await salvarValidadesRemotas(validadesFallback, usuarioBanco);
-    await salvarFotosRemotas(fotosFallback);
     return {
       usuario: usuarioBanco,
       validades: validadesFallback,
-      fotosPorPlu: fotosFallback,
     };
   }
 
   return {
     usuario: usuarioBanco,
     validades: validades.map(fromDbValidade),
-    fotosPorPlu: fotosArrayParaMapa(fotos || []),
   };
 }
 
@@ -358,21 +493,5 @@ export async function removerValidadeRemota(id) {
   if (!supabaseConfigurado || !id) return;
 
   const { error } = await supabase.from('validades').delete().eq('id', id);
-  if (error) throw new Error(error.message);
-}
-
-export async function salvarFotosRemotas(fotosPorPlu) {
-  if (!supabaseConfigurado) return;
-
-  const payload = Object.entries(fotosPorPlu)
-    .filter(([plu, imagem]) => plu && imagem)
-    .map(([plu, imagem]) => ({
-      plu,
-      imagem,
-    }));
-
-  if (payload.length === 0) return;
-
-  const { error } = await supabase.from('fotos_produtos').upsert(payload, { onConflict: 'plu' });
   if (error) throw new Error(error.message);
 }

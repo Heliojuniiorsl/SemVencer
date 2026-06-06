@@ -13,6 +13,33 @@ create table if not exists public.usuarios (
 alter table if exists public.usuarios
 add column if not exists aprovado boolean not null default false;
 
+alter table if exists public.usuarios
+add column if not exists last_activity_label text;
+
+alter table if exists public.usuarios
+add column if not exists last_activity_at timestamptz;
+
+alter table if exists public.usuarios
+add column if not exists last_route text;
+
+alter table if exists public.usuarios
+drop constraint if exists usuarios_telefone_valido_check;
+
+alter table if exists public.usuarios
+add constraint usuarios_telefone_valido_check
+check (
+  admin = true
+  or (
+    telefone ~ '^[0-9]{11}$'
+    and substring(telefone from 3 for 1) = '9'
+    and telefone !~ '^([0-9])\1{10}$'
+    and case
+      when telefone ~ '^[0-9]{2}' then substring(telefone from 1 for 2)::int between 11 and 99
+      else false
+    end
+  )
+) not valid;
+
 create table if not exists public.validades (
   id text primary key,
   usuario_id uuid references public.usuarios(id) on delete set null,
@@ -25,19 +52,16 @@ create table if not exists public.validades (
   quantidade text,
   fabricacao date,
   validade date not null,
-  imagem text,
   responsavel text,
   revisado boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
-create table if not exists public.fotos_produtos (
-  plu text primary key,
-  imagem text not null,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
+alter table if exists public.validades
+drop column if exists imagem;
+
+drop table if exists public.fotos_produtos;
 
 create table if not exists public.produtos_base (
   plu text primary key,
@@ -71,11 +95,6 @@ create trigger set_validades_updated_at
 before update on public.validades
 for each row execute function public.set_updated_at();
 
-drop trigger if exists set_fotos_produtos_updated_at on public.fotos_produtos;
-create trigger set_fotos_produtos_updated_at
-before update on public.fotos_produtos
-for each row execute function public.set_updated_at();
-
 drop trigger if exists set_produtos_base_updated_at on public.produtos_base;
 create trigger set_produtos_base_updated_at
 before update on public.produtos_base
@@ -92,7 +111,6 @@ where matricula = '3408990';
 
 alter table public.usuarios enable row level security;
 alter table public.validades enable row level security;
-alter table public.fotos_produtos enable row level security;
 alter table public.produtos_base enable row level security;
 
 drop policy if exists "usuarios leitura anon" on public.usuarios;
@@ -138,25 +156,6 @@ create policy "validades exclusao anon"
 on public.validades for delete
 to anon
 using (true);
-
-drop policy if exists "fotos leitura anon" on public.fotos_produtos;
-create policy "fotos leitura anon"
-on public.fotos_produtos for select
-to anon
-using (true);
-
-drop policy if exists "fotos escrita anon" on public.fotos_produtos;
-create policy "fotos escrita anon"
-on public.fotos_produtos for insert
-to anon
-with check (true);
-
-drop policy if exists "fotos atualizacao anon" on public.fotos_produtos;
-create policy "fotos atualizacao anon"
-on public.fotos_produtos for update
-to anon
-using (true)
-with check (true);
 
 drop policy if exists "produtos leitura anon" on public.produtos_base;
 create policy "produtos leitura anon"

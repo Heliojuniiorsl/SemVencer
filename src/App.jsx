@@ -3,7 +3,6 @@ import {
   AlertTriangle,
   Calculator,
   CalendarCheck,
-  Camera,
   CheckCircle2,
   Clock3,
   Copy,
@@ -33,14 +32,17 @@ import {
   aprovarUsuario,
   cadastrarUsuario,
   carregarProdutosBaseRemotos,
-  carregarUsuariosPendentes,
+  carregarUsuariosAdmin,
   carregarDadosRemotos,
+  formatarTelefone,
   loginUsuario,
+  registrarAtividadeUsuario,
   removerValidadeRemota,
-  salvarFotosRemotas,
   salvarValidadesRemotas,
+  telefoneValido,
 } from './services/database';
 import { calcularUltimoDigito, montarPluCompleto, somenteNumeros } from './utils/calcularDigito';
+import { copiarTexto } from './utils/clipboard';
 import { buscarProdutoExato, buscarProdutos } from './utils/filtros';
 
 function listarCategoriasProdutos(listaProdutos) {
@@ -52,15 +54,29 @@ function listarCategoriasProdutos(listaProdutos) {
   ];
 }
 
+function normalizarSecaoProduto(secao) {
+  const valor = String(secao || 'Outros').trim();
+  const valorNormalizado = valor
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+  if (valorNormalizado === 'carnes' || valorNormalizado === 'outros') {
+    return 'Carnes e Aves';
+  }
+
+  return valor || 'Carnes e Aves';
+}
+
 function listarSecoesProdutos(listaProdutos) {
-  return Array.from(new Set(listaProdutos.map((produto) => produto.secao || 'Outros')))
+  return Array.from(new Set(listaProdutos.map((produto) => normalizarSecaoProduto(produto.secao))))
     .filter(Boolean)
     .sort((a, b) => a.localeCompare(b, 'pt-BR'));
 }
 
 function contarProdutosPorSecao(listaProdutos) {
   return listaProdutos.reduce((resultado, produto) => {
-    const secao = produto.secao || 'Outros';
+    const secao = normalizarSecaoProduto(produto.secao);
     resultado[secao] = (resultado[secao] || 0) + 1;
     return resultado;
   }, {});
@@ -153,8 +169,8 @@ const statusOrdem = [
 const storageKeys = {
   validades: 'semVencer.validades.v1',
   validadesPorUsuario: 'semVencer.validades.usuario.v1',
-  fotosPorPlu: 'semVencer.fotosPorPlu.v1',
   secoesPorUsuario: 'semVencer.secoes.usuario.v1',
+  secoesConfiguradasPorUsuario: 'semVencer.secoes.configuradas.usuario.v1',
   usuario: 'semVencer.usuarioAtual.v1',
 };
 
@@ -217,7 +233,13 @@ const validadeSeed = [
   },
 ];
 
+const appEmArquivoLocal = typeof window !== 'undefined' && window.location.protocol === 'file:';
+
 function normalizarBase() {
+  if (appEmArquivoLocal) {
+    return '';
+  }
+
   const base = import.meta.env.BASE_URL || '/';
   return base.endsWith('/') ? base.slice(0, -1) : base;
 }
@@ -225,7 +247,9 @@ function normalizarBase() {
 const basePath = normalizarBase();
 
 function resolverRota(pathname) {
-  let path = decodeURIComponent(pathname || '/');
+  let path = appEmArquivoLocal
+    ? decodeURIComponent((window.location.hash || '#/').replace(/^#/, '') || '/')
+    : decodeURIComponent(pathname || '/');
 
   if (basePath && basePath !== '/' && path === basePath) {
     path = '/';
@@ -249,6 +273,10 @@ function resolverRota(pathname) {
 }
 
 function criarHref(path) {
+  if (appEmArquivoLocal) {
+    return `#${path}`;
+  }
+
   if (!basePath || basePath === '/') {
     return path;
   }
@@ -300,6 +328,21 @@ function formatarQuantidade(valor, unidade) {
   return `${limparQuantidade(valor) || '1'} ${unidade === 'un' ? 'un' : 'kg'}`;
 }
 
+function formatarEmbalagemProduto(valor) {
+  if (valor === undefined || valor === null || valor === '') return '';
+  const numero = Number(valor);
+
+  if (Number.isFinite(numero)) {
+    if (numero === 1) {
+      return 'Caixa por KG';
+    }
+
+    return `Caixa com: ${String(numero).replace('.', ',')}`;
+  }
+
+  return String(valor);
+}
+
 function criarValidadesIniciais() {
   return validadeSeed.map((item, index) => {
     const produto = produtos[item.produtoIndex] || produtos[index] || produtos[0];
@@ -339,17 +382,20 @@ function salvarStorageJson(chave, valor) {
   }
 }
 
-function carregarFotosPorPlu() {
-  return lerStorageJson(storageKeys.fotosPorPlu, {});
+function storageTemChave(chave) {
+  if (!chave) return false;
+
+  try {
+    return window.localStorage.getItem(chave) !== null;
+  } catch {
+    return false;
+  }
 }
 
-function aplicarFotosSalvas(itens, fotosPorPlu) {
+function normalizarValidadesSalvas(itens) {
   return itens.map((item) => {
-    const codigo = somenteNumeros(item.plu);
-
     return {
       ...item,
-      imagem: item.imagem || fotosPorPlu[codigo] || '',
       tipo: item.tipo ? normalizarTipoProduto(item.tipo) : inferirTipoConservacao(item.produto),
     };
   });
@@ -365,10 +411,15 @@ function chaveSecoesUsuario(usuario) {
   return matricula ? `${storageKeys.secoesPorUsuario}.${matricula}` : '';
 }
 
+function chaveSecoesConfiguradasUsuario(usuario) {
+  const matricula = somenteNumeros(usuario?.matricula);
+  return matricula ? `${storageKeys.secoesConfiguradasPorUsuario}.${matricula}` : '';
+}
+
 function normalizarSecoesSelecionadas(valor) {
   if (!Array.isArray(valor)) return [];
 
-  return Array.from(new Set(valor.map((secao) => String(secao || '').trim()).filter(Boolean)));
+  return Array.from(new Set(valor.map((secao) => normalizarSecaoProduto(secao)).filter(Boolean)));
 }
 
 function carregarSecoesDoUsuario(usuario) {
@@ -381,7 +432,14 @@ function carregarSecoesDoUsuario(usuario) {
   return normalizarSecoesSelecionadas(lerStorageJson(chave, []));
 }
 
-function carregarValidadesDoUsuario(usuario, fotosPorPlu) {
+function carregarSecoesConfiguradasUsuario(usuario) {
+  const chaveConfigurada = chaveSecoesConfiguradasUsuario(usuario);
+  const chaveSecoes = chaveSecoesUsuario(usuario);
+
+  return Boolean(lerStorageJson(chaveConfigurada, false) || storageTemChave(chaveSecoes));
+}
+
+function carregarValidadesDoUsuario(usuario) {
   const matricula = somenteNumeros(usuario?.matricula);
 
   if (!matricula) {
@@ -391,7 +449,7 @@ function carregarValidadesDoUsuario(usuario, fotosPorPlu) {
   const salvas = lerStorageJson(chaveValidadesUsuario(usuario), null);
 
   if (Array.isArray(salvas)) {
-    return aplicarFotosSalvas(salvas, fotosPorPlu);
+    return normalizarValidadesSalvas(salvas);
   }
 
   if (matricula !== ADMIN_MATRICULA) {
@@ -400,7 +458,7 @@ function carregarValidadesDoUsuario(usuario, fotosPorPlu) {
 
   const legado = lerStorageJson(storageKeys.validades, null);
   const itens = Array.isArray(legado) && legado.length > 0 ? legado : criarValidadesIniciais();
-  return aplicarFotosSalvas(itens, fotosPorPlu);
+  return normalizarValidadesSalvas(itens);
 }
 
 function salvarValidadesDoUsuario(usuario, validades) {
@@ -431,6 +489,22 @@ function usuarioPodeAcessar(usuario) {
   return Boolean(usuario?.admin || usuario?.aprovado);
 }
 
+function descreverAtividadeUsuario(rota, cadastroAberto, cadastroEdicaoId, produtoDetalhe) {
+  if (cadastroAberto) {
+    return cadastroEdicaoId ? 'Editando produto cadastrado' : 'Cadastrando produto';
+  }
+
+  if (produtoDetalhe) {
+    return 'Visualizando produto cadastrado';
+  }
+
+  if (rota === '/plu') return 'Calculando PLU';
+  if (rota === '/pesquisa-plu') return 'Pesquisando PLU';
+  if (rota === '/configuracao') return 'Ajustando configuracoes';
+
+  return 'Visualizando validades';
+}
+
 function formatarData(dataISO) {
   return new Intl.DateTimeFormat('pt-BR', {
     day: '2-digit',
@@ -444,6 +518,17 @@ function formatarDataCurta(dataISO) {
     day: '2-digit',
     month: '2-digit',
   }).format(new Date(`${dataISO}T00:00:00`));
+}
+
+function formatarDataHora(dataISO) {
+  if (!dataISO) return 'Sem registro';
+
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(dataISO));
 }
 
 function diferencaEmDias(dataISO) {
@@ -542,34 +627,6 @@ function encontrarProdutosProvaveis(listaProdutos, nome, codigo, limite = 12) {
     .map((item) => item.produto);
 }
 
-function carregarImagemProduto(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const imagem = new Image();
-
-      imagem.onload = () => {
-        const maxSize = 900;
-        const escala = Math.min(1, maxSize / Math.max(imagem.width, imagem.height));
-        const canvas = document.createElement('canvas');
-        canvas.width = Math.round(imagem.width * escala);
-        canvas.height = Math.round(imagem.height * escala);
-
-        const context = canvas.getContext('2d');
-        context.drawImage(imagem, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', 0.78));
-      };
-
-      imagem.onerror = reject;
-      imagem.src = reader.result;
-    };
-
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
 function carregarUsuarioInicial() {
   return normalizarSessaoUsuario(lerStorageJson(storageKeys.usuario, null));
 }
@@ -584,7 +641,10 @@ function App() {
   const [usuarioDadosChave, setUsuarioDadosChave] = useState('');
   const [secoesUsuarioChave, setSecoesUsuarioChave] = useState(() => chaveSecoesUsuario(carregarUsuarioInicial()));
   const [secoesSelecionadas, setSecoesSelecionadas] = useState(() => carregarSecoesDoUsuario(carregarUsuarioInicial()));
+  const [secoesConfiguradas, setSecoesConfiguradas] = useState(() => carregarSecoesConfiguradasUsuario(carregarUsuarioInicial()));
   const [usuariosPendentes, setUsuariosPendentes] = useState([]);
+  const [usuariosAdmin, setUsuariosAdmin] = useState([]);
+  const [usuarioAdminSelecionado, setUsuarioAdminSelecionado] = useState(null);
   const [pluBase, setPluBase] = useState('');
   const [termoPesquisa, setTermoPesquisa] = useState('');
   const [categoria, setCategoria] = useState('Todas');
@@ -592,7 +652,6 @@ function App() {
   const [visualizacao, setVisualizacao] = useState('tabela');
   const [visualizacaoValidades, setVisualizacaoValidades] = useState('tabela');
   const [produtosBase, setProdutosBase] = useState(produtos);
-  const [fotosPorPlu, setFotosPorPlu] = useState(carregarFotosPorPlu);
   const [validades, setValidades] = useState([]);
   const [filtroValidade, setFiltroValidade] = useState('todos');
   const [buscaValidade, setBuscaValidade] = useState('');
@@ -607,7 +666,6 @@ function App() {
     quantidade: '',
     unidade: 'kg',
     validade: criarDataRelativa(5),
-    imagem: '',
   });
 
   useEffect(() => {
@@ -623,26 +681,29 @@ function App() {
     document.documentElement.dataset.theme = 'claro';
     try {
       window.localStorage.removeItem('semVencer.tema.v1');
+      window.localStorage.removeItem('semVencer.fotosPorPlu.v1');
     } catch (error) {
-      console.warn('Nao foi possivel limpar o tema antigo', error);
+      console.warn('Nao foi possivel limpar preferencias antigas', error);
     }
   }, []);
 
   useEffect(() => {
     const chave = chaveSecoesUsuario(usuarioAtual);
     setSecoesSelecionadas(carregarSecoesDoUsuario(usuarioAtual));
+    setSecoesConfiguradas(carregarSecoesConfiguradasUsuario(usuarioAtual));
     setSecoesUsuarioChave(chave);
   }, [usuarioAtual?.matricula]);
 
   useEffect(() => {
     const chave = chaveSecoesUsuario(usuarioAtual);
 
-    if (!chave || secoesUsuarioChave !== chave) {
+    if (!chave || secoesUsuarioChave !== chave || !secoesConfiguradas) {
       return;
     }
 
     salvarStorageJson(chave, secoesSelecionadas);
-  }, [secoesSelecionadas, secoesUsuarioChave, usuarioAtual]);
+    salvarStorageJson(chaveSecoesConfiguradasUsuario(usuarioAtual), true);
+  }, [secoesConfiguradas, secoesSelecionadas, secoesUsuarioChave, usuarioAtual]);
 
   useEffect(() => {
     let cancelado = false;
@@ -690,25 +751,51 @@ function App() {
   useEffect(() => {
     if (!usuarioAtual?.admin) {
       setUsuariosPendentes([]);
+      setUsuariosAdmin([]);
+      setUsuarioAdminSelecionado(null);
       return undefined;
     }
 
     let cancelado = false;
 
-    carregarUsuariosPendentes()
-      .then((usuarios) => {
+    async function carregarListaAdmin() {
+      try {
+        const usuarios = await carregarUsuariosAdmin();
         if (!cancelado) {
-          setUsuariosPendentes(usuarios);
+          setUsuariosAdmin(usuarios);
+          setUsuariosPendentes(usuarios.filter((usuario) => !usuario.admin && !usuario.aprovado));
+          setUsuarioAdminSelecionado((usuarioSelecionado) =>
+            usuarioSelecionado ? usuarios.find((usuario) => usuario.matricula === usuarioSelecionado.matricula) || usuarioSelecionado : null,
+          );
         }
-      })
-      .catch((error) => {
-        console.warn('Nao foi possivel carregar usuarios pendentes', error);
-      });
+      } catch (error) {
+        console.warn('Nao foi possivel carregar usuarios admin', error);
+      }
+    }
+
+    carregarListaAdmin();
+    const intervalo = window.setInterval(carregarListaAdmin, 20000);
 
     return () => {
       cancelado = true;
+      window.clearInterval(intervalo);
     };
-  }, [usuarioAtual]);
+  }, [usuarioAtual?.admin, usuarioAtual?.id]);
+
+  useEffect(() => {
+    if (!usuarioAtual || !usuarioPodeAcessar(usuarioAtual)) {
+      return undefined;
+    }
+
+    const atividade = descreverAtividadeUsuario(rotaAtual, cadastroAberto, cadastroEdicaoId, produtoDetalhe);
+    const timeout = window.setTimeout(() => {
+      registrarAtividadeUsuario(usuarioAtual, atividade, rotaAtual).catch((error) => {
+        console.warn('Nao foi possivel registrar atividade', error);
+      });
+    }, 450);
+
+    return () => window.clearTimeout(timeout);
+  }, [cadastroAberto, cadastroEdicaoId, produtoDetalhe, rotaAtual, usuarioAtual]);
 
   useEffect(() => {
     if (!usuarioAtual || !usuarioPodeAcessar(usuarioAtual) || dadosRemotosCarregados) {
@@ -722,8 +809,8 @@ function App() {
       setAuthErro('');
 
       try {
-        const validadesLocais = carregarValidadesDoUsuario(usuarioAtual, fotosPorPlu);
-        const dados = await carregarDadosRemotos(usuarioAtual, validadesLocais, fotosPorPlu);
+        const validadesLocais = carregarValidadesDoUsuario(usuarioAtual);
+        const dados = await carregarDadosRemotos(usuarioAtual, validadesLocais);
 
         if (cancelado) return;
 
@@ -731,8 +818,7 @@ function App() {
         if (dados.usuario && dados.usuario.id !== usuarioAtual.id) {
           setUsuarioAtual(dados.usuario);
         }
-        setFotosPorPlu(dados.fotosPorPlu);
-        setValidades(aplicarFotosSalvas(dados.validades, dados.fotosPorPlu));
+        setValidades(normalizarValidadesSalvas(dados.validades));
         setUsuarioDadosChave(chaveValidadesUsuario(usuarioCarregado));
         setDadosRemotosCarregados(true);
       } catch (error) {
@@ -755,7 +841,7 @@ function App() {
   }, [dadosRemotosCarregados, usuarioAtual]);
 
   useEffect(() => {
-    if (!cadastroAberto && !produtoDetalhe) {
+    if (!cadastroAberto && !produtoDetalhe && !usuarioAdminSelecionado) {
       return undefined;
     }
 
@@ -765,16 +851,12 @@ function App() {
     return () => {
       document.body.style.overflow = overflowAnterior;
     };
-  }, [cadastroAberto, produtoDetalhe]);
+  }, [cadastroAberto, produtoDetalhe, usuarioAdminSelecionado]);
 
   useEffect(() => {
     if (!usuarioAtual || !dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) return;
     salvarValidadesDoUsuario(usuarioAtual, validades);
   }, [dadosRemotosCarregados, usuarioAtual, usuarioDadosChave, validades]);
-
-  useEffect(() => {
-    salvarStorageJson(storageKeys.fotosPorPlu, fotosPorPlu);
-  }, [fotosPorPlu]);
 
   useEffect(() => {
     if (!usuarioAtual || !dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) return;
@@ -783,27 +865,32 @@ function App() {
     });
   }, [dadosRemotosCarregados, usuarioAtual, usuarioDadosChave, validades]);
 
-  useEffect(() => {
-    if (!usuarioAtual || !dadosRemotosCarregados) return;
-    salvarFotosRemotas(fotosPorPlu).catch((error) => {
-      console.warn('Nao foi possivel sincronizar fotos', error);
-    });
-  }, [dadosRemotosCarregados, fotosPorPlu, usuarioAtual]);
-
-  const secoesProdutos = useMemo(() => listarSecoesProdutos(produtosBase), [produtosBase]);
-  const contagemSecoesProdutos = useMemo(() => contarProdutosPorSecao(produtosBase), [produtosBase]);
+  const produtosBaseComSecao = useMemo(
+    () =>
+      produtosBase.map((produto) => ({
+        ...produto,
+        secao: normalizarSecaoProduto(produto.secao),
+      })),
+    [produtosBase],
+  );
+  const secoesProdutos = useMemo(() => listarSecoesProdutos(produtosBaseComSecao), [produtosBaseComSecao]);
+  const contagemSecoesProdutos = useMemo(() => contarProdutosPorSecao(produtosBaseComSecao), [produtosBaseComSecao]);
+  const produtoBasePorPlu = useMemo(
+    () => new Map(produtosBaseComSecao.map((produto) => [somenteNumeros(produto.plu), produto])),
+    [produtosBaseComSecao],
+  );
   const secoesSelecionadasValidas = useMemo(
     () => secoesSelecionadas.filter((secao) => secoesProdutos.includes(secao)),
     [secoesProdutos, secoesSelecionadas],
   );
   const produtosFiltradosPorSecao = useMemo(() => {
     if (secoesSelecionadasValidas.length === 0) {
-      return produtosBase;
+      return produtosBaseComSecao;
     }
 
     const secoesPermitidas = new Set(secoesSelecionadasValidas);
-    return produtosBase.filter((produto) => secoesPermitidas.has(produto.secao || 'Outros'));
-  }, [produtosBase, secoesSelecionadasValidas]);
+    return produtosBaseComSecao.filter((produto) => secoesPermitidas.has(normalizarSecaoProduto(produto.secao)));
+  }, [produtosBaseComSecao, secoesSelecionadasValidas]);
 
   const baseLimpa = somenteNumeros(pluBase);
   const ultimoDigito = calcularUltimoDigito(baseLimpa);
@@ -818,7 +905,7 @@ function App() {
   }, [categoria, categoriasProdutos]);
 
   const resultados = useMemo(() => {
-    return buscarProdutos(produtosFiltradosPorSecao, termoPesquisa, categoria).slice(0, 80);
+    return buscarProdutos(produtosFiltradosPorSecao, termoPesquisa, categoria);
   }, [produtosFiltradosPorSecao, termoPesquisa, categoria]);
 
   const validadesTratadas = useMemo(() => {
@@ -828,12 +915,16 @@ function App() {
         const tipo = item.tipo ? normalizarTipoProduto(item.tipo) : inferirTipoConservacao(item.produto);
         const status = classificarValidade(dias, tipo);
         const config = statusConfig[status];
-        const codigo = somenteNumeros(item.plu);
+        const produtoBase = produtoBasePorPlu.get(somenteNumeros(item.plu));
 
         return {
           ...item,
           tipo,
-          imagem: item.imagem || fotosPorPlu[codigo] || '',
+          nomeProduto: item.produto || produtoBase?.descricao || 'Produto sem nome',
+          categoria: produtoBase?.categoria || item.categoria || 'Cadastro',
+          tipoPlu: produtoBase?.tipoPlu || 'Nao informado',
+          secao: produtoBase?.secao ? normalizarSecaoProduto(produtoBase.secao) : 'Nao informado',
+          embalagem: formatarEmbalagemProduto(produtoBase?.embalagemMultiplo),
           dias,
           status,
           statusBadge: config.badge,
@@ -843,7 +934,7 @@ function App() {
         };
       })
       .sort((a, b) => a.dias - b.dias || a.produto.localeCompare(b.produto));
-  }, [fotosPorPlu, validades]);
+  }, [produtoBasePorPlu, validades]);
 
   const resumoValidades = useMemo(() => {
     const resumo = statusOrdem.reduce(
@@ -961,6 +1052,36 @@ function App() {
     try {
       await aprovarUsuario(matricula);
       setUsuariosPendentes((usuarios) => usuarios.filter((usuario) => usuario.matricula !== matricula));
+      setUsuariosAdmin((usuarios) =>
+        usuarios.map((usuario) =>
+          usuario.matricula === matricula
+            ? {
+                ...usuario,
+                aprovado: true,
+                admin: false,
+                atividade: {
+                  ...(usuario.atividade || {}),
+                  label: 'Cadastro aprovado',
+                  at: new Date().toISOString(),
+                },
+              }
+            : usuario,
+        ),
+      );
+      setUsuarioAdminSelecionado((usuario) =>
+        usuario?.matricula === matricula
+          ? {
+              ...usuario,
+              aprovado: true,
+              admin: false,
+              atividade: {
+                ...(usuario.atividade || {}),
+                label: 'Cadastro aprovado',
+                at: new Date().toISOString(),
+              },
+            }
+          : usuario,
+      );
     } catch (error) {
       console.warn('Nao foi possivel aprovar usuario', error);
     } finally {
@@ -970,7 +1091,7 @@ function App() {
 
   async function copiarPlu() {
     if (!pluCompleto) return;
-    await navigator.clipboard.writeText(pluCompleto);
+    await copiarTexto(pluCompleto);
     setCopiado(true);
     setTimeout(() => setCopiado(false), 1500);
   }
@@ -995,25 +1116,6 @@ function App() {
     }));
   }
 
-  function salvarFotoDoPlu(plu, imagem) {
-    const codigo = somenteNumeros(plu);
-
-    if (!codigo || !imagem) {
-      return;
-    }
-
-    setFotosPorPlu((fotosAtuais) => {
-      if (fotosAtuais[codigo] === imagem) {
-        return fotosAtuais;
-      }
-
-      return {
-        ...fotosAtuais,
-        [codigo]: imagem,
-      };
-    });
-  }
-
   function limparCadastro() {
     setNovoItem({
       produto: '',
@@ -1023,7 +1125,6 @@ function App() {
       quantidade: '',
       unidade: 'kg',
       validade: criarDataRelativa(5),
-      imagem: '',
     });
     setCadastroEdicaoId(null);
   }
@@ -1039,8 +1140,6 @@ function App() {
   }
 
   function abrirEdicaoProduto(item) {
-    const codigo = somenteNumeros(item.plu);
-
     setNovoItem({
       produto: item.produto,
       plu: item.plu === 'Sem PLU' ? '' : item.plu,
@@ -1049,7 +1148,6 @@ function App() {
       quantidade: extrairNumeroQuantidade(item.quantidade),
       unidade: extrairUnidadeQuantidade(item.quantidade),
       validade: item.validade,
-      imagem: item.imagem || fotosPorPlu[codigo] || '',
     });
     setCadastroEdicaoId(item.id);
     setCadastroAberto(true);
@@ -1064,10 +1162,8 @@ function App() {
 
     const codigoLimpo = somenteNumeros(novoItem.plu);
     const pluFinal = codigoLimpo || 'Sem PLU';
-    const imagemFinal = novoItem.imagem || fotosPorPlu[codigoLimpo] || '';
     const quantidadeFinal = formatarQuantidade(novoItem.quantidade, novoItem.unidade);
     const tipoFinal = novoItem.tipo ? normalizarTipoProduto(novoItem.tipo) : inferirTipoConservacao(novoItem.produto);
-    salvarFotoDoPlu(codigoLimpo, imagemFinal);
 
     if (cadastroEdicaoId) {
       setValidades((itens) =>
@@ -1081,7 +1177,6 @@ function App() {
                 tipo: tipoFinal,
                 quantidade: quantidadeFinal,
                 validade: novoItem.validade,
-                imagem: imagemFinal,
               }
             : item,
         ),
@@ -1103,7 +1198,6 @@ function App() {
         quantidade: quantidadeFinal,
         fabricacao: criarDataRelativa(-1),
         validade: novoItem.validade,
-        imagem: imagemFinal,
         responsavel: 'Cadastro mobile',
         revisado: false,
       },
@@ -1133,6 +1227,29 @@ function App() {
     });
   }
 
+  function confirmarSecoesProdutos() {
+    const chave = chaveSecoesUsuario(usuarioAtual);
+
+    if (chave) {
+      salvarStorageJson(chave, secoesSelecionadas);
+      salvarStorageJson(chaveSecoesConfiguradasUsuario(usuarioAtual), true);
+    }
+
+    setSecoesConfiguradas(true);
+  }
+
+  function confirmarTodasSecoesProdutos() {
+    const chave = chaveSecoesUsuario(usuarioAtual);
+
+    if (chave) {
+      salvarStorageJson(chave, []);
+      salvarStorageJson(chaveSecoesConfiguradasUsuario(usuarioAtual), true);
+    }
+
+    setSecoesSelecionadas([]);
+    setSecoesConfiguradas(true);
+  }
+
   function usarTodasSecoesProdutos() {
     setSecoesSelecionadas([]);
   }
@@ -1150,6 +1267,8 @@ function App() {
     contagemSecoesProdutos,
     secoesSelecionadas: secoesSelecionadasValidas,
     alternarSecaoProduto,
+    confirmarSecoesProdutos,
+    confirmarTodasSecoesProdutos,
     usarTodasSecoesProdutos,
     categorias: categoriasProdutos,
     pluBase,
@@ -1187,6 +1306,9 @@ function App() {
     usuarioAtual,
     sincronizando,
     usuariosPendentes,
+    usuariosAdmin,
+    usuarioAdminSelecionado,
+    setUsuarioAdminSelecionado,
     aprovarCadastroUsuario,
     sair,
     navegar,
@@ -1204,6 +1326,10 @@ function App() {
         onCadastro={cadastrarComTelefone}
       />
     );
+  }
+
+  if (!secoesConfiguradas) {
+    return <OnboardingSecoesPage {...pageProps} />;
   }
 
   return (
@@ -1230,9 +1356,7 @@ function App() {
           produtosBase={produtosFiltradosPorSecao}
           novoItem={novoItem}
           cadastroEdicaoId={cadastroEdicaoId}
-          fotosPorPlu={fotosPorPlu}
           atualizarNovoItem={atualizarNovoItem}
-          salvarFotoDoPlu={salvarFotoDoPlu}
           adicionarValidade={adicionarValidade}
           fecharCadastroProduto={fecharCadastroProduto}
         />
@@ -1278,6 +1402,7 @@ function AuthPage({ erro, mensagem, loading, onLogin, onCadastro }) {
   const [matricula, setMatricula] = useState('');
   const [telefone, setTelefone] = useState('');
   const matriculaLimpa = somenteNumeros(matricula);
+  const telefoneLimpo = somenteNumeros(telefone);
 
   function enviar(event) {
     event.preventDefault();
@@ -1287,9 +1412,17 @@ function AuthPage({ erro, mensagem, loading, onLogin, onCadastro }) {
       return;
     }
 
+    if (!telefoneValido(telefoneLimpo)) {
+      onCadastro({
+        matricula: matriculaLimpa,
+        telefone: telefoneLimpo,
+      });
+      return;
+    }
+
     onCadastro({
       matricula: matriculaLimpa,
-      telefone,
+      telefone: telefoneLimpo,
     });
   }
 
@@ -1327,10 +1460,11 @@ function AuthPage({ erro, mensagem, loading, onLogin, onCadastro }) {
             <label>
               Telefone
               <input
-                value={telefone}
+                value={formatarTelefone(telefone)}
                 inputMode="tel"
-                placeholder="DDD + numero"
-                onChange={(event) => setTelefone(somenteNumeros(event.target.value))}
+                placeholder="(61) 99842-7629"
+                maxLength={15}
+                onChange={(event) => setTelefone(somenteNumeros(event.target.value).slice(0, 11))}
               />
             </label>
           )}
@@ -1348,6 +1482,79 @@ function AuthPage({ erro, mensagem, loading, onLogin, onCadastro }) {
   );
 }
 
+function OnboardingSecoesPage({
+  usuarioAtual,
+  secoesProdutos,
+  contagemSecoesProdutos,
+  secoesSelecionadas,
+  produtosBaseTotal,
+  produtosVisiveisTotal,
+  alternarSecaoProduto,
+  confirmarSecoesProdutos,
+  confirmarTodasSecoesProdutos,
+  sair,
+}) {
+  const usandoTodasSecoes = secoesSelecionadas.length === 0;
+
+  return (
+    <main className="onboarding-shell">
+      <section className="onboarding-card">
+        <div className="auth-brand">
+          <PackageSearch size={28} />
+          <div>
+            <span>Sem Vencer</span>
+            <h1>Seções do PLU</h1>
+          </div>
+        </div>
+
+        <div className="onboarding-copy">
+          <strong>Matricula {usuarioAtual?.matricula}</strong>
+          <p>Escolha as seções que aparecem na pesquisa e nas sugestões do cadastro.</p>
+        </div>
+
+        <div className="section-selector-status">
+          <div>
+            <span>{usandoTodasSecoes ? 'Todas as seções' : `${secoesSelecionadas.length} seção(ões)`}</span>
+            <strong>
+              {produtosVisiveisTotal} de {produtosBaseTotal} produtos
+            </strong>
+          </div>
+          <button type="button" onClick={confirmarTodasSecoesProdutos}>
+            Usar todas
+          </button>
+        </div>
+
+        <div className="section-options onboarding-options" role="group" aria-label="Seções da base de PLU">
+          {secoesProdutos.map((secao) => {
+            const ativa = secoesSelecionadas.includes(secao);
+
+            return (
+              <button key={secao} type="button" className={ativa ? 'active' : ''} onClick={() => alternarSecaoProduto(secao)}>
+                <CheckCircle2 size={17} />
+                <span>
+                  <strong>{secao}</strong>
+                  <small>{contagemSecoesProdutos[secao] || 0} produto(s)</small>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="onboarding-actions">
+          <button className="primary-button" type="button" onClick={confirmarSecoesProdutos}>
+            <CheckCircle2 size={18} />
+            {usandoTodasSecoes ? 'Continuar com todas' : 'Salvar seleção'}
+          </button>
+          <button className="onboarding-logout" type="button" onClick={sair}>
+            <X size={18} />
+            Sair
+          </button>
+        </div>
+      </section>
+    </main>
+  );
+}
+
 function PluPage({
   pluBase,
   setPluBase,
@@ -1360,23 +1567,8 @@ function PluPage({
 }) {
   return (
     <div className="page-grid">
-      <PageTitle
-        eyebrow="Cálculo"
-        title="PLU"
-        description="Calculadora de último dígito e validação direta na base de produtos."
-        icon={Calculator}
-      />
-
       <section className="tool-layout">
-        <div className="tool-panel">
-          <div className="section-heading">
-            <div>
-              <span>Entrada</span>
-              <h3>PLU sem o último dígito</h3>
-            </div>
-            <PackageSearch size={22} />
-          </div>
-
+        <div className="tool-panel plu-entry-panel">
           <input
             className="input-principal"
             value={pluBase}
@@ -1416,14 +1608,6 @@ function PluPage({
 
       {ultimoDigito !== null && (
         <section className="work-panel">
-          <div className="section-heading">
-            <div>
-              <span>Conferência</span>
-              <h3>Produto localizado</h3>
-            </div>
-            <PackageCheck size={22} />
-          </div>
-
           {produtoCalculado ? (
             <ProdutoCard produto={produtoCalculado} />
           ) : (
@@ -1445,15 +1629,12 @@ function PesquisaPluPage({
   visualizacao,
   setVisualizacao,
 }) {
+  const [categoriasAberto, setCategoriasAberto] = useState(false);
+  const categoriaAtiva = categoria || 'Todas';
+  const totalResultadoTexto = `${resultados.length} PLU ${resultados.length === 1 ? 'encontrado' : 'encontrados'}`;
+
   return (
     <div className="page-grid">
-      <PageTitle
-        eyebrow="Consulta"
-        title="Pesquisa de PLU"
-        description="Busca por código, descrição ou categoria dentro da base de carnes e aves."
-        icon={Search}
-      />
-
       <section className="work-panel">
         <div className="search-row">
           <div className="search-field">
@@ -1465,45 +1646,52 @@ function PesquisaPluPage({
             />
           </div>
 
-          <div className="view-toggle">
+          <div className="search-actions">
+            <div className="view-toggle">
+              <button
+                className={visualizacao === 'cards' ? 'active' : ''}
+                onClick={() => setVisualizacao('cards')}
+                title="Visualizar como cards"
+              >
+                <Grid3x3 size={18} />
+              </button>
+              <button
+                className={visualizacao === 'tabela' ? 'active' : ''}
+                onClick={() => setVisualizacao('tabela')}
+                title="Visualizar como tabela"
+              >
+                <List size={18} />
+              </button>
+            </div>
+
             <button
-              className={visualizacao === 'cards' ? 'active' : ''}
-              onClick={() => setVisualizacao('cards')}
-              title="Visualizar como cards"
+              className={categoriaAtiva === 'Todas' ? 'filter-action-button' : 'filter-action-button active'}
+              type="button"
+              onClick={() => setCategoriasAberto(true)}
+              title={`Filtrar categoria: ${categoriaAtiva}`}
+              aria-label={`Filtrar categoria: ${categoriaAtiva}`}
             >
-              <Grid3x3 size={18} />
-            </button>
-            <button
-              className={visualizacao === 'tabela' ? 'active' : ''}
-              onClick={() => setVisualizacao('tabela')}
-              title="Visualizar como tabela"
-            >
-              <List size={18} />
+              <Filter size={18} />
             </button>
           </div>
-        </div>
-
-        <div className="filter-row">
-          <Filter size={18} />
-          {categorias.map((item) => (
-            <button
-              key={item}
-              className={categoria === item ? 'active' : ''}
-              onClick={() => setCategoria(item)}
-            >
-              {item}
-            </button>
-          ))}
         </div>
       </section>
 
+      {categoriasAberto && (
+        <CategoriaFiltroSheet
+          categorias={categorias}
+          categoriaAtual={categoriaAtiva}
+          onSelect={(item) => {
+            setCategoria(item);
+            setCategoriasAberto(false);
+          }}
+          onClose={() => setCategoriasAberto(false)}
+        />
+      )}
+
       <section className="work-panel">
-        <div className="section-heading">
-          <div>
-            <span>Resultados</span>
-            <h3>{resultados.length} item(ns) encontrados</h3>
-          </div>
-          <strong>{resultados.length === 80 ? 'Limite visual de 80' : 'Consulta'}</strong>
+        <div className="results-count">
+          <strong>{totalResultadoTexto}</strong>
         </div>
 
         {resultados.length > 0 ? (
@@ -1515,6 +1703,45 @@ function PesquisaPluPage({
         ) : (
           <div className="empty-state">Nenhum PLU encontrado nessa pesquisa.</div>
         )}
+      </section>
+    </div>
+  );
+}
+
+function CategoriaFiltroSheet({ categorias, categoriaAtual, onSelect, onClose }) {
+  return (
+    <div className="bottom-sheet-backdrop" role="presentation" onClick={onClose}>
+      <section
+        className="bottom-sheet category-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="categoria-filtro-titulo"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="sheet-handle" />
+        <div className="sheet-header">
+          <div>
+            <span>Filtro</span>
+            <h3 id="categoria-filtro-titulo">Categoria</h3>
+          </div>
+          <button className="sheet-close" onClick={onClose} aria-label="Fechar filtro de categoria">
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="category-sheet-options">
+          {categorias.map((item) => (
+            <button
+              key={item}
+              type="button"
+              className={categoriaAtual === item ? 'active' : ''}
+              onClick={() => onSelect(item)}
+            >
+              <span>{item}</span>
+              {categoriaAtual === item && <CheckCircle2 size={18} />}
+            </button>
+          ))}
+        </div>
       </section>
     </div>
   );
@@ -1538,6 +1765,7 @@ function ValidadesPage({
   const [filtroAberto, setFiltroAberto] = useState(false);
   const [calendarioAberto, setCalendarioAberto] = useState(false);
   const filtroAtivo = filtroValidade !== 'todos';
+  const totalProdutosTexto = `${validadesFiltradas.length} ${validadesFiltradas.length === 1 ? 'produto' : 'produtos'}`;
 
   return (
     <div className="page-grid">
@@ -1548,13 +1776,11 @@ function ValidadesPage({
       </div>
 
       <section className="work-panel">
-        <div className="section-heading">
+        <div className="section-heading products-heading">
           <div>
-            <span>Produtos</span>
-            <h3>Cadastrados</h3>
+            <h3>{totalProdutosTexto}</h3>
           </div>
           <div className="heading-actions">
-            <strong>{validadesFiltradas.length} registro(s)</strong>
             <div className="view-toggle list-tools" aria-label="Acoes da lista">
               <button
                 className={visualizacaoValidades === 'tabela' ? 'active' : ''}
@@ -1818,6 +2044,9 @@ function ConfiguracaoPage({
   usuarioAtual,
   sincronizando,
   usuariosPendentes,
+  usuariosAdmin,
+  usuarioAdminSelecionado,
+  setUsuarioAdminSelecionado,
   aprovarCadastroUsuario,
   sair,
   secoesProdutos,
@@ -1829,6 +2058,8 @@ function ConfiguracaoPage({
   usarTodasSecoesProdutos,
 }) {
   const usandoTodasSecoes = secoesSelecionadas.length === 0;
+  const totalUsuarios = usuariosAdmin.length;
+  const totalPendentes = usuariosPendentes.length;
 
   return (
     <div className="page-grid">
@@ -1908,31 +2139,164 @@ function ConfiguracaoPage({
         <section className="settings-panel">
           <div className="section-heading">
             <div>
-              <span>Acessos</span>
-              <h3>Cadastros pendentes</h3>
+              <span>Admin</span>
+              <h3>Usuarios</h3>
             </div>
             <ShieldCheck size={22} />
           </div>
 
-          {usuariosPendentes.length > 0 ? (
-            <div className="pending-users">
-              {usuariosPendentes.map((usuario) => (
-                <div key={usuario.matricula}>
-                  <span>
-                    <strong>{usuario.matricula}</strong>
-                    <small>{usuario.telefone}</small>
-                  </span>
-                  <button type="button" onClick={() => aprovarCadastroUsuario(usuario.matricula)} disabled={sincronizando}>
-                    Aprovar
-                  </button>
-                </div>
+          <div className="admin-summary">
+            <span>{totalUsuarios} usuario(s)</span>
+            <strong>{totalPendentes} pendente(s)</strong>
+          </div>
+
+          {usuariosAdmin.length > 0 ? (
+            <div className="admin-users">
+              {usuariosAdmin.map((usuario) => (
+                <UsuarioAdminCard
+                  key={usuario.matricula}
+                  usuario={usuario}
+                  sincronizando={sincronizando}
+                  onOpen={() => setUsuarioAdminSelecionado(usuario)}
+                  onApprove={() => aprovarCadastroUsuario(usuario.matricula)}
+                />
               ))}
             </div>
           ) : (
-            <div className="empty-access">Nenhum cadastro pendente.</div>
+            <div className="empty-access">Nenhum usuario encontrado.</div>
           )}
         </section>
       )}
+
+      {usuarioAdminSelecionado && (
+        <UsuarioAdminDetalheSheet
+          usuario={usuarioAdminSelecionado}
+          sincronizando={sincronizando}
+          onClose={() => setUsuarioAdminSelecionado(null)}
+          onApprove={() => aprovarCadastroUsuario(usuarioAdminSelecionado.matricula)}
+        />
+      )}
+    </div>
+  );
+}
+
+function statusUsuarioAdmin(usuario) {
+  if (usuario.admin) return 'Admin';
+  if (usuario.aprovado) return 'Liberado';
+  return 'Pendente';
+}
+
+function tomUsuarioAdmin(usuario) {
+  if (usuario.admin) return 'admin';
+  if (usuario.aprovado) return 'approved';
+  return 'pending';
+}
+
+function UsuarioLogo({ usuario }) {
+  const matricula = usuario?.matricula || '';
+  const iniciais = matricula.slice(-2) || 'U';
+
+  return <span className={`user-logo tone-${tomUsuarioAdmin(usuario)}`}>{iniciais}</span>;
+}
+
+function UsuarioAdminCard({ usuario, sincronizando, onOpen, onApprove }) {
+  const pendente = !usuario.admin && !usuario.aprovado;
+
+  return (
+    <article
+      className="admin-user-card"
+      role="button"
+      tabIndex={0}
+      onClick={onOpen}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onOpen();
+        }
+      }}
+    >
+      <UsuarioLogo usuario={usuario} />
+      <span className="admin-user-main">
+        <strong>{usuario.matricula}</strong>
+        <small>{formatarTelefone(usuario.telefone) || 'Telefone nao informado'}</small>
+        <em>{usuario.atividade?.label || 'Sem atividade recente'}</em>
+      </span>
+      <span className={`admin-user-status tone-${tomUsuarioAdmin(usuario)}`}>{statusUsuarioAdmin(usuario)}</span>
+      {pendente && (
+        <button
+          type="button"
+          className="admin-approve-button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onApprove();
+          }}
+          disabled={sincronizando}
+        >
+          Aprovar
+        </button>
+      )}
+    </article>
+  );
+}
+
+function UsuarioAdminDetalheSheet({ usuario, sincronizando, onClose, onApprove }) {
+  const pendente = !usuario.admin && !usuario.aprovado;
+  const atividade = usuario.atividade || {};
+
+  return (
+    <div className="bottom-sheet-backdrop" role="presentation" onClick={onClose}>
+      <section
+        className="bottom-sheet user-detail-sheet"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="usuario-detalhe-titulo"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="sheet-handle" />
+        <div className="sheet-header">
+          <div>
+            <span>Usuario</span>
+            <h3 id="usuario-detalhe-titulo">{usuario.matricula}</h3>
+          </div>
+          <button className="sheet-close" onClick={onClose} aria-label="Fechar detalhes do usuario">
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className={`user-detail-hero tone-${tomUsuarioAdmin(usuario)}`}>
+          <UsuarioLogo usuario={usuario} />
+          <div>
+            <span>{statusUsuarioAdmin(usuario)}</span>
+            <strong>{atividade.label || 'Sem atividade recente'}</strong>
+            <small>{formatarDataHora(atividade.at)}</small>
+          </div>
+        </div>
+
+        <div className="user-detail-grid">
+          <DetailBox label="Matricula" value={usuario.matricula} destaque />
+          <DetailBox label="Telefone" value={formatarTelefone(usuario.telefone)} destaque />
+          <DetailBox label="Ultimo login" value={formatarDataHora(usuario.lastLoginAt)} />
+          <DetailBox label="Cadastrado em" value={formatarDataHora(usuario.createdAt)} />
+          <DetailBox label="Produtos cadastrados" value={atividade.totalProdutos ?? 0} />
+          <DetailBox label="Rota" value={atividade.rota || usuario.lastRoute || 'Sem rota'} />
+          <DetailBox label="Ultimo produto" value={atividade.ultimoProduto || 'Nenhum produto'} wide />
+          <DetailBox label="PLU / EAN" value={atividade.ultimoPlu || 'Sem PLU'} />
+          <DetailBox label="Validade" value={atividade.ultimaValidade ? formatarData(atividade.ultimaValidade) : 'Sem validade'} />
+        </div>
+
+        <div className="detail-actions">
+          {pendente && (
+            <button className="detail-action edit" type="button" onClick={onApprove} disabled={sincronizando}>
+              <CheckCircle2 size={18} />
+              Aprovar cadastro
+            </button>
+          )}
+          <button className="detail-action delete" type="button" onClick={onClose}>
+            <X size={18} />
+            Fechar
+          </button>
+        </div>
+      </section>
     </div>
   );
 }
@@ -1941,9 +2305,7 @@ function CadastroProdutoSheet({
   produtosBase,
   novoItem,
   cadastroEdicaoId,
-  fotosPorPlu,
   atualizarNovoItem,
-  salvarFotoDoPlu,
   adicionarValidade,
   fecharCadastroProduto,
 }) {
@@ -1953,19 +2315,6 @@ function CadastroProdutoSheet({
     [novoItem.produto, novoItem.plu, produtosBase],
   );
 
-  async function selecionarFoto(event) {
-    const file = event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    const imagem = await carregarImagemProduto(file);
-    atualizarNovoItem('imagem', imagem);
-    salvarFotoDoPlu(novoItem.plu, imagem);
-    event.target.value = '';
-  }
-
   function usarProdutoProvavel(produto) {
     if (!produto) {
       return;
@@ -1974,9 +2323,6 @@ function CadastroProdutoSheet({
     atualizarNovoItem('produto', produto.descricao);
     atualizarNovoItem('plu', produto.plu);
     atualizarNovoItem('unidade', inferirUnidadeProduto(produto.descricao));
-    if (!novoItem.imagem && fotosPorPlu[produto.plu]) {
-      atualizarNovoItem('imagem', fotosPorPlu[produto.plu]);
-    }
     setMostrarSugestoes(false);
   }
 
@@ -2001,32 +2347,6 @@ function CadastroProdutoSheet({
         </div>
 
         <form className="sheet-form" onSubmit={adicionarValidade}>
-          <div className="photo-capture">
-            <div className={novoItem.imagem ? 'photo-preview has-image' : 'photo-preview'}>
-              {novoItem.imagem ? (
-                <img src={novoItem.imagem} alt="Foto do produto" />
-              ) : (
-                <>
-                  <Camera size={26} />
-                  <span>Sem foto</span>
-                </>
-              )}
-            </div>
-
-            <label className="photo-button" htmlFor="produto-foto-input">
-              <Camera size={18} />
-              {novoItem.imagem ? 'Trocar foto' : 'Tirar foto'}
-            </label>
-            <input
-              id="produto-foto-input"
-              className="photo-input"
-              type="file"
-              accept="image/*"
-              capture="environment"
-              onChange={selecionarFoto}
-            />
-          </div>
-
           <label>
             PLU / EAN
             <input
@@ -2036,11 +2356,6 @@ function CadastroProdutoSheet({
               onChange={(event) => {
                 const codigo = somenteNumeros(event.target.value);
                 atualizarNovoItem('plu', codigo);
-                if (novoItem.imagem) {
-                  salvarFotoDoPlu(codigo, novoItem.imagem);
-                } else if (fotosPorPlu[codigo]) {
-                  atualizarNovoItem('imagem', fotosPorPlu[codigo]);
-                }
                 setMostrarSugestoes(true);
               }}
             />
@@ -2217,17 +2532,6 @@ function ProdutoCadastroCard({ item, onView, onEdit, onDelete }) {
 
   return (
     <article className={`produto-cadastro-card tone-${config.tone}${item.dias <= 3 ? ' is-alerting' : ''}`}>
-      <div className="produto-image-box">
-        {item.imagem ? (
-          <img className="produto-foto" src={item.imagem} alt={`Foto de ${item.produto}`} />
-        ) : (
-          <>
-            <PackageCheck size={40} />
-            <span>Produto</span>
-          </>
-        )}
-      </div>
-
       <div className="produto-card-content">
         <div className="produto-name-box">
           <span className={`produto-status tone-${config.tone}`}>{config.badge}</span>
@@ -2266,6 +2570,23 @@ function InfoBox({ label, value }) {
   );
 }
 
+function valorDetalhe(valor) {
+  return valor === undefined || valor === null || valor === '' ? 'Nao informado' : valor;
+}
+
+function DetailBox({ label, value, destaque, wide }) {
+  const classes = ['detail-info-box'];
+  if (destaque) classes.push('highlight');
+  if (wide) classes.push('wide');
+
+  return (
+    <div className={classes.join(' ')}>
+      <span>{label}</span>
+      <strong>{valorDetalhe(value)}</strong>
+    </div>
+  );
+}
+
 function ProdutoDetalheSheet({ item, onClose, onEdit, onDelete }) {
   return (
     <div className="bottom-sheet-backdrop" role="presentation" onClick={onClose}>
@@ -2280,7 +2601,7 @@ function ProdutoDetalheSheet({ item, onClose, onEdit, onDelete }) {
         <div className="sheet-header">
           <div>
             <span>Produto cadastrado</span>
-            <h3 id="produto-detalhe-titulo">{item.produto}</h3>
+            <h3 id="produto-detalhe-titulo">{item.nomeProduto}</h3>
           </div>
           <button className="sheet-close" onClick={onClose} aria-label="Fechar detalhes">
             <X size={20} />
@@ -2288,22 +2609,15 @@ function ProdutoDetalheSheet({ item, onClose, onEdit, onDelete }) {
         </div>
 
         <div className="detail-grid">
-          <div className={item.imagem ? 'detail-photo has-image' : 'detail-photo'}>
-            {item.imagem ? (
-              <img src={item.imagem} alt={`Foto de ${item.produto}`} />
-            ) : (
-              <>
-                <PackageCheck size={34} />
-                <span>Sem foto</span>
-              </>
-            )}
-          </div>
-          <InfoBox label="PLU / EAN" value={item.plu} />
-          <InfoBox label="Quantidade" value={item.quantidade} />
-          <InfoBox label="Tipo" value={item.tipo} />
-          <InfoBox label="Local" value={item.setor} />
-          <InfoBox label="Validade" value={formatarData(item.validade)} />
-          <InfoBox label="Prazo" value={item.prazo} />
+          <DetailBox label="Nome" value={item.nomeProduto} wide />
+          <DetailBox label="PLU / EAN" value={item.plu} destaque />
+          <DetailBox label="Quantidade" value={item.quantidade} destaque />
+          <DetailBox label="Validade" value={formatarData(item.validade)} destaque />
+          <DetailBox label="Tipo" value={item.tipo} />
+          <DetailBox label="Tipo do PLU" value={item.tipoPlu} />
+          <DetailBox label="Seção" value={item.secao} />
+          <DetailBox label="Categoria" value={item.categoria} />
+          <DetailBox label="Embalagem" value={item.embalagem} />
         </div>
 
         <div className="detail-actions">

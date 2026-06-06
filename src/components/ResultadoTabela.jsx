@@ -1,11 +1,12 @@
 import { CheckCircle2, Copy } from 'lucide-react';
 import { useState } from 'react';
+import { copiarTexto } from '../utils/clipboard';
 
 export default function ResultadoTabela({ produtos }) {
   const [linhaCopiada, setLinhaCopiada] = useState(null);
 
-  function copiarPlu(plu) {
-    navigator.clipboard.writeText(plu);
+  async function copiarPlu(plu) {
+    await copiarTexto(plu);
     setLinhaCopiada(plu);
     setTimeout(() => {
       setLinhaCopiada(null);

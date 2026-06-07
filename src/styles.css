@@ -1062,6 +1062,81 @@ button {
   box-shadow: 0 14px 32px rgba(24, 33, 47, 0.06);
 }
 
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.theme-options button {
+  min-width: 0;
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #cbd6e2;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 249, 0.96)),
+    #ffffff;
+  color: #58677a;
+  text-align: left;
+}
+
+.theme-options button span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.theme-options button strong,
+.theme-options button small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.theme-options button strong {
+  color: #151f2d;
+  font-size: 13px;
+  font-weight: 1000;
+}
+
+.theme-options button small {
+  color: #687587;
+  font-size: 10px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.theme-options button > svg {
+  color: var(--light-accent);
+}
+
+.theme-options button.active {
+  border-color: color-mix(in srgb, var(--light-accent) 44%, transparent);
+  background: linear-gradient(135deg, var(--light-active-a, #ecfdf8), var(--light-active-b, #fff6df));
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--light-accent) 14%, transparent);
+}
+
+.theme-preview {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(100, 116, 139, 0.25);
+  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.78);
+}
+
+.theme-preview.theme-claro {
+  background: linear-gradient(135deg, #ffffff 0 46%, #0f766e 47% 73%, #d9a441 74%);
+}
+
+.theme-preview.theme-azul {
+  background: linear-gradient(135deg, #ffffff 0 46%, #2563eb 47% 73%, #38bdf8 74%);
+}
+
 .section-selector-status {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -3571,15 +3646,39 @@ button {
   --light-muted: #647386;
   --light-accent: #0f766e;
   --light-accent-2: #d9a441;
+  --light-primary-2: #18a393;
+  --light-active-a: #ecfdf8;
+  --light-active-b: #fff6df;
+  --light-glow-a: rgba(15, 118, 110, 0.12);
+  --light-glow-b: rgba(217, 164, 65, 0.18);
   color: var(--light-text);
   background: var(--light-page-b);
   color-scheme: light;
 }
 
+:root[data-theme='azul'] {
+  --light-page-a: #fbfdff;
+  --light-page-b: #f1f7ff;
+  --light-page-c: #e7f1ff;
+  --light-surface: rgba(255, 255, 255, 0.92);
+  --light-surface-strong: #ffffff;
+  --light-field: #f8fbff;
+  --light-border: #cfe0f4;
+  --light-text: #102033;
+  --light-muted: #60748e;
+  --light-accent: #2563eb;
+  --light-accent-2: #06b6d4;
+  --light-primary-2: #38bdf8;
+  --light-active-a: #eaf3ff;
+  --light-active-b: #e8fbff;
+  --light-glow-a: rgba(37, 99, 235, 0.15);
+  --light-glow-b: rgba(6, 182, 212, 0.18);
+}
+
 :root body {
   background:
-    radial-gradient(circle at 18% -18%, rgba(15, 118, 110, 0.12), transparent 34%),
-    radial-gradient(circle at 96% 0%, rgba(217, 164, 65, 0.18), transparent 26%),
+    radial-gradient(circle at 18% -18%, var(--light-glow-a), transparent 34%),
+    radial-gradient(circle at 96% 0%, var(--light-glow-b), transparent 26%),
     linear-gradient(180deg, var(--light-page-a) 0%, var(--light-page-b) 48%, var(--light-page-c) 100%);
   color: var(--light-text);
 }
@@ -3587,7 +3686,7 @@ button {
 :root .app-header,
 :root .main-nav {
   background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(15, 118, 110, 0.12);
+  border-color: color-mix(in srgb, var(--light-accent) 14%, transparent);
   color: var(--light-text);
   box-shadow: 0 18px 48px rgba(18, 32, 51, 0.08);
 }
@@ -3599,7 +3698,7 @@ button {
 :root .brand-card,
 :root .nav-status {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(241, 247, 245, 0.9));
-  border-color: rgba(15, 118, 110, 0.14);
+  border-color: color-mix(in srgb, var(--light-accent) 16%, transparent);
   box-shadow: 0 14px 32px rgba(18, 32, 51, 0.08);
 }
 
@@ -3640,13 +3739,15 @@ button {
 
 :root .main-nav a:hover,
 :root .main-nav button:hover {
-  background: rgba(15, 118, 110, 0.07);
+  background: color-mix(in srgb, var(--light-accent) 8%, transparent);
 }
 
 :root .main-nav a.active {
-  background: linear-gradient(135deg, #ecfdf8, #fff6df);
+  background: linear-gradient(135deg, var(--light-active-a), var(--light-active-b));
   color: var(--light-accent);
-  box-shadow: inset 0 0 0 1px rgba(15, 118, 110, 0.12), 0 12px 26px rgba(15, 118, 110, 0.12);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--light-accent) 14%, transparent),
+    0 12px 26px color-mix(in srgb, var(--light-accent) 14%, transparent);
 }
 
 :root .main-nav a.active svg {
@@ -3656,9 +3757,9 @@ button {
 :root .main-nav button.nav-action,
 :root .primary-button,
 :root .sheet-submit {
-  background: linear-gradient(135deg, #0f766e, #18a393);
+  background: linear-gradient(135deg, var(--light-accent), var(--light-primary-2));
   color: #ffffff;
-  box-shadow: 0 16px 30px rgba(15, 118, 110, 0.22);
+  box-shadow: 0 16px 30px color-mix(in srgb, var(--light-accent) 24%, transparent);
 }
 
 :root .metric-card,
@@ -3707,10 +3808,10 @@ button {
 
 :root .local-toggle button.active,
 :root .unit-toggle button.active {
-  background: linear-gradient(135deg, rgba(15, 118, 110, 0.13), rgba(217, 164, 65, 0.17));
-  border-color: rgba(15, 118, 110, 0.44);
+  background: linear-gradient(135deg, var(--light-active-a), var(--light-active-b));
+  border-color: color-mix(in srgb, var(--light-accent) 44%, transparent);
   color: var(--light-accent);
-  box-shadow: 0 14px 28px rgba(15, 118, 110, 0.14);
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--light-accent) 16%, transparent);
 }
 
 :root .metric-card,

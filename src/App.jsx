@@ -12,6 +12,7 @@ import {
   List,
   PackageCheck,
   PackageSearch,
+  Palette,
   Pencil,
   Search,
   Settings,
@@ -167,12 +168,26 @@ const statusOrdem = [
 ];
 
 const storageKeys = {
+  tema: 'semVencer.tema.v1',
   validades: 'semVencer.validades.v1',
   validadesPorUsuario: 'semVencer.validades.usuario.v1',
   secoesPorUsuario: 'semVencer.secoes.usuario.v1',
   secoesConfiguradasPorUsuario: 'semVencer.secoes.configuradas.usuario.v1',
   usuario: 'semVencer.usuarioAtual.v1',
 };
+
+const temasApp = [
+  {
+    id: 'claro',
+    label: 'Branco',
+    description: 'Claro elegante',
+  },
+  {
+    id: 'azul',
+    label: 'Azul claro',
+    description: 'Suave e profissional',
+  },
+];
 
 const validadeSeed = [
   {
@@ -380,6 +395,14 @@ function salvarStorageJson(chave, valor) {
   } catch (error) {
     console.warn(`Nao foi possivel salvar ${chave}`, error);
   }
+}
+
+function normalizarTema(valor) {
+  return temasApp.some((tema) => tema.id === valor) ? valor : 'claro';
+}
+
+function carregarTemaInicial() {
+  return normalizarTema(lerStorageJson(storageKeys.tema, 'claro'));
 }
 
 function storageTemChave(chave) {
@@ -634,6 +657,7 @@ function carregarUsuarioInicial() {
 function App() {
   const [rotaAtual, setRotaAtual] = useState(() => resolverRota(window.location.pathname));
   const [usuarioAtual, setUsuarioAtual] = useState(carregarUsuarioInicial);
+  const [temaAtual, setTemaAtual] = useState(carregarTemaInicial);
   const [authErro, setAuthErro] = useState('');
   const [authMensagem, setAuthMensagem] = useState('');
   const [sincronizando, setSincronizando] = useState(false);
@@ -678,14 +702,15 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = 'claro';
+    document.documentElement.dataset.theme = temaAtual;
+    salvarStorageJson(storageKeys.tema, temaAtual);
+
     try {
-      window.localStorage.removeItem('semVencer.tema.v1');
       window.localStorage.removeItem('semVencer.fotosPorPlu.v1');
     } catch (error) {
       console.warn('Nao foi possivel limpar preferencias antigas', error);
     }
-  }, []);
+  }, [temaAtual]);
 
   useEffect(() => {
     const chave = chaveSecoesUsuario(usuarioAtual);
@@ -1304,6 +1329,9 @@ function App() {
     produtoDetalhe,
     setProdutoDetalhe,
     usuarioAtual,
+    temaAtual,
+    setTemaAtual,
+    temas: temasApp,
     sincronizando,
     usuariosPendentes,
     usuariosAdmin,
@@ -2042,6 +2070,9 @@ function CalendarioValidadesSheet({ itens, onClose }) {
 
 function ConfiguracaoPage({
   usuarioAtual,
+  temaAtual,
+  setTemaAtual,
+  temas,
   sincronizando,
   usuariosPendentes,
   usuariosAdmin,
@@ -2069,6 +2100,34 @@ function ConfiguracaoPage({
         description="Preferências da base de PLU."
         icon={Settings}
       />
+
+      <section className="settings-panel">
+        <div className="section-heading">
+          <div>
+            <span>Aparência</span>
+            <h3>Tema</h3>
+          </div>
+          <Palette size={22} />
+        </div>
+
+        <div className="theme-options" role="group" aria-label="Tema do aplicativo">
+          {temas.map((tema) => (
+            <button
+              key={tema.id}
+              type="button"
+              className={temaAtual === tema.id ? 'active' : ''}
+              onClick={() => setTemaAtual(tema.id)}
+            >
+              <i className={`theme-preview theme-${tema.id}`} aria-hidden="true" />
+              <span>
+                <strong>{tema.label}</strong>
+                <small>{tema.description}</small>
+              </span>
+              {temaAtual === tema.id && <CheckCircle2 size={18} />}
+            </button>
+          ))}
+        </div>
+      </section>
 
       <section className="settings-panel">
         <div className="section-heading">

@@ -26,7 +26,6 @@ import Footer from './components/Footer';
 import ProdutoCard from './components/ProdutoCard';
 import ResultadoTabela from './components/ResultadoTabela';
 import ResultadoCards from './components/ResultadoCards';
-import produtos from './data/plus.json';
 import {
   ADMIN_MATRICULA,
   CONTATO_LIBERACAO,
@@ -172,14 +171,7 @@ const statusOrdem = [
   'okCong',
 ];
 
-const storageKeys = {
-  tema: 'semVencer.tema.v1',
-  validades: 'semVencer.validades.v1',
-  validadesPorUsuario: 'semVencer.validades.usuario.v1',
-  secoesPorUsuario: 'semVencer.secoes.usuario.v1',
-  secoesConfiguradasPorUsuario: 'semVencer.secoes.configuradas.usuario.v1',
-  usuario: 'semVencer.usuarioAtual.v1',
-};
+const legacyStoragePrefix = 'semVencer.';
 
 const temasApp = [
   {
@@ -191,65 +183,6 @@ const temasApp = [
     id: 'azul',
     label: 'Azul claro',
     description: 'Suave e profissional',
-  },
-];
-
-const validadeSeed = [
-  {
-    produtoIndex: 1,
-    lote: 'BLC-2305',
-    setor: 'Açougue',
-    quantidade: '8,4 kg',
-    validadeEmDias: -1,
-    responsavel: 'Equipe manhã',
-  },
-  {
-    produtoIndex: 12,
-    lote: 'EXP-1021',
-    setor: 'Exposição',
-    quantidade: '12 un',
-    validadeEmDias: 0,
-    responsavel: 'Balcão',
-  },
-  {
-    produtoIndex: 28,
-    lote: 'CAM-7720',
-    setor: 'Câmara fria',
-    quantidade: '18,2 kg',
-    validadeEmDias: 1,
-    responsavel: 'Conferência',
-  },
-  {
-    produtoIndex: 44,
-    lote: 'MAN-1844',
-    setor: 'Manipulação',
-    quantidade: '6,7 kg',
-    validadeEmDias: 3,
-    responsavel: 'Produção',
-  },
-  {
-    produtoIndex: 67,
-    lote: 'SEP-4920',
-    setor: 'Separação',
-    quantidade: '21 un',
-    validadeEmDias: 5,
-    responsavel: 'Expedição',
-  },
-  {
-    produtoIndex: 90,
-    lote: 'CAM-8102',
-    setor: 'Câmara fria',
-    quantidade: '14,6 kg',
-    validadeEmDias: 11,
-    responsavel: 'Equipe tarde',
-  },
-  {
-    produtoIndex: 116,
-    lote: 'EXP-5531',
-    setor: 'Exposição',
-    quantidade: '9 un',
-    validadeEmDias: 16,
-    responsavel: 'Reposição',
   },
 ];
 
@@ -363,42 +296,19 @@ function formatarEmbalagemProduto(valor) {
   return String(valor);
 }
 
-function criarValidadesIniciais() {
-  return validadeSeed.map((item, index) => {
-    const produto = produtos[item.produtoIndex] || produtos[index] || produtos[0];
-
-    return {
-      id: `validade-${index + 1}`,
-      produto: produto.descricao,
-      plu: produto.plu,
-      categoria: produto.categoria,
-      lote: item.lote,
-      setor: item.setor,
-      tipo: inferirTipoConservacao(`${produto.descricao} ${produto.tipo}`),
-      quantidade: item.quantidade,
-      fabricacao: criarDataRelativa(item.validadeEmDias - 5),
-      validade: criarDataRelativa(item.validadeEmDias),
-      responsavel: item.responsavel,
-      revisado: item.validadeEmDias > 7,
-    };
-  });
-}
-
-function lerStorageJson(chave, fallback) {
+function limparDadosLocaisAntigos() {
   try {
-    const bruto = window.localStorage.getItem(chave);
-    return bruto ? JSON.parse(bruto) : fallback;
-  } catch (error) {
-    console.warn(`Nao foi possivel ler ${chave}`, error);
-    return fallback;
-  }
-}
+    const chaves = [];
+    for (let index = 0; index < window.localStorage.length; index += 1) {
+      const chave = window.localStorage.key(index);
+      if (chave?.startsWith(legacyStoragePrefix)) {
+        chaves.push(chave);
+      }
+    }
 
-function salvarStorageJson(chave, valor) {
-  try {
-    window.localStorage.setItem(chave, JSON.stringify(valor));
+    chaves.forEach((chave) => window.localStorage.removeItem(chave));
   } catch (error) {
-    console.warn(`Nao foi possivel salvar ${chave}`, error);
+    console.warn('Nao foi possivel limpar dados locais antigos', error);
   }
 }
 
@@ -407,17 +317,7 @@ function normalizarTema(valor) {
 }
 
 function carregarTemaInicial() {
-  return normalizarTema(lerStorageJson(storageKeys.tema, 'claro'));
-}
-
-function storageTemChave(chave) {
-  if (!chave) return false;
-
-  try {
-    return window.localStorage.getItem(chave) !== null;
-  } catch {
-    return false;
-  }
+  return 'claro';
 }
 
 function normalizarValidadesSalvas(itens) {
@@ -452,17 +352,17 @@ function serializarValidades(itens) {
 
 function chaveValidadesUsuario(usuario) {
   const matricula = somenteNumeros(usuario?.matricula);
-  return matricula ? `${storageKeys.validadesPorUsuario}.${matricula}` : '';
+  return matricula ? `supabase.validades.usuario.${matricula}` : '';
 }
 
 function chaveSecoesUsuario(usuario) {
   const matricula = somenteNumeros(usuario?.matricula);
-  return matricula ? `${storageKeys.secoesPorUsuario}.${matricula}` : '';
+  return matricula ? `supabase.secoes.usuario.${matricula}` : '';
 }
 
 function chaveSecoesConfiguradasUsuario(usuario) {
   const matricula = somenteNumeros(usuario?.matricula);
-  return matricula ? `${storageKeys.secoesConfiguradasPorUsuario}.${matricula}` : '';
+  return matricula ? `supabase.secoes.configuradas.usuario.${matricula}` : '';
 }
 
 function normalizarSecoesSelecionadas(valor) {
@@ -472,83 +372,11 @@ function normalizarSecoesSelecionadas(valor) {
 }
 
 function carregarSecoesDoUsuario(usuario) {
-  const chave = chaveSecoesUsuario(usuario);
-
-  if (!chave) {
-    return [];
-  }
-
-  return normalizarSecoesSelecionadas(lerStorageJson(chave, []));
+  return usuario ? [] : [];
 }
 
 function carregarSecoesConfiguradasUsuario(usuario) {
-  const chaveConfigurada = chaveSecoesConfiguradasUsuario(usuario);
-  const chaveSecoes = chaveSecoesUsuario(usuario);
-
-  return Boolean(lerStorageJson(chaveConfigurada, false) || storageTemChave(chaveSecoes));
-}
-
-function carregarPreferenciasLocais(usuario, tema = 'claro') {
-  return {
-    secoesSelecionadas: carregarSecoesDoUsuario(usuario),
-    secoesConfiguradas: carregarSecoesConfiguradasUsuario(usuario),
-    tema,
-  };
-}
-
-function salvarPreferenciasLocais(usuario, preferencias) {
-  const chaveSecoes = chaveSecoesUsuario(usuario);
-
-  if (!chaveSecoes) return;
-
-  salvarStorageJson(chaveSecoes, normalizarSecoesSelecionadas(preferencias.secoesSelecionadas));
-  salvarStorageJson(chaveSecoesConfiguradasUsuario(usuario), Boolean(preferencias.secoesConfiguradas));
-}
-
-function carregarValidadesDoUsuario(usuario) {
-  const matricula = somenteNumeros(usuario?.matricula);
-
-  if (!matricula) {
-    return [];
-  }
-
-  const salvas = lerStorageJson(chaveValidadesUsuario(usuario), null);
-
-  if (Array.isArray(salvas)) {
-    return normalizarValidadesSalvas(salvas);
-  }
-
-  if (matricula !== ADMIN_MATRICULA) {
-    return [];
-  }
-
-  const legado = lerStorageJson(storageKeys.validades, null);
-  const itens = Array.isArray(legado) && legado.length > 0 ? legado : criarValidadesIniciais();
-  return normalizarValidadesSalvas(itens);
-}
-
-function salvarValidadesDoUsuario(usuario, validades) {
-  const chave = chaveValidadesUsuario(usuario);
-
-  if (!chave) {
-    return;
-  }
-
-  salvarStorageJson(chave, validades);
-}
-
-function normalizarSessaoUsuario(usuario) {
-  if (!usuario) return null;
-
-  const matricula = somenteNumeros(usuario.matricula);
-  const admin = matricula === ADMIN_MATRICULA;
-
-  return {
-    ...usuario,
-    matricula,
-    admin,
-    aprovado: admin || Boolean(usuario.aprovado),
-  };
+  return Boolean(usuario?.admin);
 }
 
 function usuarioPodeAcessar(usuario) {
@@ -694,7 +522,7 @@ function encontrarProdutosProvaveis(listaProdutos, nome, codigo, limite = 12) {
 }
 
 function carregarUsuarioInicial() {
-  return normalizarSessaoUsuario(lerStorageJson(storageKeys.usuario, null));
+  return null;
 }
 
 function App() {
@@ -706,7 +534,6 @@ function App() {
   const [sincronizando, setSincronizando] = useState(false);
   const [dadosRemotosCarregados, setDadosRemotosCarregados] = useState(false);
   const [usuarioDadosChave, setUsuarioDadosChave] = useState('');
-  const [secoesUsuarioChave, setSecoesUsuarioChave] = useState(() => chaveSecoesUsuario(carregarUsuarioInicial()));
   const [secoesSelecionadas, setSecoesSelecionadas] = useState(() => carregarSecoesDoUsuario(carregarUsuarioInicial()));
   const [secoesConfiguradas, setSecoesConfiguradas] = useState(() => carregarSecoesConfiguradasUsuario(carregarUsuarioInicial()));
   const [usuariosPendentes, setUsuariosPendentes] = useState([]);
@@ -718,7 +545,7 @@ function App() {
   const [copiado, setCopiado] = useState(false);
   const [visualizacao, setVisualizacao] = useState('tabela');
   const [visualizacaoValidades, setVisualizacaoValidades] = useState('tabela');
-  const [produtosBase, setProdutosBase] = useState(produtos);
+  const [produtosBase, setProdutosBase] = useState([]);
   const [validades, setValidades] = useState([]);
   const atualizacaoRemotaRef = useRef(false);
   const [filtroValidade, setFiltroValidade] = useState('todos');
@@ -759,25 +586,24 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = temaAtual;
-    salvarStorageJson(storageKeys.tema, temaAtual);
+    limparDadosLocaisAntigos();
+  }, []);
 
-    try {
-      window.localStorage.removeItem('semVencer.fotosPorPlu.v1');
-    } catch (error) {
-      console.warn('Nao foi possivel limpar preferencias antigas', error);
-    }
+  useEffect(() => {
+    document.documentElement.dataset.theme = temaAtual;
   }, [temaAtual]);
 
   useEffect(() => {
-    const chave = chaveSecoesUsuario(usuarioAtual);
     setSecoesSelecionadas(carregarSecoesDoUsuario(usuarioAtual));
     setSecoesConfiguradas(carregarSecoesConfiguradasUsuario(usuarioAtual));
-    setSecoesUsuarioChave(chave);
   }, [usuarioAtual?.matricula]);
 
   useEffect(() => {
     if (!usuarioAtual || !usuarioPodeAcessar(usuarioAtual) || !secoesConfiguradas) {
+      return;
+    }
+
+    if (!dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) {
       return;
     }
 
@@ -787,25 +613,13 @@ function App() {
       tema: temaAtual,
     };
 
-    if (bancoAtivo()) {
-      if (!dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) {
-        return;
-      }
-
-      salvarPreferenciasUsuario(usuarioAtual, preferencias).catch((error) => {
-        console.warn('Nao foi possivel sincronizar preferencias', error);
-      });
-      return;
-    }
-
-    if (secoesUsuarioChave === chaveSecoesUsuario(usuarioAtual)) {
-      salvarPreferenciasLocais(usuarioAtual, preferencias);
-    }
+    salvarPreferenciasUsuario(usuarioAtual, preferencias).catch((error) => {
+      console.warn('Nao foi possivel sincronizar preferencias', error);
+    });
   }, [
     dadosRemotosCarregados,
     secoesConfiguradas,
     secoesSelecionadas,
-    secoesUsuarioChave,
     temaAtual,
     usuarioAtual,
     usuarioDadosChave,
@@ -814,13 +628,17 @@ function App() {
   useEffect(() => {
     let cancelado = false;
 
-    carregarProdutosBaseRemotos(produtos)
+    carregarProdutosBaseRemotos()
       .then((itens) => {
-        if (!cancelado && Array.isArray(itens) && itens.length > 0) {
+        if (!cancelado && Array.isArray(itens)) {
           setProdutosBase(itens);
         }
       })
       .catch((error) => {
+        if (!cancelado) {
+          setProdutosBase([]);
+          setAuthErro(error.message || 'Nao foi possivel carregar produtos do Supabase.');
+        }
         console.warn('Nao foi possivel carregar produtos do Supabase', error);
       });
 
@@ -828,19 +646,6 @@ function App() {
       cancelado = true;
     };
   }, []);
-
-  useEffect(() => {
-    if (usuarioAtual) {
-      salvarStorageJson(storageKeys.usuario, usuarioAtual);
-      return;
-    }
-
-    try {
-      window.localStorage.removeItem(storageKeys.usuario);
-    } catch {
-      // Mantem a sessao apenas em memoria se o navegador bloquear storage.
-    }
-  }, [usuarioAtual]);
 
   useEffect(() => {
     if (!usuarioAtual || usuarioPodeAcessar(usuarioAtual)) {
@@ -915,14 +720,16 @@ function App() {
       setAuthErro('');
 
       try {
-        const validadesLocais = carregarValidadesDoUsuario(usuarioAtual);
-        const preferenciasLocais = carregarPreferenciasLocais(usuarioAtual, temaAtual);
-        const dados = await carregarDadosRemotos(usuarioAtual, validadesLocais);
+        const dados = await carregarDadosRemotos(usuarioAtual);
 
         if (cancelado) return;
 
         const usuarioCarregado = dados.usuario || usuarioAtual;
-        const preferencias = await carregarPreferenciasUsuario(usuarioCarregado, preferenciasLocais);
+        const preferencias = await carregarPreferenciasUsuario(usuarioCarregado, {
+          secoesSelecionadas: [],
+          secoesConfiguradas: false,
+          tema: 'claro',
+        });
 
         if (cancelado) return;
 
@@ -937,21 +744,11 @@ function App() {
         setDadosRemotosCarregados(true);
       } catch (error) {
         if (!cancelado) {
-          if (bancoAtivo()) {
-            setUsuarioAtual(null);
-            setValidades([]);
-            setUsuarioDadosChave('');
-            setDadosRemotosCarregados(false);
-            setAuthErro(error.message || 'Nao foi possivel validar a sessao no Supabase.');
-            return;
-          }
-
-          const preferenciasLocais = carregarPreferenciasLocais(usuarioAtual, temaAtual);
-          setSecoesSelecionadas(normalizarSecoesSelecionadas(preferenciasLocais.secoesSelecionadas));
-          setSecoesConfiguradas(Boolean(preferenciasLocais.secoesConfiguradas));
-          setValidades(normalizarValidadesSalvas(carregarValidadesDoUsuario(usuarioAtual)));
-          setAuthErro(error.message || 'Nao foi possivel carregar o banco.');
-          setDadosRemotosCarregados(true);
+          setUsuarioAtual(null);
+          setValidades([]);
+          setUsuarioDadosChave('');
+          setDadosRemotosCarregados(false);
+          setAuthErro(error.message || 'Nao foi possivel validar a sessao no Supabase.');
         }
       } finally {
         if (!cancelado) {
@@ -982,13 +779,6 @@ function App() {
 
   useEffect(() => {
     if (!usuarioAtual || !dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) return;
-    if (bancoAtivo()) return;
-    salvarValidadesDoUsuario(usuarioAtual, validades);
-  }, [dadosRemotosCarregados, usuarioAtual, usuarioDadosChave, validades]);
-
-  useEffect(() => {
-    if (!usuarioAtual || !dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) return;
-    if (!bancoAtivo()) return;
     if (atualizacaoRemotaRef.current) {
       atualizacaoRemotaRef.current = false;
       return;
@@ -1402,30 +1192,10 @@ function App() {
   }
 
   function confirmarSecoesProdutos() {
-    const preferencias = {
-      secoesSelecionadas,
-      secoesConfiguradas: true,
-      tema: temaAtual,
-    };
-
-    if (!bancoAtivo()) {
-      salvarPreferenciasLocais(usuarioAtual, preferencias);
-    }
-
     setSecoesConfiguradas(true);
   }
 
   function confirmarTodasSecoesProdutos() {
-    const preferencias = {
-      secoesSelecionadas: [],
-      secoesConfiguradas: true,
-      tema: temaAtual,
-    };
-
-    if (!bancoAtivo()) {
-      salvarPreferenciasLocais(usuarioAtual, preferencias);
-    }
-
     setSecoesSelecionadas([]);
     setSecoesConfiguradas(true);
   }
@@ -1498,6 +1268,23 @@ function App() {
   };
 
   const rotaRenderizada = ['/plu', '/pesquisa-plu', '/configuracao'].includes(rotaAtual) ? rotaAtual : '/';
+
+  if (!bancoAtivo()) {
+    return (
+      <main className="auth-shell">
+        <section className="auth-card">
+          <div className="auth-brand">
+            <PackageCheck size={28} />
+            <div>
+              <span>Sem Vencer</span>
+              <h1>Banco online</h1>
+            </div>
+          </div>
+          <div className="auth-error">Supabase nao configurado. Gere o app com as variaveis VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.</div>
+        </section>
+      </main>
+    );
+  }
 
   if (!usuarioAtual || !usuarioPodeAcessar(usuarioAtual)) {
     return (

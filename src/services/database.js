@@ -3,11 +3,14 @@ import { supabase, supabaseConfigurado } from './supabaseClient';
 export const ADMIN_MATRICULA = '000000';
 export const CONTATO_LIBERACAO = '61998427629';
 
-const localUsersKey = 'semVencer.usuarios.local.v1';
-const localMigrationPrefix = 'semVencer.migracao.supabase.v1';
-
 function somenteDigitos(valor) {
   return String(valor || '').replace(/\D/g, '');
+}
+
+function exigirSupabase() {
+  if (!supabaseConfigurado || !supabase) {
+    throw new Error('Supabase nao configurado. O app precisa estar online para acessar o banco.');
+  }
 }
 
 export function telefoneValido(valor) {
@@ -31,36 +34,6 @@ export function formatarTelefone(valor) {
   if (telefone.length <= 7) return `(${telefone.slice(0, 2)}) ${telefone.slice(2)}`;
 
   return `(${telefone.slice(0, 2)}) ${telefone.slice(2, 7)}-${telefone.slice(7)}`;
-}
-
-function lerLocal(chave, fallback) {
-  try {
-    const bruto = window.localStorage.getItem(chave);
-    return bruto ? JSON.parse(bruto) : fallback;
-  } catch {
-    return fallback;
-  }
-}
-
-function salvarLocal(chave, valor) {
-  try {
-    window.localStorage.setItem(chave, JSON.stringify(valor));
-  } catch {
-    // Local fallback best-effort.
-  }
-}
-
-function localTemChave(chave) {
-  try {
-    return window.localStorage.getItem(chave) !== null;
-  } catch {
-    return false;
-  }
-}
-
-function chaveMigracaoUsuario(usuario) {
-  const matricula = somenteDigitos(usuario?.matricula);
-  return matricula ? `${localMigrationPrefix}.${matricula}` : '';
 }
 
 function normalizarPreferencias(preferencias = {}) {
@@ -98,7 +71,8 @@ function normalizarUsuario(usuario) {
 }
 
 async function garantirUsuarioRemoto(usuario) {
-  if (!supabaseConfigurado || !usuario) return usuario;
+  exigirSupabase();
+  if (!usuario) throw new Error('Sessao invalida.');
 
   const matricula = somenteDigitos(usuario.matricula);
   const idRemoto = usuario.id && !String(usuario.id).startsWith('local-') ? usuario.id : '';
@@ -170,10 +144,8 @@ export function bancoAtivo() {
   return supabaseConfigurado;
 }
 
-export async function carregarProdutosBaseRemotos(fallback = []) {
-  if (!supabaseConfigurado) {
-    return fallback;
-  }
+export async function carregarProdutosBaseRemotos() {
+  exigirSupabase();
 
   const { data, error } = await supabase
     .from('produtos_base')
@@ -185,7 +157,7 @@ export async function carregarProdutosBaseRemotos(fallback = []) {
     throw new Error(error.message);
   }
 
-  return data && data.length > 0 ? data.map(fromDbProduto) : fallback;
+  return (data || []).map(fromDbProduto);
 }
 
 export async function cadastrarUsuario({ matricula, telefone }) {
@@ -207,20 +179,7 @@ export async function cadastrarUsuario({ matricula, telefone }) {
     aprovado: matriculaLimpa === ADMIN_MATRICULA,
   };
 
-  if (!supabaseConfigurado) {
-    const usuarios = lerLocal(localUsersKey, []);
-    const existente = usuarios.find((item) => item.matricula === matriculaLimpa);
-    const usuario = normalizarUsuario({
-      ...existente,
-      ...usuarioPayload,
-      aprovado: matriculaLimpa === ADMIN_MATRICULA || Boolean(existente?.aprovado),
-    });
-    const atualizados = existente
-      ? usuarios.map((item) => (item.matricula === matriculaLimpa ? usuario : item))
-      : [...usuarios, usuario];
-    salvarLocal(localUsersKey, atualizados);
-    return usuario;
-  }
+  exigirSupabase();
 
   const { data: existente, error: consultaError } = await supabase
     .from('usuarios')
@@ -231,19 +190,11 @@ export async function cadastrarUsuario({ matricula, telefone }) {
   if (consultaError) throw new Error(consultaError.message);
 
   if (existente) {
-    const { data, error } = await supabase
-      .from('usuarios')
-      .update({
-        telefone: telefoneLimpo,
-        admin: matriculaLimpa === ADMIN_MATRICULA,
-        aprovado: matriculaLimpa === ADMIN_MATRICULA || Boolean(existente.aprovado),
-      })
-      .eq('id', existente.id)
-      .select('id, matricula, telefone, admin, aprovado')
-      .single();
+    if (!existente.admin && !existente.aprovado) {
+      throw new Error(`Cadastro pendente. Entre em contato com ${CONTATO_LIBERACAO} para liberar o acesso.`);
+    }
 
-    if (error) throw new Error(error.message);
-    return normalizarUsuario(data);
+    throw new Error('Matricula ja cadastrada. Use o login para entrar.');
   }
 
   const { data, error } = await supabase
@@ -263,21 +214,7 @@ export async function loginUsuario(matricula) {
     throw new Error('Informe a matricula.');
   }
 
-  if (!supabaseConfigurado) {
-    const usuarios = lerLocal(localUsersKey, []);
-    const usuario = usuarios.find((item) => item.matricula === matriculaLimpa);
-    if (!usuario && matriculaLimpa === ADMIN_MATRICULA) {
-      const adminLocal = normalizarUsuario({ matricula: ADMIN_MATRICULA, telefone: '', admin: true, aprovado: true });
-      salvarLocal(localUsersKey, [...usuarios, adminLocal]);
-      return adminLocal;
-    }
-    if (!usuario) throw new Error('Matricula nao cadastrada.');
-    const usuarioNormalizado = normalizarUsuario(usuario);
-    if (!usuarioNormalizado.admin && !usuarioNormalizado.aprovado) {
-      throw new Error(`Cadastro pendente. Entre em contato com ${CONTATO_LIBERACAO} para liberar o acesso.`);
-    }
-    return usuarioNormalizado;
-  }
+  exigirSupabase();
 
   const { data, error } = await supabase
     .from('usuarios')
@@ -313,11 +250,7 @@ export async function loginUsuario(matricula) {
 }
 
 export async function carregarUsuariosPendentes() {
-  if (!supabaseConfigurado) {
-    return lerLocal(localUsersKey, [])
-      .map(normalizarUsuario)
-      .filter((usuario) => usuario && !usuario.admin && !usuario.aprovado);
-  }
+  exigirSupabase();
 
   const { data, error } = await supabase
     .from('usuarios')
@@ -373,17 +306,7 @@ async function carregarUsuariosRemotosAdmin() {
 }
 
 export async function carregarUsuariosAdmin() {
-  if (!supabaseConfigurado) {
-    const usuarios = lerLocal(localUsersKey, []).map(normalizarUsuario).filter(Boolean);
-
-    return usuarios.map((usuario) => {
-      const validades = lerLocal(`semVencer.validades.usuario.v1.${usuario.matricula}`, []);
-      return {
-        ...usuario,
-        atividade: resumoAtividadeUsuario(usuario, validades.map((item) => ({ ...item, usuario_id: usuario.id }))),
-      };
-    });
-  }
+  exigirSupabase();
 
   const usuarios = await carregarUsuariosRemotosAdmin();
   const ids = usuarios.map((usuario) => usuario.id).filter(Boolean);
@@ -411,9 +334,8 @@ export async function carregarUsuariosAdmin() {
 export async function carregarPreferenciasUsuario(usuario, fallback = {}) {
   const preferenciasFallback = normalizarPreferencias(fallback);
 
-  if (!supabaseConfigurado || !usuario) {
-    return preferenciasFallback;
-  }
+  exigirSupabase();
+  if (!usuario) return preferenciasFallback;
 
   const usuarioBanco = await garantirUsuarioRemoto(usuario);
   const { data, error } = await supabase
@@ -435,7 +357,8 @@ export async function carregarPreferenciasUsuario(usuario, fallback = {}) {
 }
 
 export async function salvarPreferenciasUsuario(usuario, preferencias) {
-  if (!supabaseConfigurado || !usuario) return;
+  exigirSupabase();
+  if (!usuario) return;
 
   const usuarioBanco = await garantirUsuarioRemoto(usuario);
   const preferenciasNormalizadas = normalizarPreferencias(preferencias);
@@ -456,6 +379,7 @@ export async function salvarPreferenciasUsuario(usuario, preferencias) {
 
 export async function registrarAtividadeUsuario(usuario, atividade, rota = '') {
   if (!usuario || !atividade) return;
+  exigirSupabase();
 
   const agora = new Date().toISOString();
   const dadosAtividade = {
@@ -463,22 +387,6 @@ export async function registrarAtividadeUsuario(usuario, atividade, rota = '') {
     lastActivityAt: agora,
     lastRoute: rota,
   };
-
-  if (!supabaseConfigurado) {
-    const matricula = somenteDigitos(usuario.matricula);
-    const usuarios = lerLocal(localUsersKey, []);
-    const atualizados = usuarios.map((item) =>
-      somenteDigitos(item.matricula) === matricula
-        ? {
-            ...item,
-            ...dadosAtividade,
-          }
-        : item,
-    );
-
-    salvarLocal(localUsersKey, atualizados);
-    return;
-  }
 
   const payload = {
     last_activity_label: atividade,
@@ -501,14 +409,7 @@ export async function aprovarUsuario(matricula) {
     throw new Error('Matricula invalida.');
   }
 
-  if (!supabaseConfigurado) {
-    const usuarios = lerLocal(localUsersKey, []);
-    const atualizados = usuarios.map((usuario) =>
-      usuario.matricula === matriculaLimpa ? { ...usuario, aprovado: true, admin: false } : usuario,
-    );
-    salvarLocal(localUsersKey, atualizados);
-    return normalizarUsuario(atualizados.find((usuario) => usuario.matricula === matriculaLimpa));
-  }
+  exigirSupabase();
 
   const { data, error } = await supabase
     .from('usuarios')
@@ -521,42 +422,20 @@ export async function aprovarUsuario(matricula) {
   return normalizarUsuario(data);
 }
 
-export async function carregarDadosRemotos(usuario, validadesFallback) {
-  if (!supabaseConfigurado || !usuario) {
-    return {
-      usuario,
-      validades: validadesFallback,
-    };
+export async function carregarDadosRemotos(usuario) {
+  exigirSupabase();
+  if (!usuario) {
+    throw new Error('Sessao invalida.');
   }
 
   const usuarioBanco = await garantirUsuarioRemoto(usuario);
-  let { data: validades, error: validadesError } = await supabase
+  const { data: validades, error: validadesError } = await supabase
     .from('validades')
     .select('*')
     .eq('usuario_id', usuarioBanco.id)
     .order('created_at', { ascending: false });
 
   if (validadesError) throw new Error(validadesError.message);
-
-  const migrationKey = chaveMigracaoUsuario(usuarioBanco);
-  const deveMigrarLocal = Array.isArray(validadesFallback) && validadesFallback.length > 0 && !localTemChave(migrationKey);
-
-  if (deveMigrarLocal) {
-    await salvarValidadesRemotas(validadesFallback, usuarioBanco);
-    salvarLocal(migrationKey, {
-      at: new Date().toISOString(),
-      total: validadesFallback.length,
-    });
-
-    const consultaAtualizada = await supabase
-      .from('validades')
-      .select('*')
-      .eq('usuario_id', usuarioBanco.id)
-      .order('created_at', { ascending: false });
-
-    if (consultaAtualizada.error) throw new Error(consultaAtualizada.error.message);
-    validades = consultaAtualizada.data || [];
-  }
 
   return {
     usuario: usuarioBanco,
@@ -565,7 +444,8 @@ export async function carregarDadosRemotos(usuario, validadesFallback) {
 }
 
 export async function carregarValidadesRemotas(usuario) {
-  if (!supabaseConfigurado || !usuario) return [];
+  exigirSupabase();
+  if (!usuario) return [];
 
   const usuarioBanco = await garantirUsuarioRemoto(usuario);
   const { data, error } = await supabase
@@ -579,7 +459,7 @@ export async function carregarValidadesRemotas(usuario) {
 }
 
 export function assinarValidadesRemotas(usuario, onChange, onError) {
-  if (!supabaseConfigurado || !usuario?.id || String(usuario.id).startsWith('local-')) {
+  if (!supabaseConfigurado || !supabase || !usuario?.id || String(usuario.id).startsWith('local-')) {
     return () => {};
   }
 
@@ -609,7 +489,8 @@ export function assinarValidadesRemotas(usuario, onChange, onError) {
 }
 
 export async function salvarValidadesRemotas(validades, usuario) {
-  if (!supabaseConfigurado || !usuario || validades.length === 0) return;
+  exigirSupabase();
+  if (!usuario || validades.length === 0) return;
 
   const payload = validades.map((item) => toDbValidade(item, usuario));
   const { error } = await supabase.from('validades').upsert(payload, { onConflict: 'id' });
@@ -618,7 +499,8 @@ export async function salvarValidadesRemotas(validades, usuario) {
 }
 
 export async function removerValidadeRemota(id) {
-  if (!supabaseConfigurado || !id) return;
+  exigirSupabase();
+  if (!id) return;
 
   const { error } = await supabase.from('validades').delete().eq('id', id);
   if (error) throw new Error(error.message);

@@ -5,24 +5,26 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
-const envPath = path.join(rootDir, '.env');
+const envPaths = [path.join(rootDir, '.env'), path.join(rootDir, '.env.local')];
 const produtosPath = path.join(rootDir, 'src', 'data', 'plus.json');
 const chunkSize = 500;
 
 async function carregarEnv() {
   const env = { ...process.env };
 
-  try {
-    const conteudo = await fs.readFile(envPath, 'utf8');
-    for (const linha of conteudo.split(/\r?\n/)) {
-      const texto = linha.trim();
-      if (!texto || texto.startsWith('#') || !texto.includes('=')) continue;
-      const [chave, ...partes] = texto.split('=');
-      const valor = partes.join('=').trim().replace(/^["']|["']$/g, '');
-      env[chave.trim()] = valor;
+  for (const envPath of envPaths) {
+    try {
+      const conteudo = await fs.readFile(envPath, 'utf8');
+      for (const linha of conteudo.split(/\r?\n/)) {
+        const texto = linha.trim();
+        if (!texto || texto.startsWith('#') || !texto.includes('=')) continue;
+        const [chave, ...partes] = texto.split('=');
+        const valor = partes.join('=').trim().replace(/^["']|["']$/g, '');
+        env[chave.trim()] = valor;
+      }
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
     }
-  } catch (error) {
-    if (error.code !== 'ENOENT') throw error;
   }
 
   return env;
@@ -62,7 +64,9 @@ const supabaseUrl = env.VITE_SUPABASE_URL || env.SUPABASE_URL;
 const supabaseKey = env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Configure VITE_SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY no .env antes de importar.');
+  throw new Error(
+    'Configure VITE_SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY no .env.local antes de importar.',
+  );
 }
 
 const produtos = JSON.parse(await fs.readFile(produtosPath, 'utf8'));

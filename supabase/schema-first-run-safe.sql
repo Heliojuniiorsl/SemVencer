@@ -7,38 +7,24 @@ create table if not exists public.usuarios (
   admin boolean not null default false,
   aprovado boolean not null default false,
   created_at timestamptz not null default now(),
-  last_login_at timestamptz
+  last_login_at timestamptz,
+  last_activity_label text,
+  last_activity_at timestamptz,
+  last_route text,
+  constraint usuarios_telefone_valido_check
+    check (
+      admin = true
+      or (
+        telefone ~ '^[0-9]{11}$'
+        and substring(telefone from 3 for 1) = '9'
+        and telefone !~ '^([0-9])\1{10}$'
+        and case
+          when telefone ~ '^[0-9]{2}' then substring(telefone from 1 for 2)::int between 11 and 99
+          else false
+        end
+      )
+    )
 );
-
-alter table if exists public.usuarios
-add column if not exists aprovado boolean not null default false;
-
-alter table if exists public.usuarios
-add column if not exists last_activity_label text;
-
-alter table if exists public.usuarios
-add column if not exists last_activity_at timestamptz;
-
-alter table if exists public.usuarios
-add column if not exists last_route text;
-
-alter table if exists public.usuarios
-drop constraint if exists usuarios_telefone_valido_check;
-
-alter table if exists public.usuarios
-add constraint usuarios_telefone_valido_check
-check (
-  admin = true
-  or (
-    telefone ~ '^[0-9]{11}$'
-    and substring(telefone from 3 for 1) = '9'
-    and telefone !~ '^([0-9])\1{10}$'
-    and case
-      when telefone ~ '^[0-9]{2}' then substring(telefone from 1 for 2)::int between 11 and 99
-      else false
-    end
-  )
-) not valid;
 
 create table if not exists public.validades (
   id text primary key,
@@ -58,11 +44,6 @@ create table if not exists public.validades (
   updated_at timestamptz not null default now()
 );
 
-alter table if exists public.validades
-drop column if exists imagem;
-
-drop table if exists public.fotos_produtos;
-
 create table if not exists public.preferencias_usuario (
   usuario_id uuid primary key references public.usuarios(id) on delete cascade,
   matricula text not null,
@@ -72,8 +53,6 @@ create table if not exists public.preferencias_usuario (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
-
-create index if not exists preferencias_usuario_matricula_idx on public.preferencias_usuario (matricula);
 
 create table if not exists public.produtos_base (
   plu text primary key,
@@ -88,6 +67,7 @@ create table if not exists public.produtos_base (
   updated_at timestamptz not null default now()
 );
 
+create index if not exists preferencias_usuario_matricula_idx on public.preferencias_usuario (matricula);
 create index if not exists produtos_base_categoria_idx on public.produtos_base (categoria);
 create index if not exists produtos_base_secao_idx on public.produtos_base (secao);
 create index if not exists produtos_base_descricao_idx on public.produtos_base using gin (to_tsvector('portuguese', descricao));
@@ -102,17 +82,14 @@ begin
 end;
 $$;
 
-drop trigger if exists set_validades_updated_at on public.validades;
 create trigger set_validades_updated_at
 before update on public.validades
 for each row execute function public.set_updated_at();
 
-drop trigger if exists set_preferencias_usuario_updated_at on public.preferencias_usuario;
 create trigger set_preferencias_usuario_updated_at
 before update on public.preferencias_usuario
 for each row execute function public.set_updated_at();
 
-drop trigger if exists set_produtos_base_updated_at on public.produtos_base;
 create trigger set_produtos_base_updated_at
 before update on public.produtos_base
 for each row execute function public.set_updated_at();
@@ -122,83 +99,65 @@ values ('000000', '00000000000', true, true)
 on conflict (matricula)
 do update set admin = true, aprovado = true;
 
-update public.usuarios
-set admin = false
-where matricula = '3408990';
-
 alter table public.usuarios enable row level security;
 alter table public.validades enable row level security;
 alter table public.preferencias_usuario enable row level security;
 alter table public.produtos_base enable row level security;
 
-drop policy if exists "usuarios leitura anon" on public.usuarios;
 create policy "usuarios leitura anon"
 on public.usuarios for select
 to anon
 using (true);
 
-drop policy if exists "usuarios cadastro anon" on public.usuarios;
 create policy "usuarios cadastro anon"
 on public.usuarios for insert
 to anon
 with check (true);
 
-drop policy if exists "usuarios atualizacao anon" on public.usuarios;
 create policy "usuarios atualizacao anon"
 on public.usuarios for update
 to anon
 using (true)
 with check (true);
 
-drop policy if exists "validades leitura anon" on public.validades;
 create policy "validades leitura anon"
 on public.validades for select
 to anon
 using (true);
 
-drop policy if exists "validades escrita anon" on public.validades;
 create policy "validades escrita anon"
 on public.validades for insert
 to anon
 with check (true);
 
-drop policy if exists "validades atualizacao anon" on public.validades;
 create policy "validades atualizacao anon"
 on public.validades for update
 to anon
 using (true)
 with check (true);
 
-drop policy if exists "validades exclusao anon" on public.validades;
 create policy "validades exclusao anon"
 on public.validades for delete
 to anon
 using (true);
 
-drop policy if exists "preferencias leitura anon" on public.preferencias_usuario;
 create policy "preferencias leitura anon"
 on public.preferencias_usuario for select
 to anon
 using (true);
 
-drop policy if exists "preferencias escrita anon" on public.preferencias_usuario;
 create policy "preferencias escrita anon"
 on public.preferencias_usuario for insert
 to anon
 with check (true);
 
-drop policy if exists "preferencias atualizacao anon" on public.preferencias_usuario;
 create policy "preferencias atualizacao anon"
 on public.preferencias_usuario for update
 to anon
 using (true)
 with check (true);
 
-drop policy if exists "produtos leitura anon" on public.produtos_base;
 create policy "produtos leitura anon"
 on public.produtos_base for select
 to anon
 using (true);
-
-drop policy if exists "produtos escrita anon" on public.produtos_base;
-drop policy if exists "produtos atualizacao anon" on public.produtos_base;

@@ -6,7 +6,8 @@
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "supabase:import-produtos": "node scripts/import-produtos-supabase.mjs"
+    "supabase:import-produtos": "node scripts/import-produtos-supabase.mjs",
+    "supabase:gerar-sql-produtos": "node scripts/gerar-import-produtos-sql.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.107.0",

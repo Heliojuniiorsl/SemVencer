@@ -4,6 +4,7 @@ export const ADMIN_MATRICULA = '000000';
 export const CONTATO_LIBERACAO = '61998427629';
 
 const localUsersKey = 'semVencer.usuarios.local.v1';
+const localMigrationPrefix = 'semVencer.migracao.supabase.v1';
 
 function somenteDigitos(valor) {
   return String(valor || '').replace(/\D/g, '');
@@ -47,6 +48,33 @@ function salvarLocal(chave, valor) {
   } catch {
     // Local fallback best-effort.
   }
+}
+
+function localTemChave(chave) {
+  try {
+    return window.localStorage.getItem(chave) !== null;
+  } catch {
+    return false;
+  }
+}
+
+function chaveMigracaoUsuario(usuario) {
+  const matricula = somenteDigitos(usuario?.matricula);
+  return matricula ? `${localMigrationPrefix}.${matricula}` : '';
+}
+
+function normalizarPreferencias(preferencias = {}) {
+  const secoes = Array.isArray(preferencias.secoesSelecionadas)
+    ? preferencias.secoesSelecionadas
+    : Array.isArray(preferencias.secoes_selecionadas)
+      ? preferencias.secoes_selecionadas
+      : [];
+
+  return {
+    secoesSelecionadas: Array.from(new Set(secoes.map((secao) => String(secao || '').trim()).filter(Boolean))),
+    secoesConfiguradas: Boolean(preferencias.secoesConfiguradas ?? preferencias.secoes_configuradas),
+    tema: ['claro', 'azul'].includes(preferencias.tema) ? preferencias.tema : 'claro',
+  };
 }
 
 function normalizarUsuario(usuario) {
@@ -382,6 +410,52 @@ export async function carregarUsuariosAdmin() {
   });
 }
 
+export async function carregarPreferenciasUsuario(usuario, fallback = {}) {
+  const preferenciasFallback = normalizarPreferencias(fallback);
+
+  if (!supabaseConfigurado || !usuario) {
+    return preferenciasFallback;
+  }
+
+  const usuarioBanco = await garantirUsuarioRemoto(usuario);
+  const { data, error } = await supabase
+    .from('preferencias_usuario')
+    .select('secoes_selecionadas, secoes_configuradas, tema')
+    .eq('usuario_id', usuarioBanco.id)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`Nao foi possivel carregar preferencias no Supabase: ${error.message}`);
+  }
+
+  if (!data) {
+    await salvarPreferenciasUsuario(usuarioBanco, preferenciasFallback);
+    return preferenciasFallback;
+  }
+
+  return normalizarPreferencias(data);
+}
+
+export async function salvarPreferenciasUsuario(usuario, preferencias) {
+  if (!supabaseConfigurado || !usuario) return;
+
+  const usuarioBanco = await garantirUsuarioRemoto(usuario);
+  const preferenciasNormalizadas = normalizarPreferencias(preferencias);
+  const payload = {
+    usuario_id: usuarioBanco.id,
+    matricula: usuarioBanco.matricula,
+    secoes_selecionadas: preferenciasNormalizadas.secoesSelecionadas,
+    secoes_configuradas: preferenciasNormalizadas.secoesConfiguradas,
+    tema: preferenciasNormalizadas.tema,
+  };
+
+  const { error } = await supabase.from('preferencias_usuario').upsert(payload, { onConflict: 'usuario_id' });
+
+  if (error) {
+    throw new Error(`Nao foi possivel salvar preferencias no Supabase: ${error.message}`);
+  }
+}
+
 export async function registrarAtividadeUsuario(usuario, atividade, rota = '') {
   if (!usuario || !atividade) return;
 
@@ -458,7 +532,7 @@ export async function carregarDadosRemotos(usuario, validadesFallback) {
   }
 
   const usuarioBanco = await garantirUsuarioRemoto(usuario);
-  const { data: validades, error: validadesError } = await supabase
+  let { data: validades, error: validadesError } = await supabase
     .from('validades')
     .select('*')
     .eq('usuario_id', usuarioBanco.id)
@@ -466,17 +540,29 @@ export async function carregarDadosRemotos(usuario, validadesFallback) {
 
   if (validadesError) throw new Error(validadesError.message);
 
-  if (!validades || validades.length === 0) {
+  const migrationKey = chaveMigracaoUsuario(usuarioBanco);
+  const deveMigrarLocal = Array.isArray(validadesFallback) && validadesFallback.length > 0 && !localTemChave(migrationKey);
+
+  if (deveMigrarLocal) {
     await salvarValidadesRemotas(validadesFallback, usuarioBanco);
-    return {
-      usuario: usuarioBanco,
-      validades: validadesFallback,
-    };
+    salvarLocal(migrationKey, {
+      at: new Date().toISOString(),
+      total: validadesFallback.length,
+    });
+
+    const consultaAtualizada = await supabase
+      .from('validades')
+      .select('*')
+      .eq('usuario_id', usuarioBanco.id)
+      .order('created_at', { ascending: false });
+
+    if (consultaAtualizada.error) throw new Error(consultaAtualizada.error.message);
+    validades = consultaAtualizada.data || [];
   }
 
   return {
     usuario: usuarioBanco,
-    validades: validades.map(fromDbValidade),
+    validades: (validades || []).map(fromDbValidade),
   };
 }
 

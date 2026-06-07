@@ -31,7 +31,9 @@ import {
   ADMIN_MATRICULA,
   CONTATO_LIBERACAO,
   aprovarUsuario,
+  bancoAtivo,
   cadastrarUsuario,
+  carregarPreferenciasUsuario,
   carregarProdutosBaseRemotos,
   carregarUsuariosAdmin,
   carregarDadosRemotos,
@@ -39,6 +41,7 @@ import {
   loginUsuario,
   registrarAtividadeUsuario,
   removerValidadeRemota,
+  salvarPreferenciasUsuario,
   salvarValidadesRemotas,
   telefoneValido,
 } from './services/database';
@@ -462,6 +465,23 @@ function carregarSecoesConfiguradasUsuario(usuario) {
   return Boolean(lerStorageJson(chaveConfigurada, false) || storageTemChave(chaveSecoes));
 }
 
+function carregarPreferenciasLocais(usuario, tema = 'claro') {
+  return {
+    secoesSelecionadas: carregarSecoesDoUsuario(usuario),
+    secoesConfiguradas: carregarSecoesConfiguradasUsuario(usuario),
+    tema,
+  };
+}
+
+function salvarPreferenciasLocais(usuario, preferencias) {
+  const chaveSecoes = chaveSecoesUsuario(usuario);
+
+  if (!chaveSecoes) return;
+
+  salvarStorageJson(chaveSecoes, normalizarSecoesSelecionadas(preferencias.secoesSelecionadas));
+  salvarStorageJson(chaveSecoesConfiguradasUsuario(usuario), Boolean(preferencias.secoesConfiguradas));
+}
+
 function carregarValidadesDoUsuario(usuario) {
   const matricula = somenteNumeros(usuario?.matricula);
 
@@ -720,15 +740,39 @@ function App() {
   }, [usuarioAtual?.matricula]);
 
   useEffect(() => {
-    const chave = chaveSecoesUsuario(usuarioAtual);
-
-    if (!chave || secoesUsuarioChave !== chave || !secoesConfiguradas) {
+    if (!usuarioAtual || !usuarioPodeAcessar(usuarioAtual) || !secoesConfiguradas) {
       return;
     }
 
-    salvarStorageJson(chave, secoesSelecionadas);
-    salvarStorageJson(chaveSecoesConfiguradasUsuario(usuarioAtual), true);
-  }, [secoesConfiguradas, secoesSelecionadas, secoesUsuarioChave, usuarioAtual]);
+    const preferencias = {
+      secoesSelecionadas,
+      secoesConfiguradas,
+      tema: temaAtual,
+    };
+
+    if (bancoAtivo()) {
+      if (!dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) {
+        return;
+      }
+
+      salvarPreferenciasUsuario(usuarioAtual, preferencias).catch((error) => {
+        console.warn('Nao foi possivel sincronizar preferencias', error);
+      });
+      return;
+    }
+
+    if (secoesUsuarioChave === chaveSecoesUsuario(usuarioAtual)) {
+      salvarPreferenciasLocais(usuarioAtual, preferencias);
+    }
+  }, [
+    dadosRemotosCarregados,
+    secoesConfiguradas,
+    secoesSelecionadas,
+    secoesUsuarioChave,
+    temaAtual,
+    usuarioAtual,
+    usuarioDadosChave,
+  ]);
 
   useEffect(() => {
     let cancelado = false;
@@ -835,19 +879,31 @@ function App() {
 
       try {
         const validadesLocais = carregarValidadesDoUsuario(usuarioAtual);
+        const preferenciasLocais = carregarPreferenciasLocais(usuarioAtual, temaAtual);
         const dados = await carregarDadosRemotos(usuarioAtual, validadesLocais);
 
         if (cancelado) return;
 
         const usuarioCarregado = dados.usuario || usuarioAtual;
+        const preferencias = await carregarPreferenciasUsuario(usuarioCarregado, preferenciasLocais);
+
+        if (cancelado) return;
+
         if (dados.usuario && dados.usuario.id !== usuarioAtual.id) {
           setUsuarioAtual(dados.usuario);
         }
+        setSecoesSelecionadas(normalizarSecoesSelecionadas(preferencias.secoesSelecionadas));
+        setSecoesConfiguradas(Boolean(preferencias.secoesConfiguradas));
+        setTemaAtual(normalizarTema(preferencias.tema));
         setValidades(normalizarValidadesSalvas(dados.validades));
         setUsuarioDadosChave(chaveValidadesUsuario(usuarioCarregado));
         setDadosRemotosCarregados(true);
       } catch (error) {
         if (!cancelado) {
+          const preferenciasLocais = carregarPreferenciasLocais(usuarioAtual, temaAtual);
+          setSecoesSelecionadas(normalizarSecoesSelecionadas(preferenciasLocais.secoesSelecionadas));
+          setSecoesConfiguradas(Boolean(preferenciasLocais.secoesConfiguradas));
+          setValidades(normalizarValidadesSalvas(carregarValidadesDoUsuario(usuarioAtual)));
           setAuthErro(error.message || 'Nao foi possivel carregar o banco.');
           setDadosRemotosCarregados(true);
         }
@@ -863,7 +919,7 @@ function App() {
     return () => {
       cancelado = true;
     };
-  }, [dadosRemotosCarregados, usuarioAtual]);
+  }, [dadosRemotosCarregados, temaAtual, usuarioAtual]);
 
   useEffect(() => {
     if (!cadastroAberto && !produtoDetalhe && !usuarioAdminSelecionado) {
@@ -880,11 +936,13 @@ function App() {
 
   useEffect(() => {
     if (!usuarioAtual || !dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) return;
+    if (bancoAtivo()) return;
     salvarValidadesDoUsuario(usuarioAtual, validades);
   }, [dadosRemotosCarregados, usuarioAtual, usuarioDadosChave, validades]);
 
   useEffect(() => {
     if (!usuarioAtual || !dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) return;
+    if (!bancoAtivo()) return;
     salvarValidadesRemotas(validades, usuarioAtual).catch((error) => {
       console.warn('Nao foi possivel sincronizar validades', error);
     });
@@ -1253,22 +1311,28 @@ function App() {
   }
 
   function confirmarSecoesProdutos() {
-    const chave = chaveSecoesUsuario(usuarioAtual);
+    const preferencias = {
+      secoesSelecionadas,
+      secoesConfiguradas: true,
+      tema: temaAtual,
+    };
 
-    if (chave) {
-      salvarStorageJson(chave, secoesSelecionadas);
-      salvarStorageJson(chaveSecoesConfiguradasUsuario(usuarioAtual), true);
+    if (!bancoAtivo()) {
+      salvarPreferenciasLocais(usuarioAtual, preferencias);
     }
 
     setSecoesConfiguradas(true);
   }
 
   function confirmarTodasSecoesProdutos() {
-    const chave = chaveSecoesUsuario(usuarioAtual);
+    const preferencias = {
+      secoesSelecionadas: [],
+      secoesConfiguradas: true,
+      tema: temaAtual,
+    };
 
-    if (chave) {
-      salvarStorageJson(chave, []);
-      salvarStorageJson(chaveSecoesConfiguradasUsuario(usuarioAtual), true);
+    if (!bancoAtivo()) {
+      salvarPreferenciasLocais(usuarioAtual, preferencias);
     }
 
     setSecoesSelecionadas([]);
@@ -1353,6 +1417,23 @@ function App() {
         onLogin={entrarComMatricula}
         onCadastro={cadastrarComTelefone}
       />
+    );
+  }
+
+  if (bancoAtivo() && !dadosRemotosCarregados) {
+    return (
+      <main className="auth-shell">
+        <section className="auth-card">
+          <div className="auth-brand">
+            <PackageCheck size={28} />
+            <div>
+              <span>Sem Vencer</span>
+              <h1>Sincronizando</h1>
+            </div>
+          </div>
+          <div className="auth-info">Carregando dados do Supabase...</div>
+        </section>
+      </main>
     );
   }
 

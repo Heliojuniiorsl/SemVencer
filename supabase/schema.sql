@@ -202,3 +202,18 @@ using (true);
 
 drop policy if exists "produtos escrita anon" on public.produtos_base;
 drop policy if exists "produtos atualizacao anon" on public.produtos_base;
+
+do $$
+begin
+  if exists (select 1 from pg_publication where pubname = 'supabase_realtime')
+    and not exists (
+      select 1
+      from pg_publication_tables
+      where pubname = 'supabase_realtime'
+        and schemaname = 'public'
+        and tablename = 'validades'
+    )
+  then
+    alter publication supabase_realtime add table public.validades;
+  end if;
+end $$;

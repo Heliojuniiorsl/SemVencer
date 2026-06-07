@@ -2,7 +2,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/copy-404.mjs",
-    "build:android": "vite build --base ./ --outDir C:/Users/junio/AndroidStudioProjects/semvencer/app/src/main/assets/semvencer --emptyOutDir",
+    "build:android": "vite build --base ./ --outDir android/app/src/main/assets/semvencer --emptyOutDir",
+    "android:debug": "npm run build:android && cd android && gradlew.bat assembleDebug",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",

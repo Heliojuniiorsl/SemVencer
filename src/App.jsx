@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   AlertTriangle,
   Calculator,
@@ -30,6 +30,7 @@ import produtos from './data/plus.json';
 import {
   ADMIN_MATRICULA,
   CONTATO_LIBERACAO,
+  assinarValidadesRemotas,
   aprovarUsuario,
   bancoAtivo,
   cadastrarUsuario,
@@ -37,6 +38,7 @@ import {
   carregarProdutosBaseRemotos,
   carregarUsuariosAdmin,
   carregarDadosRemotos,
+  carregarValidadesRemotas,
   formatarTelefone,
   loginUsuario,
   registrarAtividadeUsuario,
@@ -427,6 +429,27 @@ function normalizarValidadesSalvas(itens) {
   });
 }
 
+function serializarValidades(itens) {
+  return JSON.stringify(
+    [...itens]
+      .sort((a, b) => String(a.id).localeCompare(String(b.id)))
+      .map((item) => ({
+        id: item.id,
+        produto: item.produto,
+        plu: item.plu,
+        categoria: item.categoria,
+        lote: item.lote,
+        setor: item.setor,
+        tipo: item.tipo,
+        quantidade: item.quantidade,
+        fabricacao: item.fabricacao,
+        validade: item.validade,
+        responsavel: item.responsavel,
+        revisado: Boolean(item.revisado),
+      })),
+  );
+}
+
 function chaveValidadesUsuario(usuario) {
   const matricula = somenteNumeros(usuario?.matricula);
   return matricula ? `${storageKeys.validadesPorUsuario}.${matricula}` : '';
@@ -697,6 +720,7 @@ function App() {
   const [visualizacaoValidades, setVisualizacaoValidades] = useState('tabela');
   const [produtosBase, setProdutosBase] = useState(produtos);
   const [validades, setValidades] = useState([]);
+  const atualizacaoRemotaRef = useRef(false);
   const [filtroValidade, setFiltroValidade] = useState('todos');
   const [buscaValidade, setBuscaValidade] = useState('');
   const [cadastroAberto, setCadastroAberto] = useState(false);
@@ -711,6 +735,19 @@ function App() {
     unidade: 'kg',
     validade: criarDataRelativa(5),
   });
+
+  function aplicarValidadesRemotas(itens) {
+    const normalizadas = normalizarValidadesSalvas(itens);
+
+    setValidades((atuais) => {
+      if (serializarValidades(atuais) === serializarValidades(normalizadas)) {
+        return atuais;
+      }
+
+      atualizacaoRemotaRef.current = true;
+      return normalizadas;
+    });
+  }
 
   useEffect(() => {
     const handlePopState = () => {
@@ -895,11 +932,20 @@ function App() {
         setSecoesSelecionadas(normalizarSecoesSelecionadas(preferencias.secoesSelecionadas));
         setSecoesConfiguradas(Boolean(preferencias.secoesConfiguradas));
         setTemaAtual(normalizarTema(preferencias.tema));
-        setValidades(normalizarValidadesSalvas(dados.validades));
+        aplicarValidadesRemotas(dados.validades);
         setUsuarioDadosChave(chaveValidadesUsuario(usuarioCarregado));
         setDadosRemotosCarregados(true);
       } catch (error) {
         if (!cancelado) {
+          if (bancoAtivo()) {
+            setUsuarioAtual(null);
+            setValidades([]);
+            setUsuarioDadosChave('');
+            setDadosRemotosCarregados(false);
+            setAuthErro(error.message || 'Nao foi possivel validar a sessao no Supabase.');
+            return;
+          }
+
           const preferenciasLocais = carregarPreferenciasLocais(usuarioAtual, temaAtual);
           setSecoesSelecionadas(normalizarSecoesSelecionadas(preferenciasLocais.secoesSelecionadas));
           setSecoesConfiguradas(Boolean(preferenciasLocais.secoesConfiguradas));
@@ -943,10 +989,55 @@ function App() {
   useEffect(() => {
     if (!usuarioAtual || !dadosRemotosCarregados || usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual)) return;
     if (!bancoAtivo()) return;
+    if (atualizacaoRemotaRef.current) {
+      atualizacaoRemotaRef.current = false;
+      return;
+    }
+
     salvarValidadesRemotas(validades, usuarioAtual).catch((error) => {
       console.warn('Nao foi possivel sincronizar validades', error);
     });
   }, [dadosRemotosCarregados, usuarioAtual, usuarioDadosChave, validades]);
+
+  useEffect(() => {
+    if (
+      !bancoAtivo() ||
+      !usuarioAtual ||
+      !dadosRemotosCarregados ||
+      usuarioDadosChave !== chaveValidadesUsuario(usuarioAtual) ||
+      !usuarioAtual.id ||
+      String(usuarioAtual.id).startsWith('local-')
+    ) {
+      return undefined;
+    }
+
+    let cancelado = false;
+
+    async function atualizarValidadesRemotas() {
+      try {
+        const itens = await carregarValidadesRemotas(usuarioAtual);
+        if (!cancelado) {
+          aplicarValidadesRemotas(itens);
+        }
+      } catch (error) {
+        console.warn('Nao foi possivel atualizar validades do Supabase', error);
+      }
+    }
+
+    const cancelarAssinatura = assinarValidadesRemotas(usuarioAtual, atualizarValidadesRemotas, (error) => {
+      console.warn('Realtime do Supabase indisponivel, usando atualizacao periodica', error);
+    });
+    const intervalo = window.setInterval(atualizarValidadesRemotas, 5000);
+
+    window.addEventListener('focus', atualizarValidadesRemotas);
+
+    return () => {
+      cancelado = true;
+      window.clearInterval(intervalo);
+      window.removeEventListener('focus', atualizarValidadesRemotas);
+      cancelarAssinatura();
+    };
+  }, [dadosRemotosCarregados, usuarioAtual, usuarioDadosChave]);
 
   const produtosBaseComSecao = useMemo(
     () =>

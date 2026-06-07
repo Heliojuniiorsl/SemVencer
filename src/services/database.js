@@ -100,25 +100,23 @@ function normalizarUsuario(usuario) {
 async function garantirUsuarioRemoto(usuario) {
   if (!supabaseConfigurado || !usuario) return usuario;
 
-  if (usuario.id && !String(usuario.id).startsWith('local-')) {
-    return usuario;
-  }
-
-  const payload = {
-    matricula: somenteDigitos(usuario.matricula),
-    telefone: somenteDigitos(usuario.telefone) || '00000000000',
-    admin: somenteDigitos(usuario.matricula) === ADMIN_MATRICULA,
-    aprovado: somenteDigitos(usuario.matricula) === ADMIN_MATRICULA || Boolean(usuario.aprovado),
-  };
-
+  const matricula = somenteDigitos(usuario.matricula);
+  const idRemoto = usuario.id && !String(usuario.id).startsWith('local-') ? usuario.id : '';
   const { data, error } = await supabase
     .from('usuarios')
-    .upsert(payload, { onConflict: 'matricula' })
     .select('id, matricula, telefone, admin, aprovado')
-    .single();
+    .eq(idRemoto ? 'id' : 'matricula', idRemoto || matricula)
+    .maybeSingle();
 
   if (error) throw new Error(error.message);
-  return normalizarUsuario(data);
+  if (!data) throw new Error('Sessao local nao encontrada no Supabase. Cadastre a matricula e aguarde a aprovacao do admin.');
+
+  const usuarioRemoto = normalizarUsuario(data);
+  if (!usuarioRemoto.admin && !usuarioRemoto.aprovado) {
+    throw new Error(`Cadastro pendente. Entre em contato com ${CONTATO_LIBERACAO} para liberar o acesso.`);
+  }
+
+  return usuarioRemoto;
 }
 
 function toDbValidade(item, usuario) {
@@ -563,6 +561,50 @@ export async function carregarDadosRemotos(usuario, validadesFallback) {
   return {
     usuario: usuarioBanco,
     validades: (validades || []).map(fromDbValidade),
+  };
+}
+
+export async function carregarValidadesRemotas(usuario) {
+  if (!supabaseConfigurado || !usuario) return [];
+
+  const usuarioBanco = await garantirUsuarioRemoto(usuario);
+  const { data, error } = await supabase
+    .from('validades')
+    .select('*')
+    .eq('usuario_id', usuarioBanco.id)
+    .order('created_at', { ascending: false });
+
+  if (error) throw new Error(error.message);
+  return (data || []).map(fromDbValidade);
+}
+
+export function assinarValidadesRemotas(usuario, onChange, onError) {
+  if (!supabaseConfigurado || !usuario?.id || String(usuario.id).startsWith('local-')) {
+    return () => {};
+  }
+
+  const canal = supabase
+    .channel(`validades:${usuario.id}`)
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'validades',
+        filter: `usuario_id=eq.${usuario.id}`,
+      },
+      () => {
+        onChange();
+      },
+    )
+    .subscribe((status, error) => {
+      if (error) {
+        onError(error);
+      }
+    });
+
+  return () => {
+    supabase.removeChannel(canal);
   };
 }
 

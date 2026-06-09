@@ -147,17 +147,31 @@ export function bancoAtivo() {
 export async function carregarProdutosBaseRemotos() {
   exigirSupabase();
 
-  const { data, error } = await supabase
-    .from('produtos_base')
-    .select('plu, descricao, categoria, tipo, tipo_plu, secao, embalagem_multiplo')
-    .order('categoria', { ascending: true })
-    .order('descricao', { ascending: true });
+  const tamanhoPagina = 1000;
+  const produtos = [];
 
-  if (error) {
-    throw new Error(error.message);
+  for (let pagina = 0; ; pagina += 1) {
+    const inicio = pagina * tamanhoPagina;
+    const fim = inicio + tamanhoPagina - 1;
+    const { data, error } = await supabase
+      .from('produtos_base')
+      .select('plu, descricao, categoria, tipo, tipo_plu, secao, embalagem_multiplo')
+      .order('categoria', { ascending: true })
+      .order('descricao', { ascending: true })
+      .range(inicio, fim);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    produtos.push(...(data || []));
+
+    if (!data || data.length < tamanhoPagina) {
+      break;
+    }
   }
 
-  return (data || []).map(fromDbProduto);
+  return produtos.map(fromDbProduto);
 }
 
 export async function cadastrarUsuario({ matricula, telefone }) {
